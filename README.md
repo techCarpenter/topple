@@ -1,5 +1,31 @@
 # Make a web app
 
+- [Make a web app](#make-a-web-app)
+  - [1. Source an idea](#1-source-an-idea)
+  - [2. Market research](#2-market-research)
+    - [Undebt.it keyword competitors:](#undebtit-keyword-competitors)
+  - [3. Define functionality](#3-define-functionality)
+    - [MVP Features](#mvp-features)
+    - [Additional Features](#additional-features)
+  - [4. Sketch the web app](#4-sketch-the-web-app)
+  - [5. Plan your workflow](#5-plan-your-workflow)
+  - [6. Wireframe UI](#6-wireframe-ui)
+  - [7. Seek early validation](#7-seek-early-validation)
+  - [8. Architect database](#8-architect-database)
+  - [9. Develop frontend](#9-develop-frontend)
+  - [10. Build backend](#10-build-backend)
+  - [11. Host web app](#11-host-web-app)
+  - [12. Deploy web app](#12-deploy-web-app)
+  - [Misc.](#misc)
+    - [Name ideas](#name-ideas)
+    - [Dependencies/Libraries](#dependencieslibraries)
+    - [Data](#data)
+    - [Features](#features)
+      - [Stretch goals](#stretch-goals)
+    - [Other](#other)
+    - [Notes/Questions](#notesquestions)
+    - [Target Audience](#target-audience)
+
 ## 1. Source an idea
 
 **Idea: Debt Paydown Planner (Web App)**
