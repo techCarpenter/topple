@@ -14,7 +14,7 @@ There are many different approaches to paying back debt. Whatever your approach 
 
 ## 2. Market research
 
-**Target audience:** FIRE community, College grads, Credit card debt, etc.
+**Target audience:** FIRE community, College grads, Credit card debtors, etc.
 
 ### Undebt.it keyword competitors:
 
@@ -34,21 +34,26 @@ There are many different approaches to paying back debt. Whatever your approach 
 
 ## 3. Define functionality
 
-- Enter new loans
-- Remove loans
-- View payment/loan balance history
-- Create payment plans
-- Compare payment plans
-- Save data (persist sessions)
-- Import/export data
-- Select payment method (avalanche, snowball, custom, etc.)
-- View money saved so far compared to minimum payments (total and per loan)
-- View time saved compared to minimum payments (total and per loan)
-- View total interest paid (total and per loan)
-- Add additional one-time and scheduled payments to payment plan
-- Add previous payments manually
-- Group loans together
-- 
+### MVP Features
+
+- [ ] Add new loans
+- [ ] Remove loans
+- [ ] See graph of min. payments
+- [ ] Select payment method (avalanche, snowball, custom, etc.)
+- [ ] Save data (persist sessions)
+- [ ] View payment/loan balance history
+- [ ] View money saved so far compared to minimum payments (total and per loan)
+- [ ] View time saved compared to minimum payments (total and per loan)
+- [ ] View total interest paid (total and per loan)
+- [ ] Add additional one-time and scheduled payments to payment plan
+- [ ] Add previous payments manually
+- [ ] Group loans together
+
+### Additional Features
+
+- [ ] Import/export data
+- [ ] Create multiple payment plans
+- [ ] Compare payment plans
 
 ## 4. Sketch the web app
 
@@ -90,7 +95,7 @@ There are many different approaches to paying back debt. Whatever your approach 
 - Vuex
 - Vue-router
 - Firebase Authentication
-- Firebase realtime database
+- Firebase firestore
 - Axios
 - UI library (vuetify?)
 - d3.js (charts/graphs/visuals) or Chart.js
@@ -153,6 +158,7 @@ There are many different approaches to paying back debt. Whatever your approach 
 #### Stretch goals
 
 - Sync with accounts (like PersonaCapital, Mint, etc.)
+- Mobile app
 
 ### Other
 
