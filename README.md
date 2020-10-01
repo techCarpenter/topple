@@ -62,24 +62,48 @@ There are many different approaches to paying back debt. Whatever your approach 
 
 ### MVP Features
 
-- [ ] Add new loans
-- [ ] Remove loans
-- [ ] See graph of min. payments
+- [ ] Login/logout
+- [ ] Add/Remove loans
+- [ ] See graph of min. payments (baseline)
 - [ ] Select payment method (avalanche, snowball, custom, etc.)
 - [ ] Save data (persist sessions)
 - [ ] View payment/loan balance history
-- [ ] View money saved so far compared to minimum payments (total and per loan)
-- [ ] View time saved compared to minimum payments (total and per loan)
-- [ ] View total interest paid (total and per loan)
-- [ ] Add additional one-time and scheduled payments to payment plan
+- [ ] View money saved so far compared to minimum payments
+  - [ ] Total
+  - [ ] Per loan
+- [ ] View time saved compared to minimum payments
+  - [ ] Total
+  - [ ] Per loan
+- [ ] View total interest paid
+  - [ ] Total
+  - [ ] Per loan
+- [ ] View progress (percentage)
+  - [ ] Total
+  - [ ] Per Loan
+- [ ] Calculate payoff date
+  - [ ] Total
+  - [ ] Per loan
+- [ ] Add additional one-time and scheduled payments
+  - [ ] to specific account
+  - [ ] to total snowball
 - [ ] Add previous payments manually
-- [ ] Group loans together
 
 ### Additional Features
 
+- [ ] Modify snowball amount (+/-)
+  - [ ] after specific date
+  - [ ] select payments periods
+- [ ] Line on chart marking current date
+- [ ] Print/export payoff plan
+- [ ] Group loans together
 - [ ] Import/export data
 - [ ] Create multiple payment plans
 - [ ] Compare payment plans
+- [ ] Sync with accounts (like PersonaCapital, Mint, etc.)
+- [ ] Milestone notifications
+  - [ ] Total progress (10%, 25%, 50%, 75%, 90%, 100%)
+  - [ ] Individual loan payoff
+  - [ ] Extra paid off
 
 ## 4. Sketch the web app
 
@@ -126,7 +150,7 @@ There are many different approaches to paying back debt. Whatever your approach 
 - UI library (vuetify?)
 - d3.js (charts/graphs/visuals) or Chart.js
 
-### Data
+### Data Structure
 
 - Paydown plan object
   - Paydown method (avalanche, snowball, custom etc.)
@@ -149,41 +173,13 @@ There are many different approaches to paying back debt. Whatever your approach 
 
 ### Features
 
-- Login
-  - Social (Google, Facebook, etc.)
-  - Email & Password
-- Calculate payoff date
-  - Total
-  - Per loan
-- Import/Export Loan and payoff data
-- Apply additional payments
-  - to specific account
-  - based on paydown method
-- Modify snowball amount (+/-)
-  - after specific date
-  - selected payment periods
-- Compare multiple paydown plans (graph overlay?)
-- Print payoff plan
 - Enter current balances, compare to plan
   - Overlay current amounts
 - Enter ideal payoff date, get minimum monthly payment (based on loans entered)
-- Progression
-  - Total
-  - Per account/loan
-- Select loan color on chart
 - Change loan details for selected pay periods (interest rate, payment amount, etc.)
-- Group loans together
-- See money saved so far (compared to minimum payments plan)
-  - Per loan
-  - Total
-- Milestone notifications
-  - Total progress (10%, 25%, 50%, 75%, 90%, 100%)
-  - Individual loan payoff
-  - Extra paid off
 
 #### Stretch goals
 
-- Sync with accounts (like PersonaCapital, Mint, etc.)
 - Mobile app
 
 ### Other
@@ -193,7 +189,7 @@ There are many different approaches to paying back debt. Whatever your approach 
   - OPTION 1: Gated features in free version
   - OPTION 2: Free trial (14-30 days?)
   - OPTION 3 (forever free): self-hosted instance
-  - $5-10/month or $50-100/year?
+    - $5-10/month or $50-100/year?
 
 ### Notes/Questions
 
