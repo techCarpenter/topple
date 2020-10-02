@@ -1,30 +1,30 @@
 # Make a web app
 
-- [Make a web app](#make-a-web-app)
-  - [1. Source an idea](#1-source-an-idea)
-  - [2. Market research](#2-market-research)
-    - [Undebt.it keyword competitors:](#undebtit-keyword-competitors)
-  - [3. Define functionality](#3-define-functionality)
-    - [MVP Features](#mvp-features)
-    - [Additional Features](#additional-features)
-  - [4. Sketch the web app](#4-sketch-the-web-app)
-  - [5. Plan your workflow](#5-plan-your-workflow)
-  - [6. Wireframe UI](#6-wireframe-ui)
-  - [7. Seek early validation](#7-seek-early-validation)
-  - [8. Architect database](#8-architect-database)
-  - [9. Develop frontend](#9-develop-frontend)
-  - [10. Build backend](#10-build-backend)
-  - [11. Host web app](#11-host-web-app)
-  - [12. Deploy web app](#12-deploy-web-app)
-  - [Misc.](#misc)
-    - [Name ideas](#name-ideas)
-    - [Dependencies/Libraries](#dependencieslibraries)
-    - [Data](#data)
-    - [Features](#features)
-      - [Stretch goals](#stretch-goals)
-    - [Other](#other)
-    - [Notes/Questions](#notesquestions)
-    - [Target Audience](#target-audience)
+## Table Of Contents
+
+- [1. Source an idea](#1-source-an-idea)
+  - [Name ideas](#name-ideas)
+- [2. Market research](#2-market-research)
+  - [Undebt.it keyword competitors:](#undebtit-keyword-competitors)
+- [3. Define functionality](#3-define-functionality)
+  - [MVP Features](#mvp-features)
+  - [Additional Features](#additional-features)
+- [4. Sketch the web app](#4-sketch-the-web-app)
+- [5. Plan your workflow](#5-plan-your-workflow)
+- [6. Wireframe UI](#6-wireframe-ui)
+- [7. Seek early validation](#7-seek-early-validation)
+- [8. Architect database](#8-architect-database)
+  - [Data Structure](#data-structure)
+- [9. Develop frontend](#9-develop-frontend)
+  - [Dependencies/Libraries](#dependencieslibraries)
+  - [Other](#other)
+- [10. Build backend](#10-build-backend)
+  - [Dependencies/Libraries](#dependencieslibraries-1)
+- [11. Host web app](#11-host-web-app)
+- [12. Deploy web app](#12-deploy-web-app)
+- [Beyond the launch](#beyond-the-launch)
+  - [Monetize](#monetize)
+  - [Notes/Questions](#notesquestions)
 
 ## 1. Source an idea
 
@@ -37,6 +37,20 @@ Also, tracking progress is critical to staying the course. I want an app that ca
 I came out of college with no idea what I had gotten myself into with the loans I took out. I wanted to have a plan to pay back my loans quickly, but I also wanted to start having kids, save for retirement, and work towards buying a house with my wife.
 
 There are many different approaches to paying back debt. Whatever your approach is, this app will help you plan and commit to paying it down faster.
+
+### Name ideas
+
+- Unborrow
+- Paydown
+- Unowe
+- Unslave
+- Debt Destroyer **\***
+- Debt-gator
+- Debt chomper
+- DebtSuccess
+- DebtOverthrow
+- Mountain Climber
+- Freedom planner
 
 ## 2. Market research
 
@@ -104,6 +118,10 @@ There are many different approaches to paying back debt. Whatever your approach 
   - [ ] Total progress (10%, 25%, 50%, 75%, 90%, 100%)
   - [ ] Individual loan payoff
   - [ ] Extra paid off
+- [ ] Recap and upcoming payment emails
+- [ ] Change loan details for select pay periods (interest rate, payment amount, etc.)
+- [ ] Mobile app
+- [ ] Enter ideal payoff date, get minimum monthly payment (based on loans entered)
 
 ## 4. Sketch the web app
 
@@ -114,41 +132,6 @@ There are many different approaches to paying back debt. Whatever your approach 
 ## 7. Seek early validation
 
 ## 8. Architect database
-
-## 9. Develop frontend
-
-## 10. Build backend
-
-## 11. Host web app
-
-## 12. Deploy web app
-
-## Misc.
-
-### Name ideas
-
-- Unborrow
-- Paydown
-- Unowe
-- Unslave
-- Debt Destroyer **\***
-- Debt-gator
-- Debt chomper
-- DebtSuccess
-- DebtOverthrow
-- Mountain Climber
-- Freedom planner
-
-### Dependencies/Libraries
-
-- Vue (vue-cli)
-- Vuex
-- Vue-router
-- Firebase Authentication
-- Firebase firestore
-- Axios
-- UI library (vuetify?)
-- d3.js (charts/graphs/visuals) or Chart.js
 
 ### Data Structure
 
@@ -171,25 +154,42 @@ There are many different approaches to paying back debt. Whatever your approach 
     - Amount
     - Specific account to apply amount to (null if none)
 
-### Features
+## 9. Develop frontend
 
-- Enter current balances, compare to plan
-  - Overlay current amounts
-- Enter ideal payoff date, get minimum monthly payment (based on loans entered)
-- Change loan details for selected pay periods (interest rate, payment amount, etc.)
+### Dependencies/Libraries
 
-#### Stretch goals
-
-- Mobile app
+- [Vue](https://vuejs.org)
+- [Vuex](https://vuex.vuejs.org/)
+- [Vue-router](https://router.vuejs.org/)
+- [Chart.js](https://chartjs.org)
+- UI library
+  - [vuetify](https://vuetifyjs.com/)?
 
 ### Other
 
 - Social share icons
-- Monetize
-  - OPTION 1: Gated features in free version
-  - OPTION 2: Free trial (14-30 days?)
-  - OPTION 3 (forever free): self-hosted instance
-    - $5-10/month or $50-100/year?
+
+## 10. Build backend
+
+### Dependencies/Libraries
+
+- [Firebase](https://firebase.google.com/)
+  - Authentication
+  - Firestore/Realtime DB
+- [Axios](https://www.npmjs.com/package/axios)
+
+## 11. Host web app
+
+## 12. Deploy web app
+
+## Beyond the launch
+
+### Monetize
+
+- OPTION 1: Gated features in free version
+- OPTION 2: Free trial (14-30 days?)
+- OPTION 3 (forever free): self-hosted instance
+  - $5-10/month or $50-100/year?
 
 ### Notes/Questions
 
@@ -207,9 +207,3 @@ There are many different approaches to paying back debt. Whatever your approach 
   - Easily modify plan
   - Compare plans and scenarios
   - Stay motivated!
-
-### Target Audience
-
-- F.I.R.E. community
-- College Grads
-- Anyone with debt... (Student loans, credit card payments, car loan, mortgage, etc.)
