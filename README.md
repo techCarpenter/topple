@@ -2,31 +2,33 @@
 
 ## Table Of Contents
 
-- [1. Source an idea](#1-source-an-idea)
-  - [Name ideas](#name-ideas)
-- [2. Market research](#2-market-research)
-  - [Undebt.it keyword competitors:](#undebtit-keyword-competitors)
-- [3. Define functionality](#3-define-functionality)
-  - [MVP Features](#mvp-features)
-  - [Additional Features](#additional-features)
-- [4. Sketch the web app](#4-sketch-the-web-app)
-- [5. Plan your workflow](#5-plan-your-workflow)
-- [6. Wireframe UI](#6-wireframe-ui)
-- [7. Seek early validation](#7-seek-early-validation)
-- [8. Architect database](#8-architect-database)
-  - [Data Structure](#data-structure)
-- [9. Develop frontend](#9-develop-frontend)
-  - [Dependencies/Libraries](#dependencieslibraries)
-  - [Other](#other)
-- [10. Build backend](#10-build-backend)
-  - [Dependencies/Libraries](#dependencieslibraries-1)
-- [11. Host web app](#11-host-web-app)
-- [12. Deploy web app](#12-deploy-web-app)
-- [Beyond the launch](#beyond-the-launch)
-  - [Monetize](#monetize)
-  - [Notes/Questions](#notesquestions)
+- [Make a web app](#make-a-web-app)
+  - [Table Of Contents](#table-of-contents)
+  - [✔️ 1. Source an idea](#️-1-source-an-idea)
+    - [Name ideas](#name-ideas)
+  - [✔️ 2. Market research](#️-2-market-research)
+    - [Undebt.it keyword competitors:](#undebtit-keyword-competitors)
+  - [✔️ 3. Define functionality](#️-3-define-functionality)
+    - [MVP Features](#mvp-features)
+    - [Additional Features](#additional-features)
+  - [4. Sketch the web app](#4-sketch-the-web-app)
+  - [5. Plan your workflow](#5-plan-your-workflow)
+  - [6. Wireframe UI](#6-wireframe-ui)
+  - [7. Seek early validation](#7-seek-early-validation)
+  - [8. Architect database](#8-architect-database)
+    - [Data Structure](#data-structure)
+  - [9. Develop frontend](#9-develop-frontend)
+    - [Dependencies/Libraries](#dependencieslibraries)
+    - [Other](#other)
+  - [10. Build backend](#10-build-backend)
+    - [Dependencies/Libraries](#dependencieslibraries-1)
+  - [11. Host web app](#11-host-web-app)
+  - [12. Deploy web app](#12-deploy-web-app)
+  - [Beyond the launch](#beyond-the-launch)
+    - [Monetize](#monetize)
+    - [Notes/Questions](#notesquestions)
 
-## 1. Source an idea
+## ✔️ 1. Source an idea
 
 **Idea: Debt Paydown Planner (Web App)**
 
@@ -52,7 +54,7 @@ There are many different approaches to paying back debt. Whatever your approach 
 - Mountain Climber
 - Freedom planner
 
-## 2. Market research
+## ✔️ 2. Market research
 
 **Target audience:** FIRE community, College grads, Credit card debtors, etc.
 
@@ -72,7 +74,7 @@ There are many different approaches to paying back debt. Whatever your approach 
 - thebalance.com
 - daveramsey.com
 
-## 3. Define functionality
+## ✔️ 3. Define functionality
 
 ### MVP Features
 
@@ -135,24 +137,69 @@ There are many different approaches to paying back debt. Whatever your approach 
 
 ### Data Structure
 
-- Paydown plan object
-  - Paydown method (avalanche, snowball, custom etc.)
-  - Start date (date last updated)
-  - Array of loans
-    - Loan provider (Discover, Nelnet, Great Lakes, etc.)
-    - Account type (Credit card, student loan, mortgage, etc.)
-    - Status (deferment, repayment, etc.)
-    - Payback start date
-    - starting amount
-    - interest rate
-    - min. payment
-    - payment history array
-    - (scheduled?) additional payments
-  - Starting snowball amount (amount above total of min. payments)
-  - Array of additional payments
-    - Date
-    - Amount
-    - Specific account to apply amount to (null if none)
+```json
+{
+  "user": {
+    "username": "Brian",
+    "email": "bdevries95@gmail.com",
+    "lastLogin": "2020-08-01T13:53.221Z"
+  },
+  "accounts": [
+    {
+      "id": 1,
+      "name": "Discover 192",
+      "provider": "Discover",
+      "type": "student loan",
+      "statusChanges": [
+        {
+          "status": "deferment",
+          "startDate": "2013-08-01T00:00.000Z",
+          "endDate": "2017-08-01T00:00.000Z"
+        },
+        {
+          "status": "repayment",
+          "startDate": "2017-08-01T00:00.000Z",
+          "endDate": "2017-08-01T00:00.000Z"
+        }
+      ],
+      "startDate": "2013-08-01T00:00.000Z",
+      "initBalance": 16000,
+      "interestRate": 4.5,
+      "minPayment": 190.23,
+      "payments": [
+        {
+          "date": "2017-08-01T00:00.000Z",
+          "amount": 190,
+          "balance": 15810.77
+        }
+      ]
+    }
+  ],
+  "paymentPlans": [
+    {
+      "id": 0,
+      "name": "Plan 1",
+      "method": "snowball",
+      "initialSnowball": 1000,
+      "plannedPayments": [
+        {
+          "loanId": 1,
+          "date": "2017-08-01T00:00.000Z",
+          "interestPaid": 100,
+          "principlePaid": 90.23
+        }
+      ],
+      "additionalPayments": [
+        {
+          "accountId": null,
+          "date": "2017-08-01T00:00.000Z",
+          "amount": 250
+        }
+      ]
+    }
+  ]
+}
+```
 
 ## 9. Develop frontend
 
@@ -163,7 +210,7 @@ There are many different approaches to paying back debt. Whatever your approach 
 - [Vue-router](https://router.vuejs.org/)
 - [Chart.js](https://chartjs.org)
 - UI library
-  - [vuetify](https://vuetifyjs.com/)?
+  - [Vuetify](https://vuetifyjs.com/)?
 
 ### Other
 
