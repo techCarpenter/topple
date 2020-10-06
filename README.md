@@ -1,9 +1,6 @@
 # Make a web app
 
-## Table Of Contents
-
 - [Make a web app](#make-a-web-app)
-  - [Table Of Contents](#table-of-contents)
   - [✔️ 1. Source an idea](#️-1-source-an-idea)
     - [Name ideas](#name-ideas)
   - [✔️ 2. Market research](#️-2-market-research)
@@ -42,17 +39,11 @@ There are many different approaches to paying back debt. Whatever your approach 
 
 ### Name ideas
 
-- Unborrow
-- Paydown
-- Unowe
 - Unslave
-- Debt Destroyer **\***
-- Debt-gator
+- Debt Destroyer
 - Debt chomper
-- DebtSuccess
-- DebtOverthrow
-- Mountain Climber
-- Freedom planner
+- Mountain Climber **\***
+  - Summit?
 
 ## ✔️ 2. Market research
 
@@ -127,13 +118,21 @@ There are many different approaches to paying back debt. Whatever your approach 
 
 ## 4. Sketch the web app
 
+![Main App sketch](./readmePhotos/sketch1.jpg)
+
+![Loan details sketch](./readmePhotos/sketch2.jpg)
+
 ## 5. Plan your workflow
 
 ## 6. Wireframe UI
 
+- Figma
+
 ## 7. Seek early validation
 
 ## 8. Architect database
+
+Firebase?
 
 ### Data Structure
 
