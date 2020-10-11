@@ -1,16 +1,21 @@
 <template>
   <div class="chart-wrapper">
-    <canvas id="paydown-chart"></canvas>
+    <canvas id="paydown-chart" class="chart-canvas"></canvas>
   </div>
 </template>
 
 <style>
 .chart-wrapper {
   padding: 1rem;
-}
-#paydown-chart {
-  max-width: 90vw;
+  height: 90vh;
+  width: 90vw;
   margin: 0 auto;
+}
+@media screen and (max-width: 600px) {
+  .chart-canvas {
+    min-height: 300px;
+    max-height: 300px;
+  }
 }
 </style>
 
@@ -290,15 +295,14 @@ export default {
       }
     };
     this.paydownChartData.options.scales.xAxes[0].ticks = {
-      callback: function(date) {
-        //, index, values) {
+      callback: date => {
         return (
-          (date.getMonth() + 1).toString().padStart(2, "0") +
-          "/" +
+          this.getMonthString(date.getMonth()).substr(0, 3) +
+          " '" +
           date
             .getFullYear()
             .toString()
-            .substring(2)
+            .substr(2)
         );
       }
     };

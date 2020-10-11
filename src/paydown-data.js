@@ -6,6 +6,7 @@ export const paydownChartData = {
   },
   options: {
     responsive: true,
+    maintainAspectRatio: false,
     title: {
       display: true,
       text: ""
@@ -24,7 +25,7 @@ export const paydownChartData = {
         {
           display: true,
           scaleLabel: {
-            display: true,
+            display: false,
             labelString: "Payment Period"
           },
           ticks: {}
@@ -34,7 +35,7 @@ export const paydownChartData = {
         {
           display: true,
           scaleLabel: {
-            display: true,
+            display: false,
             labelString: "Amount(s) $"
           },
           ticks: {}
