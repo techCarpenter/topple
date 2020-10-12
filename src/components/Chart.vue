@@ -54,7 +54,7 @@ export default {
     createChart(chartId, chartData) {
       const ctx = document.getElementById(chartId);
       //const myChart =
-      new Chart(ctx, chartData);
+      return new Chart(ctx, chartData);
     },
     getMonthString(monthInt) {
       switch (monthInt) {
@@ -92,6 +92,11 @@ export default {
           fill: false,
           backgroundColor: loan.color,
           borderColor: loan.color,
+          borderWidth: 3,
+          borderCapStyle: "round",
+          pointRadius: 0,
+          pointHoverRadius: 3,
+          pointHitRadius: 3,
           data: paymentData.map(date => {
             let paymentIndex = date.payments.findIndex(
               payment => payment.loanID === loan.id
