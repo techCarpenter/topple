@@ -43,7 +43,72 @@ There are many different approaches to paying back debt. Whatever your approach 
 - Debt Destroyer
 - Debt chomper
 - Mountain Climber **\***
-  - Summit?
+- Debt Tool
+- Debt Avenger
+- Ascent
+- Hillside
+- Cliff
+- Pitch
+- Arch
+- Mount
+- Dynamite
+- Debt bomber
+- Slope
+- Debt dash
+- debt.ly
+- debto
+- paythat
+- freedm
+- paydown
+- pay.it
+- crush.it
+- debt boom
+- debt plow
+- committed.io
+- commit
+- debt grinder
+- debt dog -> man-in-debt's best friend
+- debt wrangler
+- handle.it
+- unchain.me **\***
+- debt fighter
+- debt brawl
+- scrappy
+- debt demo
+- pid (pay it down)
+- topple
+- linchpin
+- fortify
+- scheme
+- schedge (debt payment schedule)
+- ruse (plot)
+- stepTwo
+- grip
+- nitro
+- boost
+- hustle
+- bloodhound
+- debt hound
+
+What does debt do to people?
+
+- enslave
+- crush
+- trap
+- ensnare
+- weigh down
+
+What do you get when debt is paid?
+
+- freedom
+- peace of mind
+
+What is debt compared to?
+
+- Mountains
+- Chains
+- Anchors, weight
+- 
 
 ## ✔️ 2. Market research
 
@@ -69,16 +134,17 @@ There are many different approaches to paying back debt. Whatever your approach 
 
 ### MVP Features
 
-- [ ] Login/logout
 - [ ] Add/Remove loans
 - [ ] See graph of min. payments (baseline)
 - [ ] Select payment method (avalanche, snowball, custom, etc.)
 - [ ] Save data (persist sessions)
-- [ ] View payment/loan balance history
-- [ ] View money saved so far compared to minimum payments
+- [ ] Login/logout
+- [ ] View payment history
+- [ ] View loan balance history
+- [ ] View money saved so far compared to min. payments
   - [ ] Total
   - [ ] Per loan
-- [ ] View time saved compared to minimum payments
+- [ ] View time saved compared to min. payments
   - [ ] Total
   - [ ] Per loan
 - [ ] View total interest paid
@@ -114,7 +180,7 @@ There are many different approaches to paying back debt. Whatever your approach 
 - [ ] Recap and upcoming payment emails
 - [ ] Change loan details for select pay periods (interest rate, payment amount, etc.)
 - [ ] Mobile app
-- [ ] Enter ideal payoff date, get minimum monthly payment (based on loans entered)
+- [ ] Enter ideal payoff date, get min. monthly payment (based on loans entered)
 
 ## 4. Sketch the web app
 
