@@ -21,11 +21,12 @@
 
 <script>
 import Chart from "chart.js";
-import paydownChartData from "../paydown-data.js";
+import paydownChartData from "../paydown-data";
 import util from "../assets/js/functions";
+import { PAYDOWN_METHODS } from "../consts";
 
 export default {
-  name: "Chart",
+  name: "PaydownChart",
   props: {
     id: {
       type: String,
@@ -38,6 +39,7 @@ export default {
   },
   data() {
     return {
+      chart: null,
       paydownChartData: paydownChartData,
       colorArray: [
         "#ff4c00",
@@ -67,17 +69,17 @@ export default {
   methods: {
     createChart(chartData) {
       const ctx = document.getElementById(this.id);
-      //const myChart =
       return new Chart(ctx, chartData);
     },
     getDataSets(loans, paymentData) {
       let dataSets = [];
-      loans.forEach(loan => {
+      loans.forEach((loan, index, self) => {
         dataSets.push({
           label: loan.name,
           fill: false,
-          backgroundColor: loan.color,
-          borderColor: loan.color,
+          lineTension: 0.1,
+          backgroundColor: this.colorArray[index % self.length],
+          borderColor: this.colorArray[index % self.length],
           borderWidth: 3,
           borderCapStyle: "round",
           pointRadius: 0,
@@ -97,7 +99,7 @@ export default {
       return dataSets;
     },
     loanPaymentData() {
-      return util.getTotalPaymentData(this.loans, "avalanche");
+      return util.getTotalPaymentData(this.loans, PAYDOWN_METHODS.AVALANCHE);
     }
   },
   mounted() {
@@ -155,7 +157,7 @@ export default {
         return "$" + value;
       }
     };
-    this.createChart(this.paydownChartData);
+    this.chart = this.createChart(this.paydownChartData);
   }
 };
 </script>

@@ -2,9 +2,10 @@
 
 - [Make a web app](#make-a-web-app)
   - [✔️ 1. Source an idea](#️-1-source-an-idea)
+    - [Idea: Debt Paydown Planner (Web App)](#idea-debt-paydown-planner-web-app)
     - [Name ideas](#name-ideas)
   - [✔️ 2. Market research](#️-2-market-research)
-    - [Undebt.it keyword competitors:](#undebtit-keyword-competitors)
+    - [Undebt.it keyword competitors](#undebtit-keyword-competitors)
   - [✔️ 3. Define functionality](#️-3-define-functionality)
     - [MVP Features](#mvp-features)
     - [Additional Features](#additional-features)
@@ -24,10 +25,12 @@
   - [Beyond the launch](#beyond-the-launch)
     - [Monetize](#monetize)
     - [Notes/Questions](#notesquestions)
+    - [Unique selling points](#unique-selling-points)
+    - [Goals for the app](#goals-for-the-app)
 
 ## ✔️ 1. Source an idea
 
-**Idea: Debt Paydown Planner (Web App)**
+### Idea: Debt Paydown Planner (Web App)
 
 I have used other web apps and spreadsheets to attempt planning my debt payback. Spreadsheets are flexible enough to give me comparison analysis. Current web apps only provide basic analysis as well. I want to be able to see what different scenarios would produce, see how much money I would save, and dynamically change my plan.
 
@@ -108,13 +111,12 @@ What is debt compared to?
 - Mountains
 - Chains
 - Anchors, weight
-- 
 
 ## ✔️ 2. Market research
 
 **Target audience:** FIRE community, College grads, Credit card debtors, etc.
 
-### Undebt.it keyword competitors:
+### Undebt.it keyword competitors
 
 - clearcheckbook.com
 - unbury.me
@@ -287,7 +289,7 @@ Firebase?
 
 - [Firebase](https://firebase.google.com/)
   - Authentication
-  - Firestore/Realtime DB
+  - Firestore
 - [Axios](https://www.npmjs.com/package/axios)
 
 ## 11. Host web app
@@ -319,3 +321,24 @@ Firebase?
   - Easily modify plan
   - Compare plans and scenarios
   - Stay motivated!
+
+### Unique selling points
+
+- Enter your "why" as a reminder in the app
+- Rewards based system to pay off debt.
+- "Link your progress to an enjoyable and repeatable action"
+- Compete against others
+  - Match up against people with similar pay-off date?
+  - Match up against people with similar remaining balance?
+- Create a community of debtors and ex-debtors
+  - Ask what you're giving up to crush your debt faster
+- Gamify debt payment
+
+### Goals for the app
+
+- Overcome the impatience/overwhelm that usually sets in after motivation passes...
+- Keep people engaged with their freedom plan and execution
+
+superhuman product market fit
+
+talk to a lot of people! (70-100)

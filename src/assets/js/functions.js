@@ -1,3 +1,5 @@
+import { PAYDOWN_METHODS } from "../../consts";
+
 /**
  * Gets the full string value of the month by number
  * @param {Number} monthInt The number denoting the month
@@ -35,82 +37,135 @@ export function getMonthString(monthInt) {
  * @param {Array} loans Array of loans
  * @param {String} paydownMethod String to set paydown method
  */
-export function getTotalPaymentData(loans, paydownMethod) {
+export function getTotalPaymentData(loans, paydownMethod, initSnowball = 0) {
+  console.log("Paydown method:", paydownMethod);
   let returnPaymentData = [],
+    snowballAmt = initSnowball,
     loansCopy = copy(loans),
-    //curLoans = [],
-    startDate = loansCopy.map((loan) => loan.startDate).sort(dateSort)[0];
+    startDate = loansCopy.map(loan => loan.startDate).sort(dateSort)[0];
 
-  if (paydownMethod === "avalanche") {
-    loansCopy.sort((loan1, loan2) => {
-      if (loan1.apr < loan2.apr) {
-        return -1;
-      } else if (loan1.apr > loan2.apr) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
-  }
+  loansCopy = prioritizeLoans(loansCopy, paydownMethod);
 
   let curYear = startDate.getFullYear(),
     curMonth = startDate.getMonth();
-  let ratePerMonth, presentValue, minPay, futureValue, curMonthInterest, curMonthPrincipal;
 
+  let ratePerMonth;
+  let presentValue;
+  let minPay;
+  let futureValue;
+  let curMonthInterest;
+  let curMonthPrincipal;
+
+  /* Loop over each payment period */
   do {
-    let curPaymentObj = {
-      date: new Date(curYear, curMonth, 1),
-      payments: []
-    };
+    // let rePrioritize = false;
+    let extraPayment = 0;
+    let curPaymentObj = { date: new Date(curYear, curMonth, 1), payments: [] };
 
+    // loop over each loan
     for (let loan of loansCopy) {
+      let paymentDetails = {
+        loanID: null,
+        balance: null,
+        interestPaid: 0,
+        principalPaid: 0,
+        totalPaid: 0
+      };
       ratePerMonth = loan.apr / 1200;
       presentValue = loan.balance;
       minPay = loan.minPayment;
 
-      if (loan.startDate.getMonth() === curMonth && loan.startDate.getFullYear() === curYear) {
-        /* This section handles initial account balance */
-        curPaymentObj.payments.push({
-          loanID: loan.id,
-          balance: presentValue,
-          interestPaid: 0,
-          principalPaid: 0,
-          totalPaid: 0
-        });
+      if (
+        loan.startDate.getMonth() === curMonth &&
+        loan.startDate.getFullYear() === curYear
+      ) {
+        /* Handle initial account balance */
+        paymentDetails.loanID = loan.id;
+        paymentDetails.balance = presentValue;
+        // rePrioritize = true;
       } else if (
-        (loan.startDate.getMonth() < curMonth && loan.startDate.getFullYear() === curYear) ||
+        (loan.startDate.getMonth() < curMonth &&
+          loan.startDate.getFullYear() === curYear) ||
         loan.startDate.getFullYear() < curYear
       ) {
-        /* This section handles monthly payments */
+        /* Handle payments */
+
         /* Calculate future value after interest accrues and payment is applied */
         curMonthInterest = presentValue * (1 + ratePerMonth) - presentValue;
         curMonthPrincipal = minPay - curMonthInterest;
-        futureValue = parseFloat((presentValue + curMonthInterest - minPay).toFixed(2));
+        futureValue = parseFloat(
+          (presentValue + curMonthInterest - minPay).toFixed(2)
+        );
 
         if (futureValue >= presentValue && futureValue !== 0) {
           alert("Minimum payment will not cover interest every month.");
           break;
         }
-        if (futureValue < 0) {
+        if (futureValue <= 0) {
+          extraPayment += -futureValue;
           curMonthPrincipal += futureValue;
           futureValue = 0;
         }
-        curPaymentObj.payments.push({
-          loanID: loan.id,
-          balance: futureValue,
-          interestPaid: parseFloat(curMonthInterest.toFixed(2)),
-          principalPaid: parseFloat(curMonthPrincipal.toFixed(2)),
-          totalPaid: parseFloat((curMonthInterest + curMonthPrincipal).toFixed(2))
-        });
+        paymentDetails.loanID = loan.id;
+        paymentDetails.balance = futureValue;
+        paymentDetails.interestPaid = parseFloat(curMonthInterest.toFixed(2));
+        paymentDetails.principalPaid = parseFloat(curMonthPrincipal.toFixed(2));
+        paymentDetails.totalPaid = parseFloat(
+          (curMonthInterest + curMonthPrincipal).toFixed(2)
+        );
 
         loan.balance = futureValue;
+      }
+      curPaymentObj.payments.push(paymentDetails);
+    }
+    // TODO: decide if re-prioritizing is the right decision
+    // if (rePrioritize) {
+    //   loansCopy = prioritizeLoans(loansCopy, paydownMethod);
+    // }
+
+    // Add extra payments before pushing pay period
+    if (
+      (extraPayment > 0 || snowballAmt > 0) &&
+      paydownMethod !== PAYDOWN_METHODS.MIN_PAYMENTS
+    ) {
+      let paymentIndex = curPaymentObj.payments.length - 1;
+      let highPriorityAccount;
+      extraPayment += snowballAmt;
+      let formattedExtraPayment = parseFloat(extraPayment.toFixed(2));
+
+      while (
+        curPaymentObj.payments[paymentIndex].balance <= 0 &&
+        paymentIndex > 0
+      ) {
+        paymentIndex--;
+      }
+
+      highPriorityAccount = curPaymentObj.payments[paymentIndex];
+      if (highPriorityAccount.balance > 0) {
+        if (highPriorityAccount.balance - formattedExtraPayment < 0)
+          formattedExtraPayment = highPriorityAccount.balance;
+
+        highPriorityAccount.balance -= formattedExtraPayment;
+        highPriorityAccount.principalPaid += formattedExtraPayment;
+        highPriorityAccount.totalPaid += formattedExtraPayment;
+
+        let loanIndex = loansCopy.findIndex(
+          l => l.id === highPriorityAccount.loanID
+        );
+        if (
+          loanIndex >= 0 &&
+          loansCopy[loanIndex].balance - formattedExtraPayment >= 0
+        ) {
+          loansCopy[loanIndex].balance -= formattedExtraPayment;
+        }
       }
     }
 
     for (let loan of loansCopy) {
-      if (loan.balance === 0) {
+      if (loan.balance <= 0) {
+        snowballAmt += loan.minPayment;
         loansCopy.splice(
-          loansCopy.findIndex((l) => l.id === loan.id),
+          loansCopy.findIndex(l => l.id === loan.id),
           1
         );
       }
@@ -126,8 +181,58 @@ export function getTotalPaymentData(loans, paydownMethod) {
       curMonth++;
     }
   } while (loansCopy.length > 0);
-
   return returnPaymentData;
+}
+
+export function prioritizeLoans(
+  loanArray,
+  paymentMethod = PAYDOWN_METHODS.MIN_PAYMENTS
+) {
+  if (paymentMethod === PAYDOWN_METHODS.MIN_PAYMENTS) return loanArray;
+  if (paymentMethod === PAYDOWN_METHODS.AVALANCHE) {
+    loanArray.sort((loan1, loan2) => {
+      if (loan1.apr > loan2.apr) {
+        return -1;
+      } else if (loan1.apr < loan2.apr) {
+        return 1;
+      } else {
+        if (loan1.balance > loan2.balance) {
+          return -1;
+        } else if (loan1.balance < loan2.balance) {
+          return 1;
+        }
+        return 0;
+      }
+    });
+  } else if (paymentMethod === PAYDOWN_METHODS.SNOWBALL) {
+    loanArray.sort((loan1, loan2) => {
+      if (loan1.balance > loan2.balance) {
+        return -1;
+      } else if (loan1.balance < loan2.balance) {
+        return 1;
+      } else {
+        if (loan1.apr > loan2.apr) {
+          return -1;
+        } else if (loan1.apr < loan2.apr) {
+          return 1;
+        }
+        return 0;
+      }
+    });
+  }
+  loanArray.forEach((loan, index) => {
+    loan.priority = index + 1;
+  });
+  loanArray.sort((loan1, loan2) => {
+    if (loan1.priority > loan2.priority) {
+      return -1;
+    } else if (loan1.priority < loan2.priority) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+  return loanArray;
 }
 
 export function dateSort(date1, date2) {
@@ -178,5 +283,6 @@ export default {
   copy,
   getMonthString,
   dateSort,
-  getTotalPaymentData
+  getTotalPaymentData,
+  prioritizeLoans
 };

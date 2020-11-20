@@ -1,26 +1,49 @@
-import { createRouter, createWebHashHistory } from "vue-router";
-import Dashboard from "../views/Dashboard.vue";
+import { createRouter, createWebHistory } from "vue-router";
+import store from "../store";
+import Accounts from "../views/AccountsView.vue";
+import Dashboard from "../views/DashboardView.vue";
+import LoginRegister from "../views/LoginRegisterView.vue";
+import NotFound from "../views/NotFoundView.vue";
 
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: Dashboard
+    name: "LoginRegister",
+    component: LoginRegister
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+    path: "/accounts",
+    name: "Accounts",
+    component: Accounts,
+    meta: {
+      requiresLogin: true
+    }
+  },
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    component: Dashboard,
+    meta: {
+      requiresLogin: true
+    }
+  },
+  {
+    path: "/:catchAll(.*)",
+    component: NotFound
   }
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes
+});
+
+router.beforeEach(async (to, from, next) => {
+  const loggedIn = store.getters.getLoggedIn;
+  const requiresLogin = to.matched.some(record => record.meta.requiresLogin);
+
+  if (requiresLogin && !loggedIn) next({ name: "LoginRegister" });
+  else next();
 });
 
 export default router;
