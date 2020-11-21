@@ -26,14 +26,26 @@ export default {
 
 <style lang="scss" scoped>
 .nav-bar {
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  max-width: 5rem;
+  width: 5rem;
+  background-color: $background-color;
+}
+.upper-section,
+.lower-section {
+  padding: 0;
+  margin: 0;
 }
 .upper-section {
-  margin-top: calc(30 / 16) rem;
+  margin-top: 1.8rem;
 }
 .lower-section {
-  margin-bottom: calc(30 / 16) rem;
+  margin-bottom: 1.8rem;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <nav class="nav__container">
+  <!-- <nav class="nav__container">
     <div>
       <span class="nav__link-container">
         <router-link to="/">
@@ -19,13 +19,17 @@
         </router-link>
       </span>
     </div>
-  </nav>
+  </nav> -->
+  <NavBar />
   <router-view />
 </template>
 
 <script>
+import NavBar from "./components/NavBar";
+
 export default {
-  name: "App"
+  components: { NavBar },
+  name: "App",
 };
 </script>
 
