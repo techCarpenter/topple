@@ -1,7 +1,11 @@
 <template>
-  <router-link :to="path">
+  <router-link class="nav-link" :to="path">
     <div class="icon-container">
-      <svg class="nav-icon" viewBox="0 0 24 24">
+      <svg
+        class="nav-icon"
+        :class="{ mirror: icon === 'logout' }"
+        viewBox="0 0 24 24"
+      >
         <path
           v-if="icon === 'home'"
           fill="currentColor"
@@ -43,8 +47,6 @@
 </template>
 
 <script>
-// import "~styles/variables.scss";
-
 export default {
   name: "NavBarItem",
   props: {
@@ -53,21 +55,27 @@ export default {
       type: String,
       validator: () => {
         return /^home|bank|creditcard|chart|settings|account|logout$/;
-      },
+      }
     },
 
     path: {
       default: "/",
-      type: String,
-    },
-  },
+      type: String
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
+.nav-link {
+  display: block;
+  &:hover {
+    background-color: lighten($color: $background-color, $amount: 15);
+  }
+}
 .icon-container {
   width: 100%;
-  padding: 10px 20px;
+  padding: 0.75rem 1.25rem;
   margin: 0;
   padding-left: 26px;
 }
@@ -82,5 +90,8 @@ export default {
   & > .nav-icon {
     color: $theme-color;
   }
+}
+.mirror {
+  transform: rotate(180deg);
 }
 </style>

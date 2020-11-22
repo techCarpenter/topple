@@ -1,7 +1,7 @@
 <template>
   <nav class="nav-bar">
     <div class="upper-section">
-      <NavBarItem icon="home" path="/" />
+      <NavBarItem icon="home" path="/dashboard" />
       <NavBarItem icon="bank" path="/accounts" />
       <NavBarItem icon="creditcard" path="/payments" />
       <NavBarItem icon="chart" path="/chart" />
@@ -19,8 +19,8 @@ import NavBarItem from "./NavBarItem";
 
 export default {
   components: {
-    NavBarItem,
-  },
+    NavBarItem
+  }
 };
 </script>
 
@@ -33,8 +33,8 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  max-width: 5rem;
-  width: 5rem;
+  max-width: $nav-bar-width;
+  width: $nav-bar-width;
   background-color: $background-color;
 }
 .upper-section,

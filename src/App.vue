@@ -21,7 +21,9 @@
     </div>
   </nav> -->
   <NavBar />
-  <router-view />
+  <div class="view-container">
+    <router-view />
+  </div>
 </template>
 
 <script>
@@ -29,12 +31,12 @@ import NavBar from "./components/NavBar";
 
 export default {
   components: { NavBar },
-  name: "App",
+  name: "App"
 };
 </script>
 
-<style scoped>
-.nav__container {
+<style lang="scss" scoped>
+/*.nav__container {
   background-color: lightgreen;
   display: flex;
   flex-direction: row;
@@ -50,5 +52,11 @@ export default {
 }
 .nav__link-container a {
   text-decoration: none;
+} */
+.view-container {
+  padding: 50px 70px;
+  margin: 0 0 0 $nav-bar-width;
+  width: auto;
+  height: auto;
 }
 </style>
