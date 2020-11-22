@@ -1,13 +1,1 @@
 @import "./variables.scss";
-
-* {
-  box-sizing: border-box;
-}
-:root {
-  --text-color: #333;
-  --background-color: #fafafa;
-}
-body {
-  color: var(--text-color);
-  background-color: var(--background-color);
-}
