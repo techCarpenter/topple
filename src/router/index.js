@@ -1,28 +1,64 @@
 import { createRouter, createWebHistory } from "vue-router";
 import store from "../store";
-import Accounts from "../views/AccountsView.vue";
-import Dashboard from "../views/DashboardView.vue";
-import LoginRegister from "../views/LoginRegisterView.vue";
+import LoginRegisterView from "../views/LoginRegisterView.vue";
+import DashboardView from "../views/DashboardView.vue";
+import AccountsView from "../views/AccountsView.vue";
+import PaymentsView from "../views/PaymentView.vue";
+import ChartView from "../views/ChartView.vue";
+import ProfileView from "../views/ProfileView.vue";
+import SettingsView from "../views/SettingsView.vue";
 import NotFound from "../views/NotFoundView.vue";
 
 const routes = [
   {
     path: "/",
-    name: "LoginRegister",
-    component: LoginRegister
+    name: "LoginRegisterView",
+    component: LoginRegisterView
   },
   {
-    path: "/accounts",
-    name: "Accounts",
-    component: Accounts,
+    path: "/dashboard",
+    name: "DashboardView",
+    component: DashboardView,
     meta: {
       requiresLogin: true
     }
   },
   {
-    path: "/dashboard",
-    name: "Dashboard",
-    component: Dashboard,
+    path: "/accounts",
+    name: "AccountsView",
+    component: AccountsView,
+    meta: {
+      requiresLogin: true
+    }
+  },
+  {
+    path: "/payments",
+    name: "PaymentsView",
+    component: PaymentsView,
+    meta: {
+      requiresLogin: true
+    }
+  },
+  {
+    path: "/chart",
+    name: "ChartView",
+    component: ChartView,
+    meta: {
+      requiresLogin: true
+    }
+  },
+  {
+    path: "/profile",
+    name: "ProfileView",
+    component: ProfileView,
+    meta: {
+      requiresLogin: true
+    }
+  },
+  {
+    path: "/settings",
+    name: "SettingsView",
+    component: SettingsView,
     meta: {
       requiresLogin: true
     }
@@ -42,7 +78,9 @@ router.beforeEach(async (to, from, next) => {
   const loggedIn = store.getters.getLoggedIn;
   const requiresLogin = to.matched.some(record => record.meta.requiresLogin);
 
-  if (requiresLogin && !loggedIn) next({ name: "LoginRegister" });
+  if (requiresLogin && !loggedIn) next({ name: "LoginRegisterView" });
+  else if (to.name === "LoginRegisterView" && loggedIn)
+    next({ name: "DashboardView" });
   else next();
 });
 
