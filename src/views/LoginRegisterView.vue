@@ -20,7 +20,7 @@ export default {
       ui = new firebaseui.auth.AuthUI(firebase.auth());
     }
     let uiConfig = {
-      signInSuccessUrl: "#/dashboard",
+      signInSuccessUrl: "/dashboard",
       signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID]
     };
     ui.start("#firebaseui-auth-container", uiConfig);
