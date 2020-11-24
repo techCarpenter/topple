@@ -1,6 +1,7 @@
 # Make a web app
 
 - [Make a web app](#make-a-web-app)
+  - [Resources used](#resources-used)
   - [✔️ 1. Source an idea](#️-1-source-an-idea)
     - [Idea: Debt Paydown Planner (Web App)](#idea-debt-paydown-planner-web-app)
     - [Name ideas](#name-ideas)
@@ -17,7 +18,6 @@
     - [Data Structure](#data-structure)
   - [9. Develop frontend](#9-develop-frontend)
     - [Dependencies/Libraries](#dependencieslibraries)
-    - [Other](#other)
   - [10. Build backend](#10-build-backend)
     - [Dependencies/Libraries](#dependencieslibraries-1)
   - [11. Host web app](#11-host-web-app)
@@ -27,6 +27,14 @@
     - [Notes/Questions](#notesquestions)
     - [Unique selling points](#unique-selling-points)
     - [Goals for the app](#goals-for-the-app)
+
+## Resources used
+
+| Resource           | Description                                               |
+| :----------------- | :-------------------------------------------------------- |
+| Icons              | [Material Design Icons](https://materialdesignicons.com/) |
+| Frontend Framework | [Vue.js](https://vuejs.org)                               |
+| Styles             | [Tailwind CSS](https://tailwindcss.com)                   |
 
 ## ✔️ 1. Source an idea
 
@@ -276,12 +284,7 @@ Firebase?
 - [Vuex](https://vuex.vuejs.org/)
 - [Vue-router](https://router.vuejs.org/)
 - [Chart.js](https://chartjs.org)
-- UI library
-  - [Vuetify](https://vuetifyjs.com/)?
-
-### Other
-
-- Social share icons
+- [TailwindCSS](https://tailwindcss.com)?
 
 ## 10. Build backend
 
