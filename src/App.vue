@@ -18,7 +18,7 @@ export default {
 .view-container {
   padding: 50px 70px;
   margin: 0 0 0 $nav-bar-width;
-  width: auto;
   height: auto;
+  width: auto;
 }
 </style>
