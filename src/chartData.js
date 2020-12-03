@@ -1,4 +1,4 @@
-export const paydownChartData = {
+export const chartData = {
   type: "line",
   data: {
     labels: [],
@@ -45,4 +45,4 @@ export const paydownChartData = {
   }
 };
 
-export default paydownChartData;
+export default chartData;

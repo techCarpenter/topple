@@ -21,7 +21,7 @@
 
 <script>
 import Chart from "chart.js";
-import paydownChartData from "../paydown-data";
+import chartData from "../chartData";
 import util from "../assets/js/functions";
 import { PAYDOWN_METHODS } from "../consts";
 
@@ -40,7 +40,7 @@ export default {
   data() {
     return {
       chart: null,
-      paydownChartData: paydownChartData,
+      paydownChartData: chartData,
       colorArray: [
         "#ff4c00",
         "#ffbb00",

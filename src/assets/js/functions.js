@@ -279,10 +279,21 @@ export function copy(aObject) {
   return bObject;
 }
 
+export function currencyFormat(value) {
+  const currency = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2
+  });
+
+  return currency.format(value);
+}
+
 export default {
   copy,
   getMonthString,
   dateSort,
   getTotalPaymentData,
-  prioritizeLoans
+  prioritizeLoans,
+  currencyFormat
 };

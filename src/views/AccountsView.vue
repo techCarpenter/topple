@@ -1,11 +1,13 @@
 <template>
-  <!-- Account List -->
   <div class="flex">
-    <div class="w-80">
+    <div class="flex flex-col w-80 max-h-80vh">
       <div class="flex justify-between">
-        <div class="text-xl">Accounts</div>
-        <button>
-          <svg width="30" height="30" viewBox="0 0 24 24">
+        <h1 class="text-xl">Accounts</h1>
+        <button
+          @click="addLoan()"
+          class="hover:text-green-500 active:text-green-600"
+        >
+          <svg class="w-8 h-8" viewBox="0 0 24 24">
             <path
               fill="currentColor"
               d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
@@ -13,112 +15,100 @@
           </svg>
         </button>
       </div>
-      <div class="flex flex-col mt-2 p-5 shadow-container">
-        <div
-          class="flex flex-row justify-between border-white border-2 p-5 pt-2"
-        >
-          <div>Discover</div>
-          <div>$14,243.45</div>
+      <div class="mt-2 shadow-container overflow-hidden overflow-y-scroll">
+        <div class="flex flex-col flex-1 p-5 pt-2">
+          <AccountItem
+            @click="setSelectedAccount(loan.id)"
+            v-for="loan in loans"
+            :loan="loan"
+            :selected="loan.id === selectedAccountId"
+            :key="loan.id"
+          />
+          <button
+            @click="addLoan()"
+            class="w-32 flex flex-row self-center justify-center content-center border-white border-2 p-2 mt-3 uppercase hover:text-green-500 hover:border-green-500 active:border-green-600 active:text-green-600"
+          >
+            <svg class="inline-block w-6 h-6" viewBox="0 0 24 24">
+              <path
+                fill="currentColor"
+                d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
+              /></svg
+            >Add loan
+          </button>
         </div>
-        <div
-          class="flex flex-row justify-between border-white border-2 p-5 pt-2 mt-3"
-        >
-          <div>Perkins</div>
-          <div>$1,124.53</div>
-        </div>
-        <div
-          class="flex flex-row justify-between border-white border-2 p-5 pt-2 mt-3"
-        >
-          <div>Nelnet (G)</div>
-          <div>$3,498.30</div>
-        </div>
-        <button
-          class="w-32 flex flex-row self-center justify-center content-center border-white border-2 p-2 mt-3 uppercase"
-        >
-          <svg class="inline-block" width="24" height="24" viewBox="0 0 24 24">
-            <path
-              fill="currentColor"
-              d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
-            /></svg
-          >Add loan
-        </button>
       </div>
     </div>
     <div class="flex-grow ml-12">
-      <div class="text-xl">Details</div>
-      <div class="flex flex-row mt-2 p-5 shadow-container">
-        <div class="max-w-xs w-36 flex-grow">
-          <div class="flex flex-row justify-between">
-            <div class="text-2xl">Discover</div>
-            <button>
-              <svg width="30" height="30" viewBox="0 0 24 24">
-                <path
-                  fill="currentColor"
-                  d="M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z"
-                />
-              </svg>
-              <!-- Edit button -->
-            </button>
-          </div>
-          <div class="flex flex-row justify-between mt-3">
-            <div>Starting Balance:</div>
-            <div>$16,500.00</div>
-          </div>
-          <div class="flex flex-row justify-between mt-2">
-            <div>Current Balance:</div>
-            <div>$14,243.45</div>
-          </div>
-          <div class="flex flex-row justify-between mt-2">
-            <div>Minimum Payment:</div>
-            <div>$189.00</div>
-          </div>
-          <div class="flex flex-row justify-between mt-2">
-            <div>Interest Rate:</div>
-            <div>4.5%</div>
-          </div>
-          <div class="flex flex-row justify-between mt-2">
-            <div>Date Opened:</div>
-            <div>08/17/2013</div>
-          </div>
-          <hr class="border-t-2 mt-3" />
-        </div>
+      <h1 class="text-xl">Details</h1>
+      <div
+        v-if="getSelectedAccount() !== null"
+        class="flex flex-row mt-2 p-5 pt-3 shadow-container"
+      >
+        <AccountDetails :loan="getSelectedAccount()" />
       </div>
     </div>
   </div>
-  <!-- <AccountList />
-  <button @click="addLoan">Add Loan</button>
-  <button @click="loadAccounts">Load Existing</button> -->
 </template>
 
 <script>
-import { mapActions } from "vuex";
-// import AccountList from "../../src/components/AccountList";
+import { mapActions, mapGetters } from "vuex";
+import AccountItem from "../components/AccountItem";
+import AccountDetails from "../components/AccountDetails";
 
 export default {
   name: "AccountsView",
+  data() {
+    return {
+      selectedAccountId: ""
+    };
+  },
   components: {
-    // AccountList
+    AccountItem,
+    AccountDetails
   },
   methods: {
     ...mapActions(["loadAccounts"]),
+    ...mapGetters(["getAccountById"]),
     addLoan() {
+      let randBalance = Math.random() * 20000;
+      let randInterest = Math.random() * 5;
       this.$store.dispatch("addAccount", {
-        id: this.$store.getters.getAccounts.length + 1,
+        id: 1, // ID gets overridden in 'addAccount' action
         name: "Added loan",
-        balance: 5000,
-        apr: 4.3,
-        minPayment: 100,
-        startDate: new Date("2018-11-01T00:00:00"),
+        balance: randBalance,
+        apr: randInterest,
+        minPayment: randBalance * 0.015,
+        startDate: new Date("2018-01-01T00:00:00"),
         priority: 0
       });
+    },
+    getSelectedAccount() {
+      return this.getAccountById()(this.selectedAccountId);
+    },
+    setSelectedAccount(id) {
+      this.selectedAccountId = id;
+      console.log(id);
     }
+  },
+  computed: {
+    loans() {
+      return this.$store.getters.getAccounts || [];
+    }
+  },
+  mounted() {
+    this.setSelectedAccount(this.loans ? this.loans[0].id : "");
   }
 };
 </script>
 
-<style>
+<style lang="scss">
 .shadow-container {
   box-shadow: 6px 6px #f8f8f8;
   border: 2px solid #f8f8f8;
+  max-height: 75vh;
+  min-height: 75vh;
+}
+.max-h-80vh {
+  max-height: 80vh;
 }
 </style>
