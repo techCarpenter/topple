@@ -30,13 +30,7 @@
     <div class="flex flex-row justify-between mt-2">
       <div>Date Opened:</div>
       <div>
-        {{
-          (loan.startDate.getMonth() + 1).toString() +
-          "/" +
-          loan.startDate.getDate().toString() +
-          "/" +
-          loan.startDate.getFullYear().toString()
-        }}
+        {{ formatDate(loan.startDate) }}
       </div>
     </div>
     <hr class="border-t-2 mt-3" />
@@ -56,6 +50,15 @@ export default {
   methods: {
     formatCurrency(value) {
       return currencyFormat(value);
+    },
+    formatDate(dateValue) {
+      return (
+        (dateValue.getMonth() + 1).toString() +
+        "/" +
+        dateValue.getDate().toString() +
+        "/" +
+        dateValue.getFullYear().toString()
+      );
     }
   }
 };
