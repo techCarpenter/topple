@@ -8,8 +8,9 @@
   - [✔️ 2. Market research](#️-2-market-research)
     - [Undebt.it keyword competitors](#undebtit-keyword-competitors)
   - [✔️ 3. Define functionality](#️-3-define-functionality)
-    - [MVP Features](#mvp-features)
-    - [Additional Features](#additional-features)
+    - [SLC product features (_simple. lovable. complete._)](#slc-product-features-simple-lovable-complete)
+    - [v2.0 Features](#v20-features)
+    - [Long term features](#long-term-features)
   - [4. Sketch the web app](#4-sketch-the-web-app)
   - [5. Plan your workflow](#5-plan-your-workflow)
   - [6. Wireframe UI](#6-wireframe-ui)
@@ -142,7 +143,23 @@ What is debt compared to?
 
 ## ✔️ 3. Define functionality
 
-### MVP Features
+### SLC product features (_simple. lovable. complete._)
+
+- [ ] Add/Remove/Edit accounts
+- [ ] See payment chart
+- [ ] Select payment method (min. payments, avalanche, snowball, priority, etc.)
+- [ ] Save data (persist sessions)
+  - Data stored in browser for **SLC product**
+- [ ] Calculations
+  - Total Interest Paid
+  - Years until paid off
+  - Payoff date
+  - Time saved compared to min payments
+  - `$$$` saved compared to min payments
+- [ ] Add/remove additional payments
+- [ ] Line on chart marking current date
+
+### v2.0 Features
 
 - [ ] Add/Remove loans
 - [ ] See graph of min. payments (baseline)
@@ -171,7 +188,7 @@ What is debt compared to?
   - [ ] to total snowball
 - [ ] Add previous payments manually
 
-### Additional Features
+### Long term features
 
 - [ ] Modify snowball amount (+/-)
   - [ ] after specific date
@@ -283,8 +300,8 @@ Firebase?
 - [Vue](https://vuejs.org)
 - [Vuex](https://vuex.vuejs.org/)
 - [Vue-router](https://router.vuejs.org/)
-- [Chart.js](https://chartjs.org)
-- [TailwindCSS](https://tailwindcss.com)?
+- [Plotly.js](https://plotly.com/javascript/reference/)
+- [TailwindCSS](https://tailwindcss.com)
 
 ## 10. Build backend
 
