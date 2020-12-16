@@ -21,9 +21,8 @@
 
 <script>
 import Chart from "chart.js";
-import chartData from "../chartData";
 import util from "../assets/js/functions";
-import { PAYDOWN_METHODS } from "../consts";
+import { PAYDOWN_METHODS, chartData } from "../data";
 
 export default {
   name: "PaydownChart",

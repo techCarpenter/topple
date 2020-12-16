@@ -25,7 +25,7 @@
     </div>
     <div class="flex flex-row justify-between mt-2">
       <div>Interest Rate:</div>
-      <div>{{ loan.apr }}%</div>
+      <div>{{ formatPercent(loan.apr) }}</div>
     </div>
     <div class="flex flex-row justify-between mt-2">
       <div>Date Opened:</div>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { currencyFormat } from "../assets/js/functions";
+import { currencyFormat, percentFormat } from "../assets/js/functions";
 
 export default {
   props: {
@@ -50,6 +50,9 @@ export default {
   methods: {
     formatCurrency(value) {
       return currencyFormat(value);
+    },
+    formatPercent(value) {
+      return percentFormat(value);
     },
     formatDate(dateValue) {
       return (

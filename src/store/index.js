@@ -1,6 +1,5 @@
 import { createStore } from "vuex";
-import { MUTATIONS } from "../consts";
-import { accounts } from "../accounts";
+import { MUTATIONS, accounts } from "../data";
 import { v4 as uuidv4 } from "uuid";
 export default createStore({
   state: {

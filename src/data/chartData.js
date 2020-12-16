@@ -1,3 +1,4 @@
+// Chart.js chart config
 export const chartData = {
   type: "line",
   data: {

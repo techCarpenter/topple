@@ -1,4 +1,4 @@
-import { PAYDOWN_METHODS } from "../../consts";
+import { PAYDOWN_METHODS } from "../../data";
 
 /**
  * Gets the full string value of the month by number
@@ -279,14 +279,30 @@ export function copy(aObject) {
   return bObject;
 }
 
+/**
+ * Format a number as a percentage
+ * @param {Number} value The value to format
+ * @param {Number} decPlaces Number of decimal places
+ */
+export function percentFormat(value, decPlaces = 2) {
+  return (value / 100).toLocaleString("en-US", {
+    style: "percent",
+    minimumFractionDigits: decPlaces,
+    maximumFractionDigits: decPlaces
+  });
+}
+
+/**
+ * Format a number as a currency
+ * @param {Number} value The value to format
+ */
 export function currencyFormat(value) {
-  const currency = new Intl.NumberFormat("en-US", {
+  return value.toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
-    minimumFractionDigits: 2
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
   });
-
-  return currency.format(value);
 }
 
 export default {
@@ -295,5 +311,6 @@ export default {
   dateSort,
   getTotalPaymentData,
   prioritizeLoans,
-  currencyFormat
+  currencyFormat,
+  percentFormat
 };

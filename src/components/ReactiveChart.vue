@@ -7,15 +7,8 @@
 <style>
 .chart-wrapper {
   padding: 1rem;
-  height: 90vh;
-  width: 90vw;
-  margin: 0 auto;
-}
-@media screen and (max-width: 600px) {
-  .chart-canvas {
-    min-height: 300px;
-    max-height: 300px;
-  }
+  height: 100%;
+  width: 100%;
 }
 </style>
 
@@ -40,7 +33,7 @@ export default {
   },
   watch: {
     chart: {
-      handler: function () {
+      handler: function() {
         Plotly.react(
           this.$refs[this.chart.uuid],
           this.chart.traces,
