@@ -1,22 +1,22 @@
 <template>
-  <NavBar />
+  <NavBar v-if="showNav" />
   <div class="view-container max-h-screen min-h-screen">
     <router-view />
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
 import NavBar from "./components/NavBar";
+import { mapState } from "vuex";
 
 export default {
   components: { NavBar },
   name: "App",
-  methods: {
-    ...mapActions(["loadAccounts"])
-  },
-  mounted() {
-    this.loadAccounts();
+  computed: {
+    ...mapState(["userProfile"]),
+    showNav() {
+      return Object.keys(this.userProfile).length > 1;
+    }
   }
 };
 </script>

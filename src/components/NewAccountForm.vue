@@ -1,37 +1,63 @@
 <template>
-  <form @submit.prevent="submitForm()">
-    <div>
-      <label for="account-name">Name</label>
-      <input id="account-name" v-model="account.name" />
+  <div class="my-4 flex flex-col">
+    <div class="my-1">
+      <label for="account-name">Name:</label>
+      <input
+        class="bg-gray-200 text-gray-800 px-2 ml-2"
+        id="account-name"
+        v-model="account.name"
+      />
     </div>
-    <div>
+    <div class="my-1">
+      <label for="account-provider">Provider</label>
+      <input
+        class="bg-gray-200 text-gray-800 px-2 ml-2"
+        id="account-provider"
+        v-model="account.provider"
+      />
+    </div>
+    <div class="my-1">
       <label for="account-balance">Balance</label>
       <input
+        class="bg-gray-200 text-gray-800 px-2 ml-2"
         id="account-balance"
         v-model.number="account.balance"
         type="number"
         step="0.01"
       />
     </div>
-    <div>
-      <label for="account-apr">APR</label>
-      <input id="account-apr" v-model.number="account.apr" />
+    <div class="my-1">
+      <label for="account-apr">Interest Rate</label>
+      <input
+        class="bg-gray-200 text-gray-800 px-2 ml-2"
+        id="account-apr"
+        v-model.number="account.interestRate"
+      />
     </div>
-    <div>
+    <div class="my-1">
       <label for="account-minpayment">Minimum Payment</label>
       <input
+        class="bg-gray-200 text-gray-800 px-2 ml-2"
         id="account-minpayment"
         v-model.number="account.minPayment"
         type="number"
         step="0.01"
       />
     </div>
-    <div>
+    <div class="my-1">
       <label for="account-startdate">Date Opened</label>
-      <input id="account-startdate" v-model="account.startDate" type="date" />
+      <input
+        class="bg-gray-200 text-gray-800 px-2 ml-2"
+        id="account-startdate"
+        v-model="account.startDate"
+        type="date"
+      />
     </div>
-    <button type="submit">Create</button>
-  </form>
+    <div class="my-1">
+      <button @click="submitForm()">Add</button>
+      <button @click="resetForm()">Cancel</button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -43,12 +69,13 @@ export default {
   data() {
     return {
       account: {
+        id: "",
         name: "",
         balance: 0,
-        apr: 0,
-        minPayment: 0,
         startDate: "",
-        priority: 0
+        interestRate: 0,
+        minPayment: 0,
+        provider: ""
       }
     };
   },
@@ -59,12 +86,9 @@ export default {
       this.account.startDate = new Date(this.account.startDate);
       this.addAccount(this.account);
       this.$emit("form-submitted");
-    }
-  },
-  computed: {
-    computedDate() {
-      console.log(this.formDate);
-      return this.formDate;
+    },
+    resetForm() {
+      this.$emit("form-submitted");
     }
   }
 };

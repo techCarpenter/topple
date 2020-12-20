@@ -145,7 +145,9 @@ What is debt compared to?
 
 ### SLC product features (_simple. lovable. complete._)
 
-- [ ] Add/Remove/Edit accounts
+- [ ] Add account
+- [ ] Remove account
+- [ ] Edit account
 - [ ] See payment chart
 - [ ] Select payment method (min. payments, avalanche, snowball, priority, etc.)
 - [ ] Save data (persist sessions)

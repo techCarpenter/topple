@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import store from "../store";
+import { auth } from "../firebase";
 import LoginRegisterView from "../views/LoginRegisterView.vue";
 import DashboardView from "../views/DashboardView.vue";
 import AccountsView from "../views/AccountsView.vue";
@@ -11,12 +11,12 @@ import NotFound from "../views/NotFoundView.vue";
 
 const routes = [
   {
-    path: "/",
+    path: "/login",
     name: "LoginRegisterView",
     component: LoginRegisterView
   },
   {
-    path: "/dashboard",
+    path: "/",
     name: "DashboardView",
     component: DashboardView,
     meta: {
@@ -75,11 +75,10 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  const loggedIn = store.getters.getLoggedIn;
   const requiresLogin = to.matched.some(record => record.meta.requiresLogin);
 
-  if (requiresLogin && !loggedIn) next({ name: "LoginRegisterView" });
-  else if (to.name === "LoginRegisterView" && loggedIn)
+  if (requiresLogin && !auth.currentUser) next({ name: "LoginRegisterView" });
+  else if (to.name === "LoginRegisterView" && auth.currentUser)
     next({ name: "DashboardView" });
   else next();
 });

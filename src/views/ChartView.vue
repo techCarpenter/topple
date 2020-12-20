@@ -1,22 +1,17 @@
 <template>
   <div class="chart-container">
     <AccountSidebar />
-    <div class="chart-main-window">
+    <div v-if="accounts.length > 0" class="chart-main-window">
       <ReactiveChart :chart="chart" />
-      <!-- <PaydownChart
-        id="paydown-chart"
-        :loans="this.loans"
-        v-if="this.loans.length > 0"
-      />
-      <h2 v-else>No accounts found.</h2> -->
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 import AccountSidebar from "../components/AccountSidebar";
 import ReactiveChart from "../components/ReactiveChart.vue";
-import plotlyConfig from "../data";
+import { plotlyConfig } from "../data";
 
 export default {
   name: "ChartView",
@@ -30,9 +25,7 @@ export default {
     ReactiveChart
   },
   computed: {
-    loans() {
-      return this.$store.getters.getAccounts || [];
-    }
+    ...mapState(["accounts"])
   }
 };
 </script>

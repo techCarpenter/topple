@@ -1,7 +1,7 @@
 <template>
   <nav class="nav-bar">
     <div class="upper-section">
-      <NavBarItem icon="home" path="/dashboard" />
+      <NavBarItem icon="home" path="/" />
       <NavBarItem icon="bank" path="/accounts" />
       <NavBarItem icon="creditcard" path="/payments" />
       <NavBarItem icon="chart" path="/chart" />
@@ -9,17 +9,22 @@
     <div class="lower-section">
       <NavBarItem icon="account" path="/profile" />
       <NavBarItem icon="settings" path="/settings" />
-      <NavBarItem icon="logout" path="/logout" />
+      <!-- <NavBarItem icon="logout" path="/logout" /> -->
+      <button @click="logout">Logout</button>
     </div>
   </nav>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import NavBarItem from "./NavBarItem";
 
 export default {
   components: {
     NavBarItem
+  },
+  methods: {
+    ...mapActions(["logout"])
   }
 };
 </script>

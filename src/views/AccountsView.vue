@@ -1,10 +1,10 @@
-<template>
+<!--<template>
   <div class="flex">
     <div class="flex flex-col w-80 max-h-80vh">
       <div class="flex justify-between">
         <h1 class="text-xl">Accounts</h1>
         <button
-          @click="addLoan()"
+          @click="newAccount = true"
           class="hover:text-green-500 active:text-green-600"
         >
           <svg class="w-8 h-8" viewBox="0 0 24 24">
@@ -25,7 +25,7 @@
             :key="loan.id"
           />
           <button
-            @click="addLoan()"
+            @click="newAccount = true"
             class="w-32 flex flex-row self-center justify-center content-center border-white border-2 p-2 mt-3 uppercase hover:text-green-500 hover:border-green-500 active:border-green-600 active:text-green-600"
           >
             <svg class="inline-block w-6 h-6" viewBox="0 0 24 24">
@@ -39,64 +39,82 @@
       </div>
     </div>
     <div class="flex-grow ml-12">
-      <h1 class="text-xl">Details</h1>
-      <div
-        v-if="getSelectedAccount() !== null"
-        class="flex flex-row mt-2 p-5 pt-3 shadow-container"
-      >
-        <AccountDetails :loan="getSelectedAccount()" />
+      <div v-if="!newAccount">
+        <h1 class="text-xl">Details</h1>
+        <div
+          v-if="getSelectedAccount() !== null"
+          class="flex flex-row mt-2 p-5 pt-3 shadow-container"
+        >
+          <AccountDetails :loan="getSelectedAccount()" />
+        </div>
+      </div>
+      <div v-else>
+        <h1 class="text-xl">New Account</h1>
+        <NewAccountForm @form-submitted="setNewAccount(false)" />
       </div>
     </div>
+  </div>
+</template>-->
+
+<template>
+  <new-account-form @form-submitted="newAccount = false" />
+  <div>
+    <account-item
+      v-for="account in accounts"
+      :loan="account"
+      :key="account.id"
+    />
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import AccountItem from "../components/AccountItem";
-import AccountDetails from "../components/AccountDetails";
+// import AccountDetails from "../components/AccountDetails";
+import NewAccountForm from "../components/NewAccountForm";
 
 export default {
   name: "AccountsView",
   data() {
     return {
-      selectedAccountId: ""
+      selectedAccountId: "",
+      newAccount: false
     };
   },
   components: {
     AccountItem,
-    AccountDetails
+    NewAccountForm
   },
   methods: {
-    ...mapActions(["loadAccounts"]),
     ...mapGetters(["getAccountById"]),
-    addLoan() {
-      let randBalance = Math.random() * 20000;
-      let randInterest = Math.random() * 5;
-      this.$store.dispatch("addAccount", {
-        id: 1, // ID gets overridden in 'addAccount' action
-        name: "Added loan",
-        balance: randBalance,
-        apr: randInterest,
-        minPayment: randBalance * 0.015,
-        startDate: new Date("2018-01-01T00:00:00"),
-        priority: 0
-      });
-    },
+    // addLoan() {
+    //   let randBalance = Math.random() * 20000;
+    //   let randInterest = Math.random() * 5;
+    //   this.$store.dispatch("addAccount", {
+    //     id: 1, // ID gets overridden in 'addAccount' action
+    //     name: "Added loan",
+    //     balance: randBalance,
+    //     apr: randInterest,
+    //     minPayment: randBalance * 0.015,
+    //     startDate: new Date("2018-01-01T00:00:00"),
+    //     priority: 0
+    //   });
+    // },
     getSelectedAccount() {
       return this.getAccountById()(this.selectedAccountId);
     },
     setSelectedAccount(id) {
       this.selectedAccountId = id;
-      console.log(id);
     }
   },
   computed: {
-    loans() {
-      return this.$store.getters.getAccounts || [];
-    }
+    ...mapState(["accounts"])
   },
   mounted() {
-    this.setSelectedAccount(this.loans ? this.loans[0].id : "");
+    console.log(this.accounts);
+    this.setSelectedAccount(
+      this.accounts.length > 0 ? this.accounts[0].id : ""
+    );
   }
 };
 </script>

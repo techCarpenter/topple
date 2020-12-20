@@ -5,11 +5,13 @@ export const PAYDOWN_METHODS = {
   CUSTOM: "CUSTOM"
 };
 export const MUTATIONS = {
+  setAccounts: "setAccounts",
+  setUserProfile: "setUserProfile",
   createAccount: "createAccount",
   updateAccount: "updateAccount",
   deleteAccount: "deleteAccount",
-  fetchAccounts: "fetchAccounts",
-  loginUser: "loginUser"
+  loginUser: "loginUser",
+  setPayments: "setPayments"
 };
 
 export default {

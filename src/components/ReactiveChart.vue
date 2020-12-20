@@ -24,12 +24,16 @@ export default {
     }
   },
   mounted() {
-    Plotly.plot(
-      this.$refs[this.chart.uuid],
-      this.chart.traces,
-      this.chart.layout,
-      this.chart.config
-    );
+    try {
+      Plotly.plot(
+        this.$refs[this.chart.uuid],
+        this.chart.traces,
+        this.chart.layout,
+        this.chart.config
+      );
+    } catch (error) {
+      console.log(error);
+    }
   },
   watch: {
     chart: {
