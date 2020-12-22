@@ -1,5 +1,5 @@
 <template>
-  <h1>Dashboard View</h1>
+  <h1 class="text-xl">Dashboard View</h1>
 </template>
 
 <script>

@@ -54,18 +54,16 @@
       />
     </div>
     <div class="my-1">
-      <button @click="submitForm()">Add</button>
-      <button @click="resetForm()">Cancel</button>
+      <button @click="submitForm">Add</button>
+      <button @click="resetForm">Cancel</button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
-
 export default {
   name: "NewAccountForm",
-  emits: ["form-submitted"],
+  emits: ["submitform", "resetform"],
   data() {
     return {
       account: {
@@ -73,22 +71,28 @@ export default {
         name: "",
         balance: 0,
         startDate: "",
-        interestRate: 0,
+        apr: 0,
         minPayment: 0,
         provider: ""
       }
     };
   },
   methods: {
-    ...mapActions(["addAccount"]),
     submitForm() {
-      console.log(this.account.startDate);
       this.account.startDate = new Date(this.account.startDate);
-      this.addAccount(this.account);
-      this.$emit("form-submitted");
+      this.$emit("submitform", this.account);
     },
     resetForm() {
-      this.$emit("form-submitted");
+      this.account = {
+        id: "",
+        name: "",
+        balance: 0,
+        startDate: "",
+        apr: 0,
+        minPayment: 0,
+        provider: ""
+      };
+      this.$emit("resetform");
     }
   }
 };

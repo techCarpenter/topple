@@ -57,7 +57,12 @@
 </template>-->
 
 <template>
-  <new-account-form @form-submitted="newAccount = false" />
+  <new-account-form
+    @submitform="handleSubmit"
+    @resetform="newAccount = false"
+    v-if="newAccount"
+  />
+  <button @click="newAccount = true" v-else>New Account</button>
   <div>
     <account-item
       v-for="account in accounts"
@@ -68,7 +73,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import AccountItem from "../components/AccountItem";
 // import AccountDetails from "../components/AccountDetails";
 import NewAccountForm from "../components/NewAccountForm";
@@ -86,32 +91,23 @@ export default {
     NewAccountForm
   },
   methods: {
+    ...mapActions(["createAccount"]),
     ...mapGetters(["getAccountById"]),
-    // addLoan() {
-    //   let randBalance = Math.random() * 20000;
-    //   let randInterest = Math.random() * 5;
-    //   this.$store.dispatch("addAccount", {
-    //     id: 1, // ID gets overridden in 'addAccount' action
-    //     name: "Added loan",
-    //     balance: randBalance,
-    //     apr: randInterest,
-    //     minPayment: randBalance * 0.015,
-    //     startDate: new Date("2018-01-01T00:00:00"),
-    //     priority: 0
-    //   });
-    // },
     getSelectedAccount() {
       return this.getAccountById()(this.selectedAccountId);
     },
     setSelectedAccount(id) {
       this.selectedAccountId = id;
+    },
+    handleSubmit(account) {
+      this.createAccount(account);
+      this.newAccount = false;
     }
   },
   computed: {
     ...mapState(["accounts"])
   },
   mounted() {
-    console.log(this.accounts);
     this.setSelectedAccount(
       this.accounts.length > 0 ? this.accounts[0].id : ""
     );
