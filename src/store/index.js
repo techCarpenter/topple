@@ -1,34 +1,7 @@
 import { createStore } from "vuex";
-import { MUTATIONS } from "@/data";
+import { MUTATIONS, ACTIONS } from "@/data";
 import * as fb from "../firebase";
 import router from "../router";
-
-//realtime updates
-fb.accountsCollection.onSnapshot(snapshot => {
-  let accountsArray = [];
-
-  snapshot.forEach(doc => {
-    let account = doc.data();
-    account.id = doc.id;
-
-    accountsArray.push(account);
-  });
-  console.log(accountsArray);
-  store.commit(MUTATIONS.setAccounts, accountsArray);
-});
-
-fb.paymentsCollection.onSnapshot(snapshot => {
-  let paymentsArray = [];
-
-  snapshot.forEach(doc => {
-    let payment = doc.data();
-    payment.id = doc.id;
-
-    paymentsArray.push(payment);
-  });
-
-  store.commit(MUTATIONS.setPayments, paymentsArray);
-});
 
 // create vuex store
 const store = createStore({
@@ -39,25 +12,25 @@ const store = createStore({
     plans: []
   },
   actions: {
-    async addAccount(ctx, account) {
-      ctx.commit(MUTATIONS.createAccount, account);
-      // add firebase add
-    },
     async deleteAccount(ctx, id) {
       ctx.commit(MUTATIONS.deleteAccount, id);
       // add firebase delete
     },
-    async login({ dispatch }, form) {
+    async [ACTIONS.login]({ dispatch }, form) {
       // sign user in
       const { user } = await fb.auth.signInWithEmailAndPassword(
         form.email,
         form.password
       );
 
+      await fb.usersCollection.doc(user.uid).update({
+        lastLogin: new Date().toISOString()
+      });
+
       // fetch user profile and set in state
-      dispatch("fetchUserProfile", user);
+      dispatch(ACTIONS.fetchUserProfile, user);
     },
-    async signup({ dispatch }, form) {
+    async [ACTIONS.signup]({ dispatch }, form) {
       // sign user up
       const { user } = await fb.auth.createUserWithEmailAndPassword(
         form.email,
@@ -67,13 +40,13 @@ const store = createStore({
       // create user object in userCollections
       await fb.usersCollection.doc(user.uid).set({
         name: form.name,
-        title: form.title
+        lastLogin: new Date().toISOString()
       });
 
       // fetch user profile and set in state
-      dispatch("fetchUserProfile", user);
+      dispatch(ACTIONS.fetchUserProfile, user);
     },
-    async fetchUserProfile({ commit }, user) {
+    async [ACTIONS.fetchUserProfile]({ commit }, user) {
       // fetch user profile
       const userProfile = await fb.usersCollection.doc(user.uid).get();
       console.log(userProfile.data());
@@ -83,7 +56,7 @@ const store = createStore({
       // change route to dashboard
       router.push("/");
     },
-    async logout({ commit }) {
+    async [ACTIONS.logout]({ commit }) {
       // log user out
       await fb.auth.signOut();
 
@@ -93,7 +66,8 @@ const store = createStore({
       // redirect to login view
       router.push({ name: "LoginRegisterView" });
     },
-    async createAccount(ctx, account) {
+    async [ACTIONS.createAccount](ctx, account) {
+      console.log("createAccount", account);
       await fb.accountsCollection.add({
         name: account.name,
         balance: account.balance,
@@ -101,7 +75,7 @@ const store = createStore({
         apr: account.interestRate,
         minPayment: account.minPayment,
         provider: account.provider,
-        userId: fb.auth.currentUser.uid
+        uid: fb.auth.currentUser.uid
       });
     }
   },
@@ -110,6 +84,7 @@ const store = createStore({
       state.userProfile = val;
     },
     [MUTATIONS.setAccounts]: (state, accounts) => {
+      console.log("setAccounts", accounts);
       state.accounts = accounts;
     },
     [MUTATIONS.createAccount]: (state, account) => {

@@ -10,11 +10,19 @@ export const MUTATIONS = {
   createAccount: "createAccount",
   updateAccount: "updateAccount",
   deleteAccount: "deleteAccount",
-  loginUser: "loginUser",
   setPayments: "setPayments"
+};
+
+export const ACTIONS = {
+  login: "login",
+  logout: "logout",
+  signup: "signup",
+  fetchUserProfile: "fetchUserProfile",
+  createAccount: "createAccount"
 };
 
 export default {
   PAYDOWN_METHODS,
-  MUTATIONS
+  MUTATIONS,
+  ACTIONS
 };
