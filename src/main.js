@@ -20,7 +20,6 @@ fb.auth.onAuthStateChanged(user => {
   if (user) {
     store.dispatch(ACTIONS.fetchUserProfile, user);
 
-    console.log("User found!");
     fb.accountsCollection
       .where("uid", "==", fb.auth.currentUser.uid)
       .onSnapshot(snapshot => {
@@ -33,11 +32,10 @@ fb.auth.onAuthStateChanged(user => {
           docData.id = doc.id;
 
           account = createAccount(docData);
-          //AccountModel.fromMap(doc.data(), doc.id);
 
           accountsArray.push(account);
         });
-        console.log("Accounts updated in onSnapshot", accountsArray);
+        // console.log("Accounts updated in onSnapshot", accountsArray);
         store.commit(MUTATIONS.setAccounts, accountsArray);
       });
 

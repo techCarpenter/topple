@@ -49,7 +49,7 @@ const store = createStore({
     async [ACTIONS.fetchUserProfile]({ commit }, user) {
       // fetch user profile
       const userProfile = await fb.usersCollection.doc(user.uid).get();
-      console.log(userProfile.data());
+      console.log("fetched user", userProfile.data());
       // set user profile in state
       commit(MUTATIONS.setUserProfile, userProfile.data());
 
@@ -73,6 +73,7 @@ const store = createStore({
      */
     async [ACTIONS.addAccount](ctx, account) {
       account.uid = fb.auth.currentUser.uid;
+      account.dateOpened = account.dateOpened.toISOString();
 
       await fb.accountsCollection.add(account.toMap());
     }
@@ -82,7 +83,7 @@ const store = createStore({
       state.userProfile = val;
     },
     [MUTATIONS.setAccounts]: (state, accounts) => {
-      console.log("setAccounts", accounts);
+      // console.log("setAccounts", accounts);
       state.accounts = accounts;
     },
     [MUTATIONS.addAccount]: (state, account) => {
