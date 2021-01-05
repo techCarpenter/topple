@@ -1,7 +1,7 @@
 <template>
   <div class="my-4 flex flex-col">
     <div class="my-1">
-      <label for="account-name">Name:</label>
+      <label for="account-name">Name</label>
       <input
         class="bg-gray-200 text-gray-800 px-2 ml-2"
         id="account-name"
@@ -31,7 +31,7 @@
       <input
         class="bg-gray-200 text-gray-800 px-2 ml-2"
         id="account-apr"
-        v-model.number="account.interestRate"
+        v-model.number="account.apr"
       />
     </div>
     <div class="my-1">
@@ -45,11 +45,11 @@
       />
     </div>
     <div class="my-1">
-      <label for="account-startdate">Date Opened</label>
+      <label for="account-dateOpened">Date Opened</label>
       <input
         class="bg-gray-200 text-gray-800 px-2 ml-2"
-        id="account-startdate"
-        v-model="account.startDate"
+        id="account-dateOpened"
+        v-model="account.dateOpened"
         type="date"
       />
     </div>
@@ -61,37 +61,24 @@
 </template>
 
 <script>
+import { createAccount } from "../models";
+import { dateFromString } from "../assets/js/functions";
+
 export default {
   name: "NewAccountForm",
   emits: ["submitform", "resetform"],
   data() {
     return {
-      account: {
-        id: "",
-        name: "",
-        balance: 0,
-        startDate: "",
-        apr: 0,
-        minPayment: 0,
-        provider: ""
-      }
+      account: createAccount()
     };
   },
   methods: {
     submitForm() {
-      this.account.startDate = new Date(this.account.startDate);
+      this.account.dateOpened = dateFromString(this.account.dateOpened);
       this.$emit("submitform", this.account);
     },
     resetForm() {
-      this.account = {
-        id: "",
-        name: "",
-        balance: 0,
-        startDate: "",
-        apr: 0,
-        minPayment: 0,
-        provider: ""
-      };
+      this.account = createAccount();
       this.$emit("resetform");
     }
   }

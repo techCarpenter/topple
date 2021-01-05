@@ -75,6 +75,7 @@
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
 import AccountItem from "../components/AccountItem";
+import { ACTIONS } from "../data";
 // import AccountDetails from "../components/AccountDetails";
 import NewAccountForm from "../components/NewAccountForm";
 
@@ -91,7 +92,7 @@ export default {
     NewAccountForm
   },
   methods: {
-    ...mapActions(["createAccount"]),
+    ...mapActions([ACTIONS.addAccount]),
     ...mapGetters(["getAccountById"]),
     getSelectedAccount() {
       return this.getAccountById()(this.selectedAccountId);
@@ -100,7 +101,8 @@ export default {
       this.selectedAccountId = id;
     },
     handleSubmit(account) {
-      this.createAccount(account);
+      console.log("account", account);
+      this[ACTIONS.addAccount](account);
       this.newAccount = false;
     }
   },

@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import { MUTATIONS, ACTIONS } from "@/data";
+import { MUTATIONS, ACTIONS } from "../data";
 import * as fb from "../firebase";
 import router from "../router";
 
@@ -66,17 +66,15 @@ const store = createStore({
       // redirect to login view
       router.push({ name: "LoginRegisterView" });
     },
-    async [ACTIONS.createAccount](ctx, account) {
-      console.log("createAccount", account);
-      await fb.accountsCollection.add({
-        name: account.name,
-        balance: account.balance,
-        startDate: new Date().toISOString(),
-        apr: account.interestRate,
-        minPayment: account.minPayment,
-        provider: account.provider,
-        uid: fb.auth.currentUser.uid
-      });
+    /**
+     * Action to create a new account in the database
+     * @param {*} ctx
+     * @param {Object} account The loan account to create
+     */
+    async [ACTIONS.addAccount](ctx, account) {
+      account.uid = fb.auth.currentUser.uid;
+
+      await fb.accountsCollection.add(account.toMap());
     }
   },
   mutations: {
@@ -87,7 +85,7 @@ const store = createStore({
       console.log("setAccounts", accounts);
       state.accounts = accounts;
     },
-    [MUTATIONS.createAccount]: (state, account) => {
+    [MUTATIONS.addAccount]: (state, account) => {
       state.accounts.push(account);
     },
     [MUTATIONS.updateAccount]: (state, updatedAccount) => {

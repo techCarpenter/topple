@@ -30,7 +30,7 @@
     <div class="flex flex-row justify-between mt-2">
       <div>Date Opened:</div>
       <div>
-        {{ formatDate(loan.startDate) }}
+        {{ formatDate(loan.dateOpened) }}
       </div>
     </div>
     <hr class="border-t-2 mt-3" />

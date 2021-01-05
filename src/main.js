@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import { MUTATIONS, ACTIONS } from "./data";
+import { createAccount } from "./models";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
@@ -23,11 +24,16 @@ fb.auth.onAuthStateChanged(user => {
     fb.accountsCollection
       .where("uid", "==", fb.auth.currentUser.uid)
       .onSnapshot(snapshot => {
-        let accountsArray = [];
+        let accountsArray = [],
+          docData,
+          account;
 
         snapshot.forEach(doc => {
-          let account = doc.data();
-          account.id = doc.id;
+          docData = doc.data();
+          docData.id = doc.id;
+
+          account = createAccount(docData);
+          //AccountModel.fromMap(doc.data(), doc.id);
 
           accountsArray.push(account);
         });

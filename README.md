@@ -256,7 +256,7 @@ Firebase?
           "endDate": "2017-08-01T00:00.000Z"
         }
       ],
-      "startDate": "2013-08-01T00:00.000Z",
+      "dateOpened": "2013-08-01T00:00.000Z",
       "initBalance": 16000,
       "interestRate": 4.5,
       "minPayment": 190.23,

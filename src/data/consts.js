@@ -1,13 +1,13 @@
 export const PAYDOWN_METHODS = {
-  AVALANCHE: "AVALANCHE",
-  SNOWBALL: "SNOWBALL",
-  MIN_PAYMENTS: "MIN_PAYMENTS",
-  CUSTOM: "CUSTOM"
+  avalanche: "avalanche",
+  snowball: "snowball",
+  minPayments: "minPayments",
+  custom: "custom"
 };
 export const MUTATIONS = {
   setAccounts: "setAccounts",
   setUserProfile: "setUserProfile",
-  createAccount: "createAccount",
+  addAccount: "addAccount",
   updateAccount: "updateAccount",
   deleteAccount: "deleteAccount",
   setPayments: "setPayments"
@@ -18,7 +18,7 @@ export const ACTIONS = {
   logout: "logout",
   signup: "signup",
   fetchUserProfile: "fetchUserProfile",
-  createAccount: "createAccount"
+  addAccount: "addAccount"
 };
 
 export default {
