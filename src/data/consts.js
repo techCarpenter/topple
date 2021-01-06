@@ -18,7 +18,8 @@ export const ACTIONS = {
   logout: "logout",
   signup: "signup",
   fetchUserProfile: "fetchUserProfile",
-  addAccount: "addAccount"
+  addAccount: "addAccount",
+  deleteAccount: "deleteAccount"
 };
 
 export default {

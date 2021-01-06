@@ -9,11 +9,13 @@
   >
     <div>{{ loan.name }}</div>
     <div>{{ formatCurrency(loan.balance) }}</div>
+    <button @click="deleteAccount(loan.id)">Delete</button>
   </div>
 </template>
 
 <script>
 import { currencyFormat } from "../assets/js/functions";
+import { ACTIONS } from "../data";
 
 export default {
   name: "AccountItem",
@@ -29,7 +31,7 @@ export default {
   },
   methods: {
     deleteAccount(id) {
-      this.$store.dispatch("deleteAccount", id);
+      this.$store.dispatch(ACTIONS.deleteAccount, id);
     },
     formatCurrency(value) {
       return currencyFormat(value);

@@ -12,8 +12,9 @@ const store = createStore({
     plans: []
   },
   actions: {
-    async deleteAccount(ctx, id) {
-      ctx.commit(MUTATIONS.deleteAccount, id);
+    async [ACTIONS.deleteAccount](ctx, id) {
+      fb.accountsCollection.doc(id).delete();
+      // ctx.commit(MUTATIONS.deleteAccount, id);
       // add firebase delete
     },
     async [ACTIONS.login]({ dispatch }, form) {
@@ -49,12 +50,12 @@ const store = createStore({
     async [ACTIONS.fetchUserProfile]({ commit }, user) {
       // fetch user profile
       const userProfile = await fb.usersCollection.doc(user.uid).get();
-      console.log("fetched user", userProfile.data());
+      console.log("fetchUserProfile", userProfile.data());
       // set user profile in state
       commit(MUTATIONS.setUserProfile, userProfile.data());
 
       // change route to dashboard
-      router.push("/");
+      // router.push("/");
     },
     async [ACTIONS.logout]({ commit }) {
       // log user out
