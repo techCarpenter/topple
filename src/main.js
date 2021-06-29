@@ -7,9 +7,13 @@ import store from "./store";
 import * as fb from "./firebase";
 import "./assets/tailwind.css";
 
-let app;
+let app, accountSnapUnsub, paymentSnapUnsub;
 
-fb.auth.onAuthStateChanged(user => {
+fb.auth.onAuthStateChanged(async user => {
+  /**
+   * Included in onAuthStateChanged to
+   * update view when user logs in or out
+   */
   if (!app) {
     app = createApp(App)
       .use(store)
@@ -18,38 +22,63 @@ fb.auth.onAuthStateChanged(user => {
   }
 
   if (user) {
-    store.dispatch(ACTIONS.fetchUserProfile, user);
+    console.log("User Found!");
 
-    fb.accountsCollection
-      .where("uid", "==", fb.auth.currentUser.uid)
-      .onSnapshot(snapshot => {
-        let accountsArray = [],
-          docData,
-          account;
+    await store.dispatch(ACTIONS.fetchUserProfile, user);
 
-        snapshot.forEach(doc => {
-          docData = doc.data();
-          docData.id = doc.id;
+    accountSnapUnsub = fb.accountsCollection
+      .where("uid", "==", user.uid)
+      .onSnapshot(
+        accountRecords => {
+          let accountsArray = [],
+            docData,
+            account;
 
-          account = createAccount(docData);
+          accountRecords.forEach(doc => {
+            docData = doc.data();
+            docData.id = doc.id;
 
-          accountsArray.push(account);
-        });
-        // console.log("Accounts updated in onSnapshot", accountsArray);
-        store.commit(MUTATIONS.setAccounts, accountsArray);
-      });
+            account = createAccount(docData);
+            accountsArray.push(account);
+          });
+          // console.log("Accounts updated in onSnapshot", accountsArray);
+          store.commit(MUTATIONS.setAccounts, accountsArray);
+        },
+        error => {
+          console.info("Error in account snapshot", error);
+        }
+      );
 
-    fb.paymentsCollection.onSnapshot(snapshot => {
-      let paymentsArray = [];
+    paymentSnapUnsub = fb.paymentsCollection
+      .where("uid", "==", user.uid)
+      .onSnapshot(
+        paymentRecords => {
+          let paymentsArray = [];
 
-      snapshot.forEach(doc => {
-        let payment = doc.data();
-        payment.id = doc.id;
+          paymentRecords.forEach(doc => {
+            let payment = doc.data();
+            payment.id = doc.id;
 
-        paymentsArray.push(payment);
-      });
+            paymentsArray.push(payment);
+          });
 
-      store.commit(MUTATIONS.setPayments, paymentsArray);
-    });
+          store.commit(MUTATIONS.setPayments, paymentsArray);
+        },
+        error => {
+          console.error("Error in payments snapshot", error);
+        }
+      );
+  }
+  //else if no user
+  else {
+    // Unsusbscribe from firebase collection snapshot listeners
+    if (accountSnapUnsub) {
+      accountSnapUnsub();
+      console.info("Unsubscribed account snapshot");
+    }
+    if (paymentSnapUnsub) {
+      paymentSnapUnsub();
+      console.info("Unsubscribed payment snapshot");
+    }
   }
 });
