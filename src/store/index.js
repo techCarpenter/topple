@@ -3,7 +3,6 @@ import { MUTATIONS, ACTIONS } from "../data";
 import * as fb from "../firebase";
 import router from "../router";
 
-// create vuex store
 const store = createStore({
   state: {
     userProfile: {},
@@ -13,59 +12,97 @@ const store = createStore({
   },
   actions: {
     async [ACTIONS.deleteAccount](ctx, id) {
-      fb.accountsCollection.doc(id).delete();
+      fb.accountsCollection
+        .doc(id)
+        .delete()
+        .catch(() => {
+          console.error("Error deleting account");
+        });
       // ctx.commit(MUTATIONS.deleteAccount, id);
       // add firebase delete
     },
     async [ACTIONS.login]({ dispatch }, form) {
-      // sign user in
-      const { user } = await fb.auth.signInWithEmailAndPassword(
-        form.email,
-        form.password
-      );
+      return new Promise((resolve, reject) => {
+        // sign user in
+        console.log("form", form);
+        fb.auth
+          .signInWithEmailAndPassword(form.email, form.password)
+          .then(async ({ user }) => {
+            console.log("signInWithEmail (login)");
+            await fb.usersCollection
+              .doc(user.uid)
+              .update({
+                lastLogin: new Date().toISOString()
+              })
+              .catch(() => {
+                console.error("Couldn't update user in collection after login");
+              });
 
-      await fb.usersCollection.doc(user.uid).update({
-        lastLogin: new Date().toISOString()
+            // fetch user profile and set in state
+            dispatch(ACTIONS.fetchUserProfile, user);
+
+            router.push({ name: "DashboardView" });
+          })
+          .catch(err => {
+            var errorCode = err.code;
+            var errorMessage = err.message;
+            let regex = new RegExp(`auth/`, "gi");
+            if (regex.test(errorCode)) {
+              resolve(errorMessage);
+            } else {
+              console.info(errorCode);
+              reject(errorMessage);
+            }
+          });
       });
-
-      // fetch user profile and set in state
-      dispatch(ACTIONS.fetchUserProfile, user);
     },
     async [ACTIONS.signup]({ dispatch }, form) {
       // sign user up
-      const { user } = await fb.auth.createUserWithEmailAndPassword(
-        form.email,
-        form.password
-      );
-
-      // create user object in userCollections
-      await fb.usersCollection.doc(user.uid).set({
-        name: form.name,
-        lastLogin: new Date().toISOString()
-      });
+      const { user } = await fb.auth
+        .createUserWithEmailAndPassword(form.email, form.password)
+        .catch(() => {
+          console.error("Error in signup");
+        })
+        .then(async ({ user }) => {
+          // create user object in userCollections
+          await fb.usersCollection.doc(user.uid).set({
+            name: form.name,
+            lastLogin: new Date().toISOString()
+          });
+        })
+        .catch(() => {
+          console.error("Error creating user object in signup");
+        });
 
       // fetch user profile and set in state
       dispatch(ACTIONS.fetchUserProfile, user);
     },
     async [ACTIONS.fetchUserProfile]({ commit }, user) {
       // fetch user profile
-      const userProfile = await fb.usersCollection.doc(user.uid).get();
-      console.log("fetchUserProfile", userProfile.data());
-      // set user profile in state
-      commit(MUTATIONS.setUserProfile, userProfile.data());
-
-      // change route to dashboard
-      // router.push("/");
+      // const userProfile =
+      await fb.usersCollection
+        .doc(user.uid)
+        .get()
+        .then(userProfile => {
+          // console.log("fetchUserProfile", userProfile.data());
+          // set user profile in state
+          commit(MUTATIONS.setUserProfile, userProfile.data());
+        })
+        .catch(err => {
+          console.error("Error in fetchUserProfile", err);
+        });
     },
     async [ACTIONS.logout]({ commit }) {
       // log user out
-      await fb.auth.signOut();
+      await fb.auth.signOut().then(() => {
+        // clear user data from state
+        commit(MUTATIONS.setUserProfile, {});
 
-      // clear user data from state
-      commit(MUTATIONS.setUserProfile, {});
-
-      // redirect to login view
-      router.push({ name: "LoginRegisterView" });
+        // redirect to login view
+        router.push({
+          name: "LoginRegisterView"
+        });
+      });
     },
     /**
      * Action to create a new account in the database
@@ -107,6 +144,9 @@ const store = createStore({
     }
   },
   getters: {
+    getUser: state => {
+      return state.userProfile;
+    },
     getAccounts: state => {
       return state.accounts;
     },
