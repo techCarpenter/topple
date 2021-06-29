@@ -1,31 +1,21 @@
 <template>
-  <NavBar v-if="showNav" />
-  <div class="view-container max-h-screen min-h-screen">
+  <div class="p-4 m-0 min-h-screen">
     <router-view />
   </div>
+  <footer class="my-8 w-full">
+    <p class="text-center">
+      Topple made by
+      <a class="text-green-500 underline" href="https://brianjdevries.com"
+        >Brian DeVries</a
+      >
+    </p>
+  </footer>
 </template>
 
 <script>
-import NavBar from "./components/NavBar";
-import { mapState } from "vuex";
-
 export default {
-  components: { NavBar },
-  name: "App",
-  computed: {
-    ...mapState(["userProfile"]),
-    showNav() {
-      return Object.keys(this.userProfile).length > 1;
-    }
-  }
+  name: "App"
 };
 </script>
 
-<style lang="scss" scoped>
-.view-container {
-  padding: 50px 70px;
-  margin: 0 0 0 $nav-bar-width;
-  height: auto;
-  width: auto;
-}
-</style>
+<style></style>

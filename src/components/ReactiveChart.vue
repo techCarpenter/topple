@@ -1,16 +1,8 @@
 <template>
-  <div class="chart-wrapper">
+  <div class="w-full h-full">
     <div :ref="chart.uuid"></div>
   </div>
 </template>
-
-<style>
-.chart-wrapper {
-  padding: 1rem;
-  height: 100%;
-  width: 100%;
-}
-</style>
 
 <script>
 import Plotly from "plotly.js-basic-dist";
@@ -49,3 +41,5 @@ export default {
   }
 };
 </script>
+
+<style></style>
