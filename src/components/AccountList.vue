@@ -1,6 +1,6 @@
 <template>
-  <div v-if="loans.length > 0">
-    <AccountItem v-for="loan in this.loans" :key="loan.id" :loan="loan" />
+  <div class="flex flex-col w-full" v-if="accounts.length > 0">
+    <AccountItem v-for="loan in this.accounts" :key="loan.id" :account="loan" />
   </div>
 </template>
 
@@ -10,7 +10,7 @@ import AccountItem from "./AccountItem";
 export default {
   name: "AccountList",
   computed: {
-    loans() {
+    accounts() {
       return this.$store.getters.getAccounts || [];
     }
   },

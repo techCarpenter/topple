@@ -1,11 +1,32 @@
 <template>
   <aside>
-    <div v-if="!newAccount">
-      <button class="add-button" @click="newAccount = true">➕</button>
+    <div class="flex flex-col items-center" v-if="!newAccount">
       <AccountList />
+      <button
+        class="
+          w-1/3
+          min-w-max
+          bg-green-500
+          text-white
+          bold
+          text-xl
+          py-2
+          px-3
+          mb-3
+          hover:bg-green-400
+          active:bg-green-600
+          focus:bg-green-400
+        "
+        @click="newAccount = true"
+      >
+        Add <span class="text-2xl">+</span>
+      </button>
     </div>
     <div v-else>
-      <NewAccountForm @form-submitted="newAccount = false" />
+      <NewAccountForm
+        @resetform="newAccount = false"
+        @submitform="newAccount = false"
+      />
     </div>
   </aside>
 </template>
@@ -28,12 +49,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.add-button {
-  height: 2rem;
-  width: 2rem;
-  background-color: lightskyblue;
-  color: white;
-  border-radius: 50%;
-}
-</style>
+<style></style>
