@@ -1,5 +1,5 @@
 import { accounts } from "./accounts";
-import { MUTATIONS, PAYDOWN_METHODS, ACTIONS } from "./consts";
+import { MUTATIONS, PAYDOWN_METHODS, ACTIONS, GETTERS } from "./consts";
 import { chartData } from "./chartData";
 import { plotlyConfig } from "./plotlyConfig";
 
@@ -9,6 +9,7 @@ export { PAYDOWN_METHODS };
 export { chartData };
 export { plotlyConfig };
 export { ACTIONS };
+export { GETTERS };
 
 export default {
   accounts,
@@ -16,5 +17,6 @@ export default {
   ACTIONS,
   PAYDOWN_METHODS,
   chartData,
-  plotlyConfig
+  plotlyConfig,
+  GETTERS
 };
