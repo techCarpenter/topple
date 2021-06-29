@@ -22,8 +22,14 @@ export const ACTIONS = {
   deleteAccount: "deleteAccount"
 };
 
+export const GETTERS = {
+  getAccounts: "getAccounts",
+  getAccountById: "getAccountById"
+};
+
 export default {
   PAYDOWN_METHODS,
   MUTATIONS,
-  ACTIONS
+  ACTIONS,
+  GETTERS
 };
