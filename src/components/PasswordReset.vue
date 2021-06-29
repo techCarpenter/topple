@@ -1,24 +1,56 @@
 <template>
-  <div class="modal">
-    <div class="modal-content">
-      <div @click="$emit('close')" class="close">close</div>
-      <h3>Reset Password</h3>
+  <div id="reset-modal">
+    <div class="modal-content max-w-xs m-auto">
+      <h3 class="text-3xl">Reset Password</h3>
       <div v-if="!showSuccess">
-        <p>Enter your email to reset your password</p>
-        <form @submit.prevent>
+        <form @submit.prevent="resetPassword">
+          <label class="my-2 text-lg" for="reset-email">Email</label>
           <input
+            class="w-full py-1 px-2 my-2 text-gray-900"
             v-model.trim="email"
             type="email"
             placeholder="you@email.com"
+            required
+            id="reset-email"
           />
+
+          <p v-if="errorMsg !== ''" class="text-red-600">{{ errorMsg }}</p>
+          <div class="flex justify-between">
+            <button type="submit" class="button primary px-2 py-1 my-2 text-lg">
+              Reset
+            </button>
+            <a
+              @click="$emit('close')"
+              class="
+                button
+                border-gray-200 border-solid border-2
+                px-2
+                py-1
+                my-2
+                text-lg
+                cursor-pointer
+              "
+              >Cancel</a
+            >
+          </div>
         </form>
-        <p v-if="errorMsg !== ''" class="error">{{ errorMsg }}</p>
-        <button @click="resetPassword()" class="button">Reset</button>
       </div>
-      <p v-else>Success! Check your email for a reset link.</p>
+      <p v-else class="text-green-400">
+        Success! Check your email for a reset link.
+      </p>
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+#reset-modal {
+  background-color: $background-color;
+}
+.button.primary {
+  background-color: $theme-color;
+  color: white;
+}
+</style>
 
 <script>
 import { auth } from "../firebase";
@@ -34,12 +66,15 @@ export default {
   methods: {
     async resetPassword() {
       this.errorMsg = "";
-      try {
-        await auth.sendPasswordResetEmail(this.email);
-        this.showSuccess = true;
-      } catch (err) {
-        this.errorMsg = err.message;
-      }
+      console.log("resetting password");
+      await auth
+        .sendPasswordResetEmail(this.email)
+        .then(() => {
+          this.showSuccess = true;
+        })
+        .catch((err) => {
+          this.errorMsg = err.message;
+        });
     }
   }
 };
