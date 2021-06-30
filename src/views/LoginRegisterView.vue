@@ -6,175 +6,163 @@
       @close="togglePasswordReset"
     ></PasswordReset>
     <section>
-      <div>
-        <h1 class="text-3xl">⛰️ Topple</h1>
-        <!-- <h1 class="text-3xl">Topple</h1> -->
-        <p class="my-2">Let's knock over that debt mountain.</p>
-        <hr class="my-3" />
-      </div>
-      <div :class="{ 'signup-form': !showLoginForm }">
-        <form v-if="showLoginForm" @submit.prevent="login">
-          <h1 class="my-2 text-xl">Welcome Back!</h1>
-          <div class="flex flex-col my-2">
-            <label class="text-lg" for="email1"
-              >Email
-              <span class="float-right text-gray-400 text-sm italic"
-                >i.e. you@email.com</span
-              ></label
-            >
-            <input
-              class="
-                w-full
-                
-                px-1
-                text-gray-900
-                border-solid border-2 border-white
-                focus:border-green-400
-              "
-              v-model.trim="loginForm.email"
-              type="email"
-              required
-              id="email1"
-            />
-          </div>
-          <div class="flex flex-col my-2">
-            <label class="text-lg" for="password1">Password</label>
-            <input
-              class="
-                w-full
-                
-                px-1
-                text-gray-900
-                border-solid border-2 border-white
-                focus:border-green-400
-              "
-              v-model.trim="loginForm.password"
-              type="password"
-              required
-              id="password1"
-            />
-          </div>
-          <p v-if="errorMessage !== ''" class="my-2 text-red-600 text-sm">
-            {{ errorMessage }}
-          </p>
-          <div class="flex justify-between">
-            <button type="submit" class="button primary px-2 py-1 my-2 text-lg">
-              Log In
-            </button>
-            <a
-              class="
-                button
-                border-gray-200 border-solid border-2
-                px-1
-                py-1
-                my-2
-                text-lg
-                cursor-pointer
-              "
-              @click="toggleForm"
-              >Create an Account</a
-            >
-          </div>
-          <div class="extras my-2 flex flex-col items-center">
-            <a class="cursor-pointer underline" @click="togglePasswordReset"
-              >Forgot Password?</a
-            >
-          </div>
-        </form>
-        <form v-else @submit.prevent>
-          <h1 class="my-2 text-xl">Get Started</h1>
-          <div class="flex flex-col my-2">
-            <label class="text-lg" for="name">Name</label>
-            <input
-              required
-              class="
-                w-full
-                
-                px-1
-                text-gray-900
-                border-solid border-2 border-white
-                focus:border-green-400
-              "
-              v-model.trim="signupForm.name"
-              type="text"
-              id="name"
-            />
-          </div>
-          <div class="flex flex-col my-2">
-            <label class="text-lg" for="email2"
-              >Email<span class="float-right text-gray-400 text-sm italic"
-                >i.e. you@email.com</span
-              ></label
-            >
-            <input
-              required
-              class="
-                w-full
-                
-                px-1
-                text-gray-900
-                border-solid border-2 border-white
-                focus:border-green-400
-              "
-              v-model.trim="signupForm.email"
-              type="text"
-              id="email2"
-            />
-          </div>
-          <div class="flex flex-col my-2">
-            <label class="text-lg" for="password2"
-              >Password<span class="float-right text-gray-400 text-sm italic"
-                >8 character min.</span
-              ></label
-            >
-            <input
-              required
-              class="
-                w-full
-                
-                px-1
-                text-gray-900
-                border-solid border-2 border-white
-                focus:border-green-400
-              "
-              v-model.trim="signupForm.password"
-              type="password"
-              id="password2"
-            />
-          </div>
-          <div class="flex justify-between">
-            <button
-              class="button primary px-2 py-1 my-2 text-lg"
-              @click="signup"
-            >
-              Sign Up
-            </button>
-            <a
-              class="
-                button
-                border-gray-200 border-solid border-2
-                px-2
-                py-1
-                my-2
-                text-lg
-                cursor-pointer
-              "
-              @click="toggleForm"
-              >Back to Log In</a
-            >
-          </div>
-        </form>
-      </div>
+      <h1 class="text-3xl">⛰️ Topple</h1>
+      <p class="my-3">Let's knock over that debt mountain.</p>
+      <hr class="my-3" />
+      <form v-if="showLoginForm" @submit.prevent="login">
+        <h1 class="my-2 text-xl">Welcome Back!</h1>
+        <div class="flex flex-col my-2">
+          <label class="text-lg" for="email1"
+            >Email
+            <span class="float-right text-gray-400 text-sm italic"
+              >i.e. you@email.com</span
+            ></label
+          >
+          <input
+            class="
+              w-full
+              px-1
+              text-gray-900
+              border-solid border-2 border-white
+              focus:border-green-400
+            "
+            v-model.trim="loginForm.email"
+            type="email"
+            required
+            id="email1"
+          />
+        </div>
+        <div class="flex flex-col my-2">
+          <label class="text-lg" for="password1">Password</label>
+          <input
+            class="
+              w-full
+              px-1
+              text-gray-900
+              border-solid border-2 border-white
+              focus:border-green-400
+            "
+            v-model.trim="loginForm.password"
+            type="password"
+            required
+            id="password1"
+          />
+        </div>
+        <p v-if="errorMessage !== ''" class="my-2 text-red-600 text-sm">
+          {{ errorMessage }}
+        </p>
+        <div class="flex justify-between">
+          <button
+            type="submit"
+            class="bg-green-500 text-white px-2 py-1 my-2 text-lg"
+          >
+            Log In
+          </button>
+          <a
+            class="
+              button
+              border-gray-200 border-solid border-2
+              px-1
+              py-1
+              my-2
+              text-lg
+              cursor-pointer
+            "
+            @click="toggleForm"
+            >Create an Account</a
+          >
+        </div>
+        <div class="extras my-4 flex flex-col items-center">
+          <a class="cursor-pointer underline" @click="togglePasswordReset"
+            >Forgot Password?</a
+          >
+        </div>
+      </form>
+      <form v-else @submit.prevent="signup">
+        <h1 class="my-2 text-xl">Get Started</h1>
+        <div class="flex flex-col my-2">
+          <label class="text-lg" for="name">Name</label>
+          <input
+            required
+            class="
+              w-full
+              px-1
+              text-gray-900
+              border-solid border-2 border-white
+              focus:border-green-400
+            "
+            v-model.trim="signupForm.name"
+            type="text"
+            id="name"
+          />
+        </div>
+        <div class="flex flex-col my-2">
+          <label class="text-lg" for="email2"
+            >Email<span class="float-right text-gray-400 text-sm italic"
+              >i.e. you@email.com</span
+            ></label
+          >
+          <input
+            required
+            class="
+              w-full
+              px-1
+              text-gray-900
+              border-solid border-2 border-white
+              focus:border-green-400
+            "
+            v-model.trim="signupForm.email"
+            type="text"
+            id="email2"
+          />
+        </div>
+        <div class="flex flex-col my-2">
+          <label class="text-lg" for="password2"
+            >Password<span class="float-right text-gray-400 text-sm italic"
+              >8 character min.</span
+            ></label
+          >
+          <input
+            required
+            class="
+              w-full
+              px-1
+              text-gray-900
+              border-solid border-2 border-white
+              focus:border-green-400
+            "
+            v-model.trim="signupForm.password"
+            type="password"
+            id="password2"
+          />
+        </div>
+        <div class="flex justify-between">
+          <button
+            class="bg-green-500 text-white px-2 py-1 my-2 text-lg"
+            type="submit"
+          >
+            Sign Up
+          </button>
+          <a
+            class="
+              button
+              border-gray-200 border-solid border-2
+              px-2
+              py-1
+              my-2
+              text-lg
+              cursor-pointer
+            "
+            @click="toggleForm"
+            >Back to Log In</a
+          >
+        </div>
+      </form>
     </section>
   </div>
 </template>
 
-<style lang="scss" scoped>
-.button.primary {
-  background-color: $theme-color;
-  color: white;
-}
-</style>
+<style></style>
 
 <script>
 /* eslint-disable */
@@ -208,8 +196,8 @@ export default {
     togglePasswordReset() {
       this.showPasswordReset = !this.showPasswordReset;
     },
-    async login() {
-      await this.$store
+    login() {
+      this.$store
         .dispatch(ACTIONS.login, {
           email: this.loginForm.email,
           password: this.loginForm.password
