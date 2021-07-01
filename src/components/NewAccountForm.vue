@@ -137,7 +137,7 @@
 
 <script>
 import { createAccount } from "../models";
-import { dateFromString } from "../assets/js/functions";
+import { dateFromString, dateStringFromDate } from "../assets/js/paydownData";
 import { mapGetters } from "vuex";
 import { GETTERS } from "../data";
 
@@ -158,6 +158,7 @@ export default {
   methods: {
     ...mapGetters([GETTERS.getAccountById]),
     submitForm() {
+      console.log("Form date: ", this.account.dateOpened);
       this.account.dateOpened = dateFromString(this.account.dateOpened);
       this.$emit("submitform", this.account);
     },
@@ -171,6 +172,15 @@ export default {
       this.accountId !== ""
         ? createAccount(this[GETTERS.getAccountById]()(this.accountId))
         : createAccount();
+    let dt = this.account.dateOpened;
+
+    this.account.dateOpened = dateStringFromDate(this.account.dateOpened);
+    // `${dt.getFullYear().toString()}-${(
+    //   dt.getMonth() + 1
+    // )
+    //   .toString()
+    //   .padStart(2, "0")}-${dt.getDate().toString().padStart(2, "0")}`;
+    console.log("dateOpened: ", this.account.dateOpened);
   }
 };
 </script>
