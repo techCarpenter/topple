@@ -58,16 +58,19 @@
 
 <template>
   <new-account-form
-    @submitform="handleSubmit"
-    @resetform="newAccount = false"
+    :accountId="formAccountId"
+    @submitform="handlFormSubmit"
+    @resetform="handleFormReset"
     v-if="newAccount"
   />
-  <button @click="newAccount = true" v-else>New Account</button>
+  <button @click="newAccountForm" v-else>New Account</button>
   <div>
     <account-item
       v-for="account in accounts"
-      :loan="account"
+      :account="account"
       :key="account.id"
+      @delete="handleDelete"
+      @update="handleUpdate"
     />
   </div>
 </template>
@@ -75,7 +78,7 @@
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
 import AccountItem from "../components/AccountItem";
-import { ACTIONS } from "../data";
+import { ACTIONS, GETTERS } from "../data";
 // import AccountDetails from "../components/AccountDetails";
 import NewAccountForm from "../components/NewAccountForm";
 
@@ -83,8 +86,10 @@ export default {
   name: "AccountsView",
   data() {
     return {
+      formAccountId: "",
       selectedAccountId: "",
-      newAccount: false
+      newAccount: false,
+      editAccount: false
     };
   },
   components: {
@@ -92,18 +97,38 @@ export default {
     NewAccountForm
   },
   methods: {
-    ...mapActions([ACTIONS.addAccount]),
-    ...mapGetters(["getAccountById"]),
+    ...mapActions([ACTIONS.addAccount, ACTIONS.deleteAccount]),
+    ...mapGetters([GETTERS.getAccountById]),
     getSelectedAccount() {
-      return this.getAccountById()(this.selectedAccountId);
+      return this[GETTERS.getAccountById]()(this.selectedAccountId);
     },
     setSelectedAccount(id) {
       this.selectedAccountId = id;
     },
-    handleSubmit(account) {
+    handlFormSubmit(account) {
       console.log("account", account);
-      this[ACTIONS.addAccount](account);
-      this.newAccount = false;
+      if (this.editAccount) {
+        console.log("Update account here...");
+        //this[ACTIONS.updateAccount](account);
+      } else {
+        this[ACTIONS.addAccount](account);
+      }
+      this.handleFormReset();
+    },
+    handleFormReset() {
+      (this.formAccountId = ""), (this.newAccount = false);
+    },
+    handleDelete(id) {
+      this[ACTIONS.deleteAccount](id);
+    },
+    handleUpdate(id) {
+      this.formAccountId = id;
+      this.newAccount = true;
+      this.editAccount = true;
+    },
+    newAccountForm() {
+      this.formAccountId = "";
+      this.newAccount = true;
     }
   },
   computed: {
