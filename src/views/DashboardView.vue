@@ -43,24 +43,25 @@
         v-if="accounts.length > 0"
         class="mt-2 items-center flex flex-col flex-auto"
       >
-        <ReactiveChart :chart="chart" />
+        <ReactiveChart v-if="chart !== null" :chart="chart" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
-import { ACTIONS } from "../data";
+import { mapActions, mapGetters, mapState } from "vuex";
+import { ACTIONS, GETTERS, PAYDOWN_METHODS } from "../data";
 import AccountSidebar from "../components/AccountSidebar";
 import ReactiveChart from "../components/ReactiveChart.vue";
-import { plotlyConfig } from "../data";
+import { plotlyConfig, CreateTrace } from "../data";
+import { getTotalPaymentData } from "../assets/js/paydownData";
 
 export default {
   name: "DashboardView",
   data() {
     return {
-      chart: plotlyConfig
+      plotlyConfig
     };
   },
   components: {
@@ -68,10 +69,51 @@ export default {
     ReactiveChart
   },
   methods: {
-    ...mapActions([ACTIONS.logout])
+    ...mapActions([ACTIONS.logout]),
+    ...mapGetters([GETTERS.getAccounts])
   },
   computed: {
-    ...mapState(["accounts"])
+    ...mapState(["accounts"]),
+    paymentData() {
+      let data = [];
+      try {
+        data = getTotalPaymentData(this.accounts, PAYDOWN_METHODS.snowball);
+      } catch (err) {
+        console.error("Unable to get payment data: ", err);
+      }
+      console.log(data);
+      return data;
+    },
+    chart() {
+      // console.log(this.paymentData);
+
+      let chartConfig = plotlyConfig;
+      let xTrace = this.paymentData.paymentArray.map((x) => x.date);
+      let traces = [];
+
+      for (let i = 0; i < this.accounts.length; i++) {
+        traces.push(
+          CreateTrace({
+            y: this.paymentData.paymentArray.map((payPeriod) => {
+              let paymentInfo = payPeriod.payments.filter(
+                (payment) => payment.loanID === this.accounts[i].id
+              );
+              if (paymentInfo.length > 0) {
+                return paymentInfo[0].balance;
+              } else {
+                return null;
+              }
+            }),
+            x: xTrace,
+            name: this.accounts[i].name
+          })
+        );
+      }
+
+      chartConfig.traces = traces;
+      console.log(chartConfig);
+      return chartConfig;
+    }
   }
 };
 </script>

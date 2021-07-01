@@ -19,7 +19,8 @@ export const ACTIONS = {
   signup: "signup",
   fetchUserProfile: "fetchUserProfile",
   addAccount: "addAccount",
-  deleteAccount: "deleteAccount"
+  deleteAccount: "deleteAccount",
+  updateAccount: "updateAccount"
 };
 
 export const GETTERS = {
