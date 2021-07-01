@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 import { MUTATIONS, ACTIONS } from "../data";
 import * as fb from "../firebase";
 import router from "../router";
+import { dateStringFromDate } from "../assets/js/paydownData";
 
 const store = createStore({
   state: {
@@ -111,9 +112,24 @@ const store = createStore({
      */
     async [ACTIONS.addAccount](ctx, account) {
       account.uid = fb.auth.currentUser.uid;
-      account.dateOpened = account.dateOpened.toISOString();
+      account.dateOpened = dateStringFromDate(account.dateOpened);
 
       await fb.accountsCollection.add(account.toMap());
+    },
+    /**
+     * Action to update an account in the database
+     * @param {*} ctx
+     * @param {Object} account The loan account to update
+     */
+    async [ACTIONS.updateAccount](ctx, account) {
+      account.uid = fb.auth.currentUser.uid;
+      account.dateOpened = dateStringFromDate(account.dateOpened);
+
+      await fb.accountsCollection
+        .doc(account.id)
+        .set(account.toMap())
+        .then(() => console.log("Document successfully updated!"))
+        .catch(error => console.error("Error updating document: ", error));
     }
   },
   mutations: {
