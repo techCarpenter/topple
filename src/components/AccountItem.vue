@@ -1,5 +1,6 @@
 <template>
   <div
+    @click="$emit('clicked')"
     class="flex flex-row justify-between items-center border-2 py-2 px-3 mb-3"
     :class="[
       selected
@@ -63,7 +64,7 @@ import { ACTIONS } from "../data";
 
 export default {
   name: "AccountItem",
-  emits: ["update", "delete"],
+  emits: ["update", "delete", "clicked"],
   props: {
     account: {
       type: Object,
