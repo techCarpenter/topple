@@ -101,7 +101,7 @@
           focus:border-green-400
         "
         required
-        v-model="account.dateOpened"
+        v-model="dateOpened"
         type="date"
       />
     </div>
@@ -135,13 +135,15 @@
 }
 </style>
 
-<script>
+<script lang="ts">
+import { dateStringFromDate, dateFromString } from "../assets/js/paydownData";
 import { createAccount } from "../models";
-import { dateFromString, dateStringFromDate } from "../assets/js/paydownData";
 import { mapGetters } from "vuex";
 import { GETTERS } from "../data";
+import { defineComponent } from "vue";
+import { DebtAccount } from "../interfaces";
 
-export default {
+export default defineComponent({
   name: "NewAccountForm",
   emits: ["submitform", "resetform"],
   props: {
@@ -152,18 +154,18 @@ export default {
   },
   data() {
     return {
-      account: {}
+      account: createAccount() as DebtAccount,
+      dateOpened: ""
     };
   },
   methods: {
     ...mapGetters([GETTERS.getAccountById]),
     submitForm() {
-      console.log("Form date: ", this.account.dateOpened);
-      this.account.dateOpened = dateFromString(this.account.dateOpened);
+      this.account.dateOpened = dateFromString(this.dateOpened);
       this.$emit("submitform", this.account);
     },
     resetForm() {
-      this.account = {};
+      this.account = createAccount();
       this.$emit("resetform");
     }
   },
@@ -172,15 +174,12 @@ export default {
       this.accountId !== ""
         ? createAccount(this[GETTERS.getAccountById]()(this.accountId))
         : createAccount();
-    let dt = this.account.dateOpened;
-
-    this.account.dateOpened = dateStringFromDate(this.account.dateOpened);
-    // `${dt.getFullYear().toString()}-${(
-    //   dt.getMonth() + 1
-    // )
-    //   .toString()
-    //   .padStart(2, "0")}-${dt.getDate().toString().padStart(2, "0")}`;
-    console.log("dateOpened: ", this.account.dateOpened);
+    this.dateOpened =
+      this.accountId !== ""
+        ? dateStringFromDate(
+            this[GETTERS.getAccountById]()(this.accountId).dateOpened
+          )
+        : dateStringFromDate(new Date(Date.now()));
   }
-};
+});
 </script>
