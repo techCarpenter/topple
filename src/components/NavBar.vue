@@ -15,18 +15,19 @@
   </nav>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import { mapActions } from "vuex";
-import NavBarItem from "./NavBarItem";
+import NavBarItem from "./NavBarItem.vue";
 
-export default {
+export default defineComponent({
   components: {
     NavBarItem
   },
   methods: {
     ...mapActions(["logout"])
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

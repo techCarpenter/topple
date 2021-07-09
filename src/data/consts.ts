@@ -1,10 +1,10 @@
-export const PAYDOWN_METHODS = {
+const PAYDOWN_METHODS = {
   avalanche: "avalanche",
   snowball: "snowball",
   minPayments: "minPayments",
   custom: "custom"
 };
-export const MUTATIONS = {
+const MUTATIONS = {
   setAccounts: "setAccounts",
   setUserProfile: "setUserProfile",
   addAccount: "addAccount",
@@ -13,17 +13,19 @@ export const MUTATIONS = {
   setPayments: "setPayments"
 };
 
-export const ACTIONS = {
+const ACTIONS = {
   login: "login",
   logout: "logout",
   signup: "signup",
   fetchUserProfile: "fetchUserProfile",
   addAccount: "addAccount",
-  deleteAccount: "deleteAccount"
+  deleteAccount: "deleteAccount",
+  updateAccount: "updateAccount"
 };
 
-export default {
-  PAYDOWN_METHODS,
-  MUTATIONS,
-  ACTIONS
+const GETTERS = {
+  getAccounts: "getAccounts",
+  getAccountById: "getAccountById"
 };
+
+export { PAYDOWN_METHODS, MUTATIONS, ACTIONS, GETTERS };

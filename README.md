@@ -247,22 +247,22 @@ Firebase?
       "statusChanges": [
         {
           "status": "deferment",
-          "startDate": "2013-08-01T00:00.000Z",
-          "endDate": "2017-08-01T00:00.000Z"
+          "startDate": "2013-08-01",
+          "endDate": "2017-08-01"
         },
         {
           "status": "repayment",
-          "startDate": "2017-08-01T00:00.000Z",
-          "endDate": "2017-08-01T00:00.000Z"
+          "startDate": "2017-08-01",
+          "endDate": "2017-08-01"
         }
       ],
-      "dateOpened": "2013-08-01T00:00.000Z",
+      "dateOpened": "2013-08-01",
       "initBalance": 16000,
       "interestRate": 4.5,
       "minPayment": 190.23,
       "payments": [
         {
-          "date": "2017-08-01T00:00.000Z",
+          "date": "2017-08-01",
           "amount": 190,
           "balance": 15810.77
         }
@@ -278,7 +278,7 @@ Firebase?
       "plannedPayments": [
         {
           "loanId": 1,
-          "date": "2017-08-01T00:00.000Z",
+          "date": "2017-08-01",
           "interestPaid": 100,
           "principlePaid": 90.23
         }
@@ -286,7 +286,7 @@ Firebase?
       "additionalPayments": [
         {
           "accountId": null,
-          "date": "2017-08-01T00:00.000Z",
+          "date": "2017-08-01",
           "amount": 250
         }
       ]

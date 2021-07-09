@@ -1,21 +1,14 @@
 <template>
-  <div class="chart-wrapper">
-    <div :ref="chart.uuid"></div>
+  <div class="w-full plotly-container">
+    <div :id="`plotly-${chart.uuid}`"></div>
   </div>
 </template>
 
-<style>
-.chart-wrapper {
-  padding: 1rem;
-  height: 100%;
-  width: 100%;
-}
-</style>
-
 <script>
+import { defineComponent, onBeforeUnmount, onMounted, watch } from "vue";
 import Plotly from "plotly.js-basic-dist";
 
-export default {
+export default defineComponent({
   name: "ReactiveChart",
   props: {
     chart: {
@@ -23,29 +16,41 @@ export default {
       required: true
     }
   },
-  mounted() {
-    try {
-      Plotly.plot(
-        this.$refs[this.chart.uuid],
-        this.chart.traces,
-        this.chart.layout,
-        this.chart.config
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  },
-  watch: {
-    chart: {
-      handler: function() {
-        Plotly.react(
-          this.$refs[this.chart.uuid],
-          this.chart.traces,
-          this.chart.layout,
-          this.chart.config
+  setup(props) {
+    onMounted(() => {
+      try {
+        Plotly.newPlot(
+          "plotly-" + props.chart.uuid,
+          props.chart.traces,
+          props.chart.layout,
+          props.chart.config
         );
+        // console.log("Plot created from:", props.chart);
+      } catch (err) {
+        console.log("Reactive Chart Error:", err);
       }
-    }
+    });
+    let unwatchChart = watch(
+      () => props.chart,
+      (newChart, oldChart) => {
+        // console.log("Old chart:", oldChart);
+        // console.log("New chart:", newChart);
+        Plotly.react(
+          "plotly-" + newChart.uuid,
+          newChart.traces,
+          newChart.layout,
+          newChart.config
+        );
+      },
+      { deep: true }
+    );
+    onBeforeUnmount(() => unwatchChart());
   }
-};
+});
 </script>
+
+<style scoped>
+.plotly-container {
+  min-height: 450px;
+}
+</style>

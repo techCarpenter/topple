@@ -7,13 +7,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import { mapState } from "vuex";
-import AccountSidebar from "../components/AccountSidebar";
+import AccountSidebar from "../components/AccountSidebar.vue";
 import ReactiveChart from "../components/ReactiveChart.vue";
 import { plotlyConfig } from "../data";
 
-export default {
+export default defineComponent({
   name: "ChartView",
   data() {
     return {
@@ -27,7 +28,7 @@ export default {
   computed: {
     ...mapState(["accounts"])
   }
-};
+});
 </script>
 
 <style scoped>
