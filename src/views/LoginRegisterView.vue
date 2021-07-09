@@ -6,7 +6,9 @@
       @close="togglePasswordReset"
     ></PasswordReset>
     <section>
-      <h1 class="text-3xl">⛰️ Topple</h1>
+      <h1 class="text-3xl">
+        <img class="pr-2 inline-block" src="/favicon-32x32.png" />Topple
+      </h1>
       <p class="my-3">Let's knock over that debt mountain.</p>
       <hr class="my-3" />
       <form v-if="showLoginForm" @submit.prevent="login">
