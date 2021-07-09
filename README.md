@@ -1,13 +1,16 @@
 # Make a web app
 
 - [Make a web app](#make-a-web-app)
+  - [Resources used](#resources-used)
   - [✔️ 1. Source an idea](#️-1-source-an-idea)
+    - [Idea: Debt Paydown Planner (Web App)](#idea-debt-paydown-planner-web-app)
     - [Name ideas](#name-ideas)
   - [✔️ 2. Market research](#️-2-market-research)
-    - [Undebt.it keyword competitors:](#undebtit-keyword-competitors)
+    - [Undebt.it keyword competitors](#undebtit-keyword-competitors)
   - [✔️ 3. Define functionality](#️-3-define-functionality)
-    - [MVP Features](#mvp-features)
-    - [Additional Features](#additional-features)
+    - [SLC product features (_simple. lovable. complete._)](#slc-product-features-simple-lovable-complete)
+    - [v2.0 Features](#v20-features)
+    - [Long term features](#long-term-features)
   - [4. Sketch the web app](#4-sketch-the-web-app)
   - [5. Plan your workflow](#5-plan-your-workflow)
   - [6. Wireframe UI](#6-wireframe-ui)
@@ -16,7 +19,6 @@
     - [Data Structure](#data-structure)
   - [9. Develop frontend](#9-develop-frontend)
     - [Dependencies/Libraries](#dependencieslibraries)
-    - [Other](#other)
   - [10. Build backend](#10-build-backend)
     - [Dependencies/Libraries](#dependencieslibraries-1)
   - [11. Host web app](#11-host-web-app)
@@ -24,10 +26,20 @@
   - [Beyond the launch](#beyond-the-launch)
     - [Monetize](#monetize)
     - [Notes/Questions](#notesquestions)
+    - [Unique selling points](#unique-selling-points)
+    - [Goals for the app](#goals-for-the-app)
+
+## Resources used
+
+| Resource           | Description                                               |
+| :----------------- | :-------------------------------------------------------- |
+| Icons              | [Material Design Icons](https://materialdesignicons.com/) |
+| Frontend Framework | [Vue.js](https://vuejs.org)                               |
+| Styles             | [Tailwind CSS](https://tailwindcss.com)                   |
 
 ## ✔️ 1. Source an idea
 
-**Idea: Debt Paydown Planner (Web App)**
+### Idea: Debt Paydown Planner (Web App)
 
 I have used other web apps and spreadsheets to attempt planning my debt payback. Spreadsheets are flexible enough to give me comparison analysis. Current web apps only provide basic analysis as well. I want to be able to see what different scenarios would produce, see how much money I would save, and dynamically change my plan.
 
@@ -43,13 +55,77 @@ There are many different approaches to paying back debt. Whatever your approach 
 - Debt Destroyer
 - Debt chomper
 - Mountain Climber **\***
-  - Summit?
+- Debt Tool
+- Debt Avenger
+- Ascent
+- Hillside
+- Cliff
+- Pitch
+- Arch
+- Mount
+- Dynamite
+- Debt bomber
+- Slope
+- Debt dash
+- debt.ly
+- debto
+- paythat
+- freedm
+- paydown
+- pay.it
+- crush.it
+- debt boom
+- debt plow
+- committed.io
+- commit
+- debt grinder
+- debt dog -> man-in-debt's best friend
+- debt wrangler
+- handle.it
+- unchain.me **\***
+- debt fighter
+- debt brawl
+- scrappy
+- debt demo
+- pid (pay it down)
+- topple
+- linchpin
+- fortify
+- scheme
+- schedge (debt payment schedule)
+- ruse (plot)
+- stepTwo
+- grip
+- nitro
+- boost
+- hustle
+- bloodhound
+- debt hound
+
+What does debt do to people?
+
+- enslave
+- crush
+- trap
+- ensnare
+- weigh down
+
+What do you get when debt is paid?
+
+- freedom
+- peace of mind
+
+What is debt compared to?
+
+- Mountains
+- Chains
+- Anchors, weight
 
 ## ✔️ 2. Market research
 
 **Target audience:** FIRE community, College grads, Credit card debtors, etc.
 
-### Undebt.it keyword competitors:
+### Undebt.it keyword competitors
 
 - clearcheckbook.com
 - unbury.me
@@ -67,18 +143,37 @@ There are many different approaches to paying back debt. Whatever your approach 
 
 ## ✔️ 3. Define functionality
 
-### MVP Features
+### SLC product features (_simple. lovable. complete._)
 
-- [ ] Login/logout
+- [ ] Add account
+- [ ] Remove account
+- [ ] Edit account
+- [ ] See payment chart
+- [ ] Select payment method (min. payments, avalanche, snowball, priority, etc.)
+- [ ] Save data (persist sessions)
+  - Data stored in browser for **SLC product**
+- [ ] Calculations
+  - Total Interest Paid
+  - Years until paid off
+  - Payoff date
+  - Time saved compared to min payments
+  - `$$$` saved compared to min payments
+- [ ] Add/remove additional payments
+- [ ] Line on chart marking current date
+
+### v2.0 Features
+
 - [ ] Add/Remove loans
 - [ ] See graph of min. payments (baseline)
 - [ ] Select payment method (avalanche, snowball, custom, etc.)
 - [ ] Save data (persist sessions)
-- [ ] View payment/loan balance history
-- [ ] View money saved so far compared to minimum payments
+- [ ] Login/logout
+- [ ] View payment history
+- [ ] View loan balance history
+- [ ] View money saved so far compared to min. payments
   - [ ] Total
   - [ ] Per loan
-- [ ] View time saved compared to minimum payments
+- [ ] View time saved compared to min. payments
   - [ ] Total
   - [ ] Per loan
 - [ ] View total interest paid
@@ -95,7 +190,7 @@ There are many different approaches to paying back debt. Whatever your approach 
   - [ ] to total snowball
 - [ ] Add previous payments manually
 
-### Additional Features
+### Long term features
 
 - [ ] Modify snowball amount (+/-)
   - [ ] after specific date
@@ -114,7 +209,7 @@ There are many different approaches to paying back debt. Whatever your approach 
 - [ ] Recap and upcoming payment emails
 - [ ] Change loan details for select pay periods (interest rate, payment amount, etc.)
 - [ ] Mobile app
-- [ ] Enter ideal payoff date, get minimum monthly payment (based on loans entered)
+- [ ] Enter ideal payoff date, get min. monthly payment (based on loans entered)
 
 ## 4. Sketch the web app
 
@@ -152,22 +247,22 @@ Firebase?
       "statusChanges": [
         {
           "status": "deferment",
-          "startDate": "2013-08-01T00:00.000Z",
-          "endDate": "2017-08-01T00:00.000Z"
+          "startDate": "2013-08-01",
+          "endDate": "2017-08-01"
         },
         {
           "status": "repayment",
-          "startDate": "2017-08-01T00:00.000Z",
-          "endDate": "2017-08-01T00:00.000Z"
+          "startDate": "2017-08-01",
+          "endDate": "2017-08-01"
         }
       ],
-      "startDate": "2013-08-01T00:00.000Z",
+      "dateOpened": "2013-08-01",
       "initBalance": 16000,
       "interestRate": 4.5,
       "minPayment": 190.23,
       "payments": [
         {
-          "date": "2017-08-01T00:00.000Z",
+          "date": "2017-08-01",
           "amount": 190,
           "balance": 15810.77
         }
@@ -183,7 +278,7 @@ Firebase?
       "plannedPayments": [
         {
           "loanId": 1,
-          "date": "2017-08-01T00:00.000Z",
+          "date": "2017-08-01",
           "interestPaid": 100,
           "principlePaid": 90.23
         }
@@ -191,7 +286,7 @@ Firebase?
       "additionalPayments": [
         {
           "accountId": null,
-          "date": "2017-08-01T00:00.000Z",
+          "date": "2017-08-01",
           "amount": 250
         }
       ]
@@ -207,13 +302,8 @@ Firebase?
 - [Vue](https://vuejs.org)
 - [Vuex](https://vuex.vuejs.org/)
 - [Vue-router](https://router.vuejs.org/)
-- [Chart.js](https://chartjs.org)
-- UI library
-  - [Vuetify](https://vuetifyjs.com/)?
-
-### Other
-
-- Social share icons
+- [Plotly.js](https://plotly.com/javascript/reference/)
+- [TailwindCSS](https://tailwindcss.com)
 
 ## 10. Build backend
 
@@ -221,7 +311,7 @@ Firebase?
 
 - [Firebase](https://firebase.google.com/)
   - Authentication
-  - Firestore/Realtime DB
+  - Firestore
 - [Axios](https://www.npmjs.com/package/axios)
 
 ## 11. Host web app
@@ -253,3 +343,24 @@ Firebase?
   - Easily modify plan
   - Compare plans and scenarios
   - Stay motivated!
+
+### Unique selling points
+
+- Enter your "why" as a reminder in the app
+- Rewards based system to pay off debt.
+- "Link your progress to an enjoyable and repeatable action"
+- Compete against others
+  - Match up against people with similar pay-off date?
+  - Match up against people with similar remaining balance?
+- Create a community of debtors and ex-debtors
+  - Ask what you're giving up to crush your debt faster
+- Gamify debt payment
+
+### Goals for the app
+
+- Overcome the impatience/overwhelm that usually sets in after motivation passes...
+- Keep people engaged with their freedom plan and execution
+
+superhuman product market fit
+
+talk to a lot of people! (70-100)
