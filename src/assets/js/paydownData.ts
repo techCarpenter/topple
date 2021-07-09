@@ -1,11 +1,17 @@
-import { PAYDOWN_METHODS } from "../../data";
+import { PAYDOWN_METHODS } from "@/data";
+import {
+  AccountPayoffDetail,
+  DebtAccount,
+  PayPeriodDetail,
+  PaymentDetail
+} from "@/interfaces";
 
 /**
  * Gets the full string value of the month by number
  * @param {Number} monthInt The number denoting the month
  * @returns {String} The name of the corresponding month
  */
-function getMonthString(monthInt) {
+function getMonthString(monthInt: number): string {
   switch (monthInt) {
     case 0:
       return "January";
@@ -37,37 +43,44 @@ function getMonthString(monthInt) {
 /**
  * Calculates all payment data for loans.
  * @param {Array} loans Array of loans
- * @param {String} paydownMethod String to set paydown method
- * @param {Number} initSnowball Starting snowball payment amount (default is 0)
- * @returns {Object} An array of payment details with the date and an array of payments
+ * @param {string} paydownMethod String to set paydown method
+ * @param {number} initSnowball Starting snowball payment amount (default is 0)
+ * @returns {object} An array of payment details with the date and an array of payments
  */
-function getTotalPaymentData(loans, paydownMethod, initSnowball = 0) {
-  let totalInterestPaid = 0,
-    totalPrincipalPaid = 0,
-    accountPayoffOrder = [],
+function getTotalPaymentData(
+  loans: DebtAccount[],
+  paydownMethod: string = PAYDOWN_METHODS.snowball,
+  initSnowball: number = 0
+) {
+  let totalInterestPaid: number = 0,
+    totalPrincipalPaid: number = 0,
+    accountPayoffOrder: AccountPayoffDetail[] = [],
     allPaymentData = [],
-    snowballAmt = initSnowball,
-    loansCopy = copy(loans),
-    startDate = loansCopy.map(loan => loan.dateOpened).sort(dateSort)[0],
-    curYear = startDate.getFullYear(),
-    curMonth = startDate.getMonth(),
-    ratePerMonth,
-    presentValue,
-    minPay,
-    futureValue,
-    curMonthInterest,
-    curMonthPrincipal;
+    snowballAmt: number = initSnowball,
+    loansCopy: DebtAccount[] = copy(loans),
+    startDate: Date = loansCopy.map(loan => loan.dateOpened).sort(dateSort)[0],
+    curYear: number = startDate.getFullYear(),
+    curMonth: number = startDate.getMonth(),
+    ratePerMonth: number,
+    presentValue: number,
+    minPay: number,
+    futureValue: number,
+    curMonthInterest: number,
+    curMonthPrincipal: number;
 
   loansCopy = prioritizeLoans(loansCopy, paydownMethod);
 
   // Loop over each payment period
   do {
-    let extraPayment = 0,
-      curPaymentObj = { date: new Date(curYear, curMonth, 1), payments: [] };
+    let extraPayment: number = 0,
+      curPaymentObj: PayPeriodDetail = {
+        date: new Date(curYear, curMonth, 1),
+        payments: []
+      };
 
     // loop over each loan
     for (let loan of loansCopy) {
-      let paymentDetails = {
+      let paymentDetails: PaymentDetail = {
         loanID: null,
         balance: null,
         interestPaid: 0,
@@ -130,8 +143,8 @@ function getTotalPaymentData(loans, paydownMethod, initSnowball = 0) {
       )
     ) {
       let paymentIndex = curPaymentObj.payments.length - 1,
-        highPriorityAccount,
-        formattedExtraPayment,
+        highPriorityAccount: PaymentDetail,
+        formattedExtraPayment: number,
         eraseExtraPayment = false;
 
       extraPayment += snowballAmt;
@@ -195,6 +208,8 @@ function getTotalPaymentData(loans, paydownMethod, initSnowball = 0) {
       }
     });
 
+    loansCopy = prioritizeLoans(loansCopy, paydownMethod);
+
     curPaymentObj.payments.forEach(payment => {
       totalInterestPaid += payment.interestPaid;
       totalPrincipalPaid += payment.principalPaid;
@@ -227,9 +242,9 @@ function getTotalPaymentData(loans, paydownMethod, initSnowball = 0) {
 }
 
 function prioritizeLoans(
-  loanArray,
-  paymentMethod = PAYDOWN_METHODS.minPayments
-) {
+  loanArray: DebtAccount[],
+  paymentMethod: string = PAYDOWN_METHODS.minPayments
+): DebtAccount[] {
   if (paymentMethod === PAYDOWN_METHODS.minPayments) return loanArray;
 
   if (paymentMethod === PAYDOWN_METHODS.avalanche) {
@@ -264,9 +279,6 @@ function prioritizeLoans(
     });
   }
 
-  loanArray.forEach((loan, index) => {
-    loan.priority = index + 1;
-  });
   return loanArray;
 }
 
@@ -276,10 +288,10 @@ function prioritizeLoans(
  * @param {Date} date2
  * @returns 1 for first is greater, 0 for equal, and -1 for second is greater
  */
-function dateSort(date1, date2) {
-  if (typeof date1 !== Date || typeof date2 !== Date) {
-    return 0;
-  }
+function dateSort(date1: Date, date2: Date): number {
+  // if (typeof date1 !== Date || typeof date2 !== Date) {
+  //   return 0;
+  // }
 
   let year1 = date1.getFullYear(),
     month1 = date1.getMonth(),
@@ -303,15 +315,15 @@ function dateSort(date1, date2) {
 
 /**
  * Method to create a new copy with no overlapping references.
- * @param {Object | String | Array | Number | Date } aObject Item to copy
+ * @param {any} aObject Item to copy
  */
-function copy(aObject) {
+function copy(aObject: any): any {
   if (!aObject) {
     return aObject;
   }
 
   let v;
-  let bObject = Array.isArray(aObject) ? [] : {};
+  let bObject: any = Array.isArray(aObject) ? [] : {};
   for (const k in aObject) {
     v = aObject[k];
     bObject[k] =
@@ -327,11 +339,11 @@ function copy(aObject) {
 
 /**
  * Format a number as a percentage
- * @param {Number} value The value to format
- * @param {Number} decPlaces Number of decimal places
+ * @param {number} value The value to format
+ * @param {number} decPlaces Number of decimal places
  * @returns {String} The value as a percentage-formatted string
  */
-function percentFormat(value, decPlaces = 2) {
+function percentFormat(value: number, decPlaces: number = 2): string {
   return (value / 100).toLocaleString("en-US", {
     style: "percent",
     minimumFractionDigits: decPlaces,
@@ -341,10 +353,10 @@ function percentFormat(value, decPlaces = 2) {
 
 /**
  * Format a number as a currency
- * @param {Number} value The value to format
- * @returns {String} The value as a currency-formatted string
+ * @param {number} value The value to format
+ * @returns {string} The value as a currency-formatted string
  */
-function currencyFormat(value) {
+function currencyFormat(value: number): string {
   return value.toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
@@ -353,21 +365,21 @@ function currencyFormat(value) {
   });
 }
 
-function dateStringFromDate(date) {
-  if (typeof date === Date) {
-    return `${date.getFullYear().toString()}-${(date.getMonth() + 1)
-      .toString()
-      .padStart(2, "0")}-${date
-      .getDate()
-      .toString()
-      .padStart(2, "0")}`;
-  }
-  return "";
+function dateStringFromDate(date: Date): string {
+  // if (typeof date === Date) {
+  return `${date.getFullYear().toString()}-${(date.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}-${date
+    .getDate()
+    .toString()
+    .padStart(2, "0")}`;
+  // }
+  // return "";
 }
 
-function dateFromString(dateString) {
+function dateFromString(dateString: String): Date {
   let [year, month, day] = dateString.split("-");
-  return new Date(year, month - 1, day);
+  return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
 }
 
 export {

@@ -164,11 +164,12 @@
 
 <style></style>
 
-<script>
-/* eslint-disable */
-import PasswordReset from "@/components/PasswordReset";
-import { ACTIONS } from "@/data";
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+import PasswordReset from "@/components/PasswordReset.vue";
+import { ACTIONS } from "../data";
+
+export default defineComponent({
   name: "LoginRegisterView",
   components: {
     PasswordReset
@@ -202,7 +203,7 @@ export default {
           email: this.loginForm.email,
           password: this.loginForm.password
         })
-        .then((err) => {
+        .then((err: string) => {
           console.log(err);
           if (err) {
             this.errorMessage = err;
@@ -210,7 +211,7 @@ export default {
             this.errorMessage = "";
           }
         })
-        .catch((err) => {
+        .catch((err: any) => {
           console.error(err);
         });
     },
@@ -222,5 +223,5 @@ export default {
       });
     }
   }
-};
+});
 </script>

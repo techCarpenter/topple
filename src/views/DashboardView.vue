@@ -36,32 +36,95 @@
       </button>
     </div>
     <div class="flex flex-col w-full">
-      <h1 class="mt-4 text-2xl">Accounts</h1>
-      <AccountSidebar class="mt-2" />
-      <h1 class="text-2xl mt-8">Paydown Chart</h1>
+      <details open>
+        <summary class="mt-4 text-2xl">Accounts</summary>
+        <AccountSidebar class="mt-2" />
+      </details>
+      <hr class="border-t-2 my-8" />
+      <h1 class="text-2xl">Paydown Chart</h1>
       <div
         v-if="accounts.length > 0"
         class="mt-2 items-center flex flex-col flex-auto"
       >
-        <ReactiveChart v-if="chart !== null" :chart="chart" />
+        <ReactiveChart v-if="chartConfig !== null" :chart="chartConfig" />
       </div>
     </div>
   </div>
 </template>
 
-<script>
-import { mapActions, mapGetters, mapState } from "vuex";
+<script lang="ts">
+import { mapActions, mapGetters, mapState, useStore } from "vuex";
 import { ACTIONS, GETTERS, PAYDOWN_METHODS } from "../data";
-import AccountSidebar from "../components/AccountSidebar";
+import AccountSidebar from "../components/AccountSidebar.vue";
 import ReactiveChart from "../components/ReactiveChart.vue";
 import { plotlyConfig, CreateTrace } from "../data";
 import { getTotalPaymentData } from "../assets/js/paydownData";
+import { defineComponent, onMounted, reactive, watch } from "vue";
+import { PaymentDetail, PayPeriodDetail, DebtAccount } from "../interfaces";
+import { key } from "../store";
 
-export default {
+export default defineComponent({
   name: "DashboardView",
-  data() {
+  setup() {
+    let store = useStore(key),
+      chartConfig: any = reactive(plotlyConfig);
+    // accounts: DebtAccount[],
+
+    const updateChart = (accounts: DebtAccount[]) => {
+      // console.log("running updateChart()", accounts);
+      let paymentData;
+      if (accounts && accounts !== null && accounts.length > 0) {
+        try {
+          paymentData = getTotalPaymentData(accounts, PAYDOWN_METHODS.snowball);
+
+          let xTrace = paymentData.paymentArray.map((x: any) => x.date);
+          let traces = [];
+
+          for (let i = 0; i < accounts.length; i++) {
+            traces.push(
+              CreateTrace({
+                y: paymentData.paymentArray.map(
+                  (payPeriod: PayPeriodDetail) => {
+                    let paymentInfo = payPeriod.payments.filter(
+                      (payment: PaymentDetail) =>
+                        payment.loanID === accounts[i].id
+                    );
+                    if (paymentInfo.length > 0) {
+                      return paymentInfo[0].balance;
+                    } else {
+                      return null;
+                    }
+                  }
+                ),
+                x: xTrace,
+                name: accounts[i].name
+              })
+            );
+          }
+
+          chartConfig.traces = traces;
+
+          chartConfig.layout.datarevision = Date.now();
+          // console.log("watch chartConfig:", chartConfig);
+        } catch (err) {
+          console.error("Error in Dashboard onMounted:", err);
+        }
+      }
+    };
+
+    onMounted(() => updateChart(store.getters[GETTERS.getAccounts]));
+
+    const unwatch = watch(
+      () => store.state.accounts,
+      (newAccounts: DebtAccount[], oldAccounts: DebtAccount[]) => {
+        // console.log("newAccounts Dashboard:", newAccounts);
+        updateChart(newAccounts);
+      }
+    );
+
     return {
-      plotlyConfig
+      unwatch,
+      chartConfig
     };
   },
   components: {
@@ -75,47 +138,54 @@ export default {
   computed: {
     ...mapState(["accounts"]),
     paymentData() {
-      let data = [];
+      let data: any = {};
       try {
         data = getTotalPaymentData(this.accounts, PAYDOWN_METHODS.snowball);
       } catch (err) {
         console.error("Unable to get payment data: ", err);
       }
-      console.log(data);
+      console.log("payment data:", data);
       return data;
-    },
-    chart() {
-      // console.log(this.paymentData);
-
-      let chartConfig = plotlyConfig;
-      let xTrace = this.paymentData.paymentArray.map((x) => x.date);
-      let traces = [];
-
-      for (let i = 0; i < this.accounts.length; i++) {
-        traces.push(
-          CreateTrace({
-            y: this.paymentData.paymentArray.map((payPeriod) => {
-              let paymentInfo = payPeriod.payments.filter(
-                (payment) => payment.loanID === this.accounts[i].id
-              );
-              if (paymentInfo.length > 0) {
-                return paymentInfo[0].balance;
-              } else {
-                return null;
-              }
-            }),
-            x: xTrace,
-            name: this.accounts[i].name
-          })
-        );
-      }
-
-      chartConfig.traces = traces;
-      console.log(chartConfig);
-      return chartConfig;
     }
+    // chart() {
+    //   console.log("Compute chart in DashboardView");
+
+    //   let chartConfig = plotlyConfig;
+    //   let xTrace = this.paymentData.paymentArray.map((x: any) => x.date);
+    //   let traces = [];
+
+    //   console.log("chart accounts in Dashboard:", this.accounts);
+
+    //   for (let i = 0; i < this.accounts.length; i++) {
+    //     traces.push(
+    //       CreateTrace({
+    //         y: this.paymentData.paymentArray.map(
+    //           (payPeriod: PayPeriodDetail) => {
+    //             let paymentInfo = payPeriod.payments.filter(
+    //               (payment: PaymentDetail) =>
+    //                 payment.loanID === this.accounts[i].id
+    //             );
+    //             if (paymentInfo.length > 0) {
+    //               return paymentInfo[0].balance;
+    //             } else {
+    //               return null;
+    //             }
+    //           }
+    //         ),
+    //         x: xTrace,
+    //         name: this.accounts[i].name
+    //       })
+    //     );
+    //   }
+
+    //   chartConfig.traces = traces;
+
+    //   chartConfig.layout.datarevision = Date.now();
+    //   console.log("chart():", chartConfig);
+    //   return chartConfig;
+    // }
   }
-};
+});
 </script>
 
 <style></style>

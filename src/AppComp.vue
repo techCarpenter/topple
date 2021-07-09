@@ -12,12 +12,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import { mapState } from "vuex";
-import { auth } from "../src/firebase";
+import { auth } from "./firebase";
 
-export default {
-  name: "App",
+export default defineComponent({
+  name: "AppComp",
   data() {
     return {
       signedIn: false
@@ -31,7 +32,7 @@ export default {
       this.signedIn = auth.currentUser !== null;
     }
   }
-};
+});
 </script>
 
 <style></style>

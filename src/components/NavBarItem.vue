@@ -46,15 +46,19 @@
   </router-link>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
   name: "NavBarItem",
   props: {
     icon: {
       required: true,
       type: String,
-      validator: () => {
-        return /^home|bank|creditcard|chart|settings|account|logout$/;
+      validator: (value: string) => {
+        return /^home|bank|creditcard|chart|settings|account|logout$/.test(
+          value
+        );
       }
     },
 
@@ -63,7 +67,7 @@ export default {
       type: String
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>

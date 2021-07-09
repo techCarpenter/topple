@@ -75,12 +75,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { mapActions, mapGetters, mapState } from "vuex";
-import AccountItem from "../components/AccountItem";
+import AccountItem from "../components/AccountItem.vue";
 import { ACTIONS, GETTERS } from "../data";
 // import AccountDetails from "../components/AccountDetails";
-import NewAccountForm from "../components/NewAccountForm";
+import NewAccountForm from "../components/NewAccountForm.vue";
 
 export default {
   name: "AccountsView",
@@ -106,9 +106,9 @@ export default {
       this.selectedAccountId = id;
     },
     handlFormSubmit(account) {
-      console.log("account", account);
+      // console.log("account", account);
       if (this.editAccount) {
-        console.log("Update account here...");
+        // console.log("Update account here...");
         //this[ACTIONS.updateAccount](account);
       } else {
         this[ACTIONS.addAccount](account);

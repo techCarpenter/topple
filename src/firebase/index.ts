@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import { accountConverter } from "./converters";
 
 // firebase init
 const firebaseConfig = {
@@ -21,15 +22,10 @@ const auth = firebase.auth();
 
 // collection references
 const usersCollection = db.collection("users");
-const accountsCollection = db.collection("accounts");
+const accountsCollection = db
+  .collection("accounts")
+  .withConverter(accountConverter);
 const paymentsCollection = db.collection("payments");
-const plansCollection = db.collection("plans");
+// const plansCollection = db.collection("plans");
 
-export {
-  db,
-  auth,
-  usersCollection,
-  accountsCollection,
-  plansCollection,
-  paymentsCollection
-};
+export { db, auth, usersCollection, accountsCollection, paymentsCollection };

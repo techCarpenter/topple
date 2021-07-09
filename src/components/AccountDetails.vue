@@ -37,10 +37,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import { currencyFormat, percentFormat } from "../assets/js/functions";
 
-export default {
+export default defineComponent({
   props: {
     loan: {
       type: Object,
@@ -64,5 +65,5 @@ export default {
       );
     }
   }
-};
+});
 </script>

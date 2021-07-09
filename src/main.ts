@@ -1,13 +1,14 @@
 import { createApp } from "vue";
 import { MUTATIONS, ACTIONS } from "./data";
 import { createAccount } from "./models";
-import App from "./App.vue";
-import router from "./router";
-import store from "./store";
+import AppComp from "./AppComp.vue";
+import { router } from "./router";
+import store, { key } from "./store";
 import * as fb from "./firebase";
 import "./assets/tailwind.css";
+import { DebtAccount } from "@/interfaces";
 
-let app, accountSnapUnsub, paymentSnapUnsub;
+let app: any, accountSnapUnsub: Function; // paymentSnapUnsub: Function;
 
 fb.auth.onAuthStateChanged(async user => {
   /**
@@ -15,8 +16,8 @@ fb.auth.onAuthStateChanged(async user => {
    * update view when user logs in or out
    */
   if (!app) {
-    app = createApp(App)
-      .use(store)
+    app = createApp(AppComp)
+      .use(store, key)
       .use(router)
       .mount("#app");
   }
@@ -28,9 +29,10 @@ fb.auth.onAuthStateChanged(async user => {
 
     accountSnapUnsub = fb.accountsCollection
       .where("uid", "==", user.uid)
+      // .withConverter(accountConverter)
       .onSnapshot(
         accountRecords => {
-          let accountsArray = [],
+          let accountsArray: DebtAccount[] = [],
             docData,
             account;
 
@@ -41,7 +43,7 @@ fb.auth.onAuthStateChanged(async user => {
             account = createAccount(docData);
             accountsArray.push(account);
           });
-          // console.log("Accounts updated in onSnapshot", accountsArray);
+
           store.commit(MUTATIONS.setAccounts, accountsArray);
         },
         error => {
@@ -49,25 +51,25 @@ fb.auth.onAuthStateChanged(async user => {
         }
       );
 
-    paymentSnapUnsub = fb.paymentsCollection
-      .where("uid", "==", user.uid)
-      .onSnapshot(
-        paymentRecords => {
-          let paymentsArray = [];
+    // paymentSnapUnsub = fb.paymentsCollection
+    //   .where("uid", "==", user.uid)
+    //   .onSnapshot(
+    //     paymentRecords => {
+    //       let paymentsArray = [];
 
-          paymentRecords.forEach(doc => {
-            let payment = doc.data();
-            payment.id = doc.id;
+    //       paymentRecords.forEach(doc => {
+    //         let payment = doc.data();
+    //         payment.id = doc.id;
 
-            paymentsArray.push(payment);
-          });
+    //         paymentsArray.push(payment);
+    //       });
 
-          store.commit(MUTATIONS.setPayments, paymentsArray);
-        },
-        error => {
-          console.error("Error in payments snapshot", error);
-        }
-      );
+    //       store.commit(MUTATIONS.setPayments, paymentsArray);
+    //     },
+    //     error => {
+    //       console.error("Error in payments snapshot", error);
+    //     }
+    //   );
   }
   //else if no user
   else {
@@ -76,9 +78,9 @@ fb.auth.onAuthStateChanged(async user => {
       accountSnapUnsub();
       console.info("Unsubscribed account snapshot");
     }
-    if (paymentSnapUnsub) {
-      paymentSnapUnsub();
-      console.info("Unsubscribed payment snapshot");
-    }
+    // if (paymentSnapUnsub) {
+    //   paymentSnapUnsub();
+    //   console.info("Unsubscribed payment snapshot");
+    // }
   }
 });

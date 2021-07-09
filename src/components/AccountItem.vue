@@ -5,7 +5,7 @@
     :class="[
       selected
         ? ['border-green-500', 'bg-green-500', 'bg-opacity-25']
-        : ['border-white', 'hover:bg-gray-600']
+        : ['border-white', 'hover:bg-gray-700']
     ]"
   >
     <div>
@@ -58,16 +58,17 @@
   </div>
 </template>
 
-<script>
-import { currencyFormat } from "../assets/js/functions";
-import { ACTIONS } from "../data";
+<script lang="ts">
+import { defineComponent } from "vue";
+import { currencyFormat } from "../assets/js/paydownData";
+import { DebtAccount } from "../interfaces";
 
-export default {
+export default defineComponent({
   name: "AccountItem",
   emits: ["update", "delete", "clicked"],
   props: {
     account: {
-      type: Object,
+      type: Object as () => DebtAccount,
       required: true
     },
     selected: {
@@ -76,15 +77,15 @@ export default {
     }
   },
   methods: {
-    emitUpdate(id) {
+    emitUpdate(id: string) {
       this.$emit("update", id);
     },
-    emitDelete(id) {
+    emitDelete(id: string) {
       this.$emit("delete", id);
     },
-    formatCurrency(value) {
+    formatCurrency(value: number) {
       return currencyFormat(value);
     }
   }
-};
+});
 </script>

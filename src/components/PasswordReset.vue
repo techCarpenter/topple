@@ -52,10 +52,11 @@
 }
 </style>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import { auth } from "../firebase";
 
-export default {
+export default defineComponent({
   data() {
     return {
       email: "",
@@ -77,5 +78,5 @@ export default {
         });
     }
   }
-};
+});
 </script>

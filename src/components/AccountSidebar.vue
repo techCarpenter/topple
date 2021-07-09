@@ -32,13 +32,15 @@
   </aside>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import { mapActions } from "vuex";
 import { ACTIONS } from "../data";
-import AccountList from "./AccountList";
-import NewAccountForm from "./NewAccountForm";
+import { DebtAccount } from "../interfaces";
+import AccountList from "./AccountList.vue";
+import NewAccountForm from "./NewAccountForm.vue";
 
-export default {
+export default defineComponent({
   name: "AccountSidebar",
   data() {
     return {
@@ -53,10 +55,10 @@ export default {
   },
   methods: {
     ...mapActions([ACTIONS.addAccount, ACTIONS.updateAccount]),
-    handleFormSubmit(account) {
-      console.log("account", account);
+    handleFormSubmit(account: DebtAccount) {
+      // console.log("account", account);
       if (this.editAccount) {
-        console.log("Update account here...", account);
+        // console.log("Update account here...", account);
         this[ACTIONS.updateAccount](account);
       } else {
         this[ACTIONS.addAccount](account);
@@ -68,13 +70,13 @@ export default {
       this.newAccount = false;
       this.editAccount = false;
     },
-    handleAccountUpdate(id) {
+    handleAccountUpdate(id: string) {
       this.formAccountId = id;
       this.newAccount = true;
       this.editAccount = true;
     }
   }
-};
+});
 </script>
 
 <style></style>

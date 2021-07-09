@@ -1,18 +1,26 @@
-import { createStore } from "vuex";
+import { createStore, Store } from "vuex";
+import { InjectionKey } from "vue";
 import { MUTATIONS, ACTIONS } from "../data";
 import * as fb from "../firebase";
-import router from "../router";
-import { dateStringFromDate } from "../assets/js/paydownData";
+import { router } from "../router";
+import { DebtAccount, PaymentDetail } from "@/interfaces";
 
-const store = createStore({
+export interface State {
+  userProfile: Object;
+  accounts: DebtAccount[];
+  payments: PaymentDetail[];
+}
+
+export const key: InjectionKey<Store<State>> = Symbol();
+
+const store = createStore<State>({
   state: {
     userProfile: {},
-    accounts: [],
-    payments: [],
-    plans: []
+    accounts: [] as DebtAccount[],
+    payments: [] as PaymentDetail[]
   },
   actions: {
-    async [ACTIONS.deleteAccount](ctx, id) {
+    async [ACTIONS.deleteAccount](ctx, id: string) {
       fb.accountsCollection
         .doc(id)
         .delete()
@@ -20,7 +28,6 @@ const store = createStore({
           console.error("Error deleting account");
         });
       // ctx.commit(MUTATIONS.deleteAccount, id);
-      // add firebase delete
     },
     async [ACTIONS.login]({ dispatch }, form) {
       return new Promise((resolve, reject) => {
@@ -33,7 +40,7 @@ const store = createStore({
             await fb.usersCollection
               .doc(user.uid)
               .update({
-                lastLogin: new Date().toISOString()
+                lastLogin: Date.now()
               })
               .catch(() => {
                 console.error("Couldn't update user in collection after login");
@@ -42,6 +49,7 @@ const store = createStore({
             // fetch user profile and set in state
             dispatch(ACTIONS.fetchUserProfile, user);
 
+            // redirect to dashboard page
             router.push({ name: "DashboardView" });
           })
           .catch(err => {
@@ -59,24 +67,21 @@ const store = createStore({
     },
     async [ACTIONS.signup]({ dispatch }, form) {
       // sign user up
-      const { user } = await fb.auth
+      await fb.auth
         .createUserWithEmailAndPassword(form.email, form.password)
-        .catch(() => {
-          console.error("Error in signup");
-        })
         .then(async ({ user }) => {
           // create user object in userCollections
           await fb.usersCollection.doc(user.uid).set({
             name: form.name,
-            lastLogin: new Date().toISOString()
+            lastLogin: Date.now()
           });
+          dispatch(ACTIONS.fetchUserProfile, user);
         })
         .catch(() => {
           console.error("Error creating user object in signup");
         });
 
       // fetch user profile and set in state
-      dispatch(ACTIONS.fetchUserProfile, user);
     },
     async [ACTIONS.fetchUserProfile]({ commit }, user) {
       // fetch user profile
@@ -110,24 +115,22 @@ const store = createStore({
      * @param {*} ctx
      * @param {Object} account The loan account to create
      */
-    async [ACTIONS.addAccount](ctx, account) {
+    async [ACTIONS.addAccount](ctx, account: DebtAccount) {
       account.uid = fb.auth.currentUser.uid;
-      account.dateOpened = dateStringFromDate(account.dateOpened);
 
-      await fb.accountsCollection.add(account.toMap());
+      await fb.accountsCollection.add(account);
     },
     /**
      * Action to update an account in the database
      * @param {*} ctx
      * @param {Object} account The loan account to update
      */
-    async [ACTIONS.updateAccount](ctx, account) {
+    async [ACTIONS.updateAccount](ctx, account: DebtAccount) {
       account.uid = fb.auth.currentUser.uid;
-      account.dateOpened = dateStringFromDate(account.dateOpened);
 
       await fb.accountsCollection
         .doc(account.id)
-        .set(account.toMap())
+        .set(account)
         .then(() => console.log("Document successfully updated!"))
         .catch(error => console.error("Error updating document: ", error));
     }
@@ -136,21 +139,21 @@ const store = createStore({
     [MUTATIONS.setUserProfile]: (state, val) => {
       state.userProfile = val;
     },
-    [MUTATIONS.setAccounts]: (state, accounts) => {
+    [MUTATIONS.setAccounts]: (state, accounts: DebtAccount[]) => {
       // console.log("setAccounts", accounts);
       state.accounts = accounts;
     },
-    [MUTATIONS.addAccount]: (state, account) => {
+    [MUTATIONS.addAccount]: (state, account: DebtAccount) => {
       state.accounts.push(account);
     },
-    [MUTATIONS.updateAccount]: (state, updatedAccount) => {
+    [MUTATIONS.updateAccount]: (state, updatedAccount: DebtAccount) => {
       const index = state.accounts.findIndex(
         account => account.id === updatedAccount.id
       );
       if (index < 0) return;
       state.accounts.splice(index, 1, updatedAccount);
     },
-    [MUTATIONS.deleteAccount]: (state, id) => {
+    [MUTATIONS.deleteAccount]: (state, id: string) => {
       const index = state.accounts.findIndex(account => account.id === id);
       if (index < 0) return;
       state.accounts.splice(index, 1);
@@ -166,7 +169,7 @@ const store = createStore({
     getAccounts: state => {
       return state.accounts;
     },
-    getAccountById: state => accountId => {
+    getAccountById: state => (accountId: String) => {
       const index = state.accounts.findIndex(
         account => account.id === accountId
       );
