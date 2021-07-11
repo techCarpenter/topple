@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import { auth } from "../firebase";
-import LoginRegisterView from "../views/LoginRegisterView.vue";
-import DashboardView from "../views/DashboardView.vue";
-import NotFound from "../views/NotFoundView.vue";
+const LoginRegisterView = () => import("../views/LoginRegisterView.vue");
+const DashboardView = () => import("../views/DashboardView.vue");
+const NotFound = () => import("../views/NotFoundView.vue");
 
 const routes: RouteRecordRaw[] = [
   {
