@@ -27,7 +27,7 @@ export default defineComponent({
         );
         // console.log("Plot created from:", props.chart);
       } catch (err) {
-        console.log("Reactive Chart Error:", err);
+        console.error("Reactive Chart Error:", err);
       }
     });
     let unwatchChart = watch(
