@@ -31,9 +31,9 @@ const LAYOUT = {
   },
   margin: {
     t: 5,
-    r: 5,
+    r: 15,
     b: 20,
-    l: 25
+    l: 40
   },
   paper_bgcolor: "#222222",
   plot_bgcolor: "#222222",
