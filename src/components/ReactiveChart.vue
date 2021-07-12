@@ -25,7 +25,6 @@ export default defineComponent({
           props.chart.layout,
           props.chart.config
         );
-        // console.log("Plot created from:", props.chart);
       } catch (err) {
         console.error("Reactive Chart Error:", err);
       }
@@ -33,8 +32,6 @@ export default defineComponent({
     let unwatchChart = watch(
       () => props.chart,
       (newChart, oldChart) => {
-        // console.log("Old chart:", oldChart);
-        // console.log("New chart:", newChart);
         Plotly.react(
           "plotly-" + newChart.uuid,
           newChart.traces,
