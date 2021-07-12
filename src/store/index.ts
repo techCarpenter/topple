@@ -75,23 +75,23 @@ const store = createStore<State>({
             name: form.name,
             lastLogin: Date.now()
           });
+          // fetch user profile and set in state
           dispatch(ACTIONS.fetchUserProfile, user);
+
+          // redirect to dashboard
+          router.push({
+            name: "DashboardView"
+          });
         })
         .catch(() => {
           console.error("Error creating user object in signup");
         });
-
-      // fetch user profile and set in state
     },
     async [ACTIONS.fetchUserProfile]({ commit }, user) {
-      // fetch user profile
-      // const userProfile =
       await fb.usersCollection
         .doc(user.uid)
         .get()
         .then(userProfile => {
-          // console.log("fetchUserProfile", userProfile.data());
-          // set user profile in state
           commit(MUTATIONS.setUserProfile, userProfile.data());
         })
         .catch(err => {
