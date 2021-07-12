@@ -20,7 +20,7 @@
         v-model="account.name"
       />
     </div>
-    <div class="my-1 flex flex-col">
+    <!-- <div class="my-1 flex flex-col">
       <label class="text-lg" for="account-provider">Provider</label>
       <input
         id="account-provider"
@@ -34,7 +34,7 @@
         type="text"
         v-model="account.provider"
       />
-    </div>
+    </div> -->
     <div class="my-1 flex flex-col">
       <label class="text-lg" for="account-balance">Balance</label>
       <input
@@ -105,6 +105,9 @@
         type="date"
       />
     </div>
+    <div v-if="errorMessage !== ''" class="my-1 flex flex-col">
+      <p class="text-red-600">{{ errorMessage }}</p>
+    </div>
     <div class="my-2">
       <button class="button primary px-2 py-1 text-lg" type="submit">
         {{ accountId === "" ? "Create" : "Save" }}
@@ -136,7 +139,11 @@
 </style>
 
 <script lang="ts">
-import { dateStringFromDate, dateFromString } from "../assets/js/paydownData";
+import {
+  dateStringFromDate,
+  dateFromString,
+  currencyFormat
+} from "../assets/js/paydownData";
 import { createAccount } from "../models";
 import { mapGetters } from "vuex";
 import { GETTERS } from "../data";
@@ -155,16 +162,26 @@ export default defineComponent({
   data() {
     return {
       account: createAccount() as DebtAccount,
-      dateOpened: ""
+      dateOpened: "",
+      errorMessage: ""
     };
   },
   methods: {
     ...mapGetters([GETTERS.getAccountById]),
     submitForm() {
-      this.account.dateOpened = dateFromString(this.dateOpened);
-      this.$emit("submitform", this.account);
+      let interest = this.account.balance * (this.account.apr / 1200);
+      if (interest >= this.account.minPayment) {
+        this.errorMessage = `Minimum payment will not cover interest of ${currencyFormat(
+          interest
+        )}.`;
+      } else {
+        this.errorMessage = "";
+        this.account.dateOpened = dateFromString(this.dateOpened);
+        this.$emit("submitform", this.account);
+      }
     },
     resetForm() {
+      this.errorMessage = "";
       this.account = createAccount();
       this.$emit("resetform");
     }

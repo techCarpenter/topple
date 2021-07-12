@@ -113,8 +113,9 @@ function getTotalPaymentData(
         );
 
         if (futureValue >= presentValue && futureValue !== 0) {
-          alert("Minimum payment will not cover interest every month.");
-          break;
+          throw new Error(
+            "Minimum payment will not cover interest every month."
+          );
         }
         if (futureValue <= 0) {
           extraPayment += -futureValue;
