@@ -25,7 +25,8 @@ const ACTIONS = {
 
 const GETTERS = {
   getAccounts: "getAccounts",
-  getAccountById: "getAccountById"
+  getAccountById: "getAccountById",
+  getUser: "getUser"
 };
 
 export { PAYDOWN_METHODS, MUTATIONS, ACTIONS, GETTERS };
