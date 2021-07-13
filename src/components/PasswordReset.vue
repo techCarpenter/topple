@@ -69,11 +69,14 @@ export default defineComponent({
       this.errorMsg = "";
       console.log("resetting password");
       await auth
-        .sendPasswordResetEmail(this.email)
+        .sendPasswordResetEmail(this.email, {
+          url: "https://localhost:8080",
+          handleCodeInApp: true
+        })
         .then(() => {
           this.showSuccess = true;
         })
-        .catch((err) => {
+        .catch((err: any) => {
           this.errorMsg = err.message;
         });
     }

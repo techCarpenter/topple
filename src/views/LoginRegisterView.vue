@@ -1,10 +1,10 @@
 <template>
   <div id="login" class="max-w-xs m-auto">
-    <PasswordReset
+    <!-- <PasswordReset
       class="w-screen h-screen z-10 absolute bg-black top-0 left-0 p-4"
       v-if="showPasswordReset"
       @close="togglePasswordReset"
-    ></PasswordReset>
+    ></PasswordReset> -->
     <section>
       <h1 class="text-3xl">
         <img class="pr-2 inline-block" src="/favicon-32x32.png" />Topple
@@ -74,11 +74,11 @@
             >Create an Account</a
           >
         </div>
-        <div class="extras my-4 flex flex-col items-center">
+        <!-- <div class="extras my-4 flex flex-col items-center">
           <a class="cursor-pointer underline" @click="togglePasswordReset"
             >Forgot Password?</a
           >
-        </div>
+        </div> -->
       </form>
       <form v-else @submit.prevent="signup">
         <h1 class="my-2 text-xl">Get Started</h1>
@@ -171,13 +171,13 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import PasswordReset from "@/components/PasswordReset.vue";
+// import PasswordReset from "@/components/PasswordReset.vue";
 import { ACTIONS } from "../data";
 
 export default defineComponent({
   name: "LoginRegisterView",
   components: {
-    PasswordReset
+    // PasswordReset
   },
   data() {
     return {
@@ -192,17 +192,17 @@ export default defineComponent({
         email: "",
         password: ""
       },
-      showLoginForm: true,
-      showPasswordReset: false
+      showLoginForm: true
+      // showPasswordReset: false
     };
   },
   methods: {
     toggleForm() {
       this.showLoginForm = !this.showLoginForm;
     },
-    togglePasswordReset() {
-      this.showPasswordReset = !this.showPasswordReset;
-    },
+    // togglePasswordReset() {
+    //   this.showPasswordReset = !this.showPasswordReset;
+    // },
     login() {
       this.$store
         .dispatch(ACTIONS.login, {
