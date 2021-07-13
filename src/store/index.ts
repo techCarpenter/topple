@@ -1,6 +1,6 @@
 import { createStore, Store } from "vuex";
 import { InjectionKey } from "vue";
-import { MUTATIONS, ACTIONS } from "../data";
+import { MUTATIONS, ACTIONS, GETTERS } from "../data";
 import * as fb from "../firebase";
 import { router } from "../router";
 import { DebtAccount, PaymentDetail } from "@/interfaces";
@@ -32,7 +32,6 @@ const store = createStore<State>({
     async [ACTIONS.login]({ dispatch }, form) {
       return new Promise((resolve, reject) => {
         // sign user in
-        console.log("form", form);
         fb.auth
           .signInWithEmailAndPassword(form.email, form.password)
           .then(async ({ user }) => {
@@ -67,25 +66,28 @@ const store = createStore<State>({
     },
     async [ACTIONS.signup]({ dispatch }, form) {
       // sign user up
-      await fb.auth
-        .createUserWithEmailAndPassword(form.email, form.password)
-        .then(async ({ user }) => {
-          // create user object in userCollections
-          await fb.usersCollection.doc(user.uid).set({
-            name: form.name,
-            lastLogin: Date.now()
-          });
-          // fetch user profile and set in state
-          dispatch(ACTIONS.fetchUserProfile, user);
+      return new Promise((resolve, reject) => {
+        fb.auth
+          .createUserWithEmailAndPassword(form.email, form.password)
+          .then(async ({ user }) => {
+            // create user object in userCollections
+            await fb.usersCollection.doc(user.uid).set({
+              name: form.name,
+              email: form.email,
+              lastLogin: Date.now()
+            });
+            // fetch user profile and set in state
+            dispatch(ACTIONS.fetchUserProfile, user);
 
-          // redirect to dashboard
-          router.push({
-            name: "DashboardView"
+            // redirect to dashboard
+            router.push({
+              name: "DashboardView"
+            });
+          })
+          .catch((error: any) => {
+            reject(error.message);
           });
-        })
-        .catch(() => {
-          console.error("Error creating user object in signup");
-        });
+      });
     },
     async [ACTIONS.fetchUserProfile]({ commit }, user) {
       await fb.usersCollection
@@ -110,21 +112,11 @@ const store = createStore<State>({
         });
       });
     },
-    /**
-     * Action to create a new account in the database
-     * @param {*} ctx
-     * @param {Object} account The loan account to create
-     */
     async [ACTIONS.addAccount](ctx, account: DebtAccount) {
       account.uid = fb.auth.currentUser.uid;
 
       await fb.accountsCollection.add(account);
     },
-    /**
-     * Action to update an account in the database
-     * @param {*} ctx
-     * @param {Object} account The loan account to update
-     */
     async [ACTIONS.updateAccount](ctx, account: DebtAccount) {
       account.uid = fb.auth.currentUser.uid;
 
@@ -163,13 +155,13 @@ const store = createStore<State>({
     }
   },
   getters: {
-    getUser: state => {
+    [GETTERS.getUser]: state => {
       return state.userProfile;
     },
-    getAccounts: state => {
+    [GETTERS.getAccounts]: state => {
       return state.accounts;
     },
-    getAccountById: state => (accountId: String) => {
+    [GETTERS.getAccountById]: state => (accountId: String) => {
       const index = state.accounts.findIndex(
         account => account.id === accountId
       );

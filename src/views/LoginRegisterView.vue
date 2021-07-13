@@ -50,8 +50,8 @@
             id="password1"
           />
         </div>
-        <p v-if="errorMessage !== ''" class="my-2 text-red-600 text-sm">
-          {{ errorMessage }}
+        <p v-if="loginErrorMessage !== ''" class="my-2 text-red-600 text-sm">
+          {{ loginErrorMessage }}
         </p>
         <div class="flex justify-between">
           <button
@@ -138,6 +138,9 @@
             id="password2"
           />
         </div>
+        <p v-if="signupErrorMessage !== ''" class="my-2 text-red-600 text-sm">
+          {{ signupErrorMessage }}
+        </p>
         <div class="flex justify-between">
           <button
             class="bg-green-500 text-white px-2 py-1 my-2 text-lg"
@@ -178,7 +181,8 @@ export default defineComponent({
   },
   data() {
     return {
-      errorMessage: "",
+      loginErrorMessage: "",
+      signupErrorMessage: "",
       loginForm: {
         email: "",
         password: ""
@@ -208,9 +212,9 @@ export default defineComponent({
         .then((err: string) => {
           console.log(err);
           if (err) {
-            this.errorMessage = err;
+            this.loginErrorMessage = err;
           } else {
-            this.errorMessage = "";
+            this.loginErrorMessage = "";
           }
         })
         .catch((err: any) => {
@@ -218,11 +222,16 @@ export default defineComponent({
         });
     },
     signup() {
-      this.$store.dispatch(ACTIONS.signup, {
-        email: this.signupForm.email,
-        password: this.signupForm.password,
-        name: this.signupForm.name
-      });
+      this.$store
+        .dispatch(ACTIONS.signup, {
+          email: this.signupForm.email,
+          password: this.signupForm.password,
+          name: this.signupForm.name
+        })
+        .then(() => (this.signupErrorMessage = ""))
+        .catch((error: string) => {
+          this.signupErrorMessage = error;
+        });
     }
   }
 });
