@@ -109,7 +109,7 @@ export default defineComponent({
           chartConfig.layout.datarevision = Date.now();
           // console.log("watch chartConfig:", chartConfig);
         } catch (err) {
-          console.error("Error in Dashboard onMounted:", err);
+          console.error("Error updating chart:", err);
         }
       }
     };
@@ -119,7 +119,6 @@ export default defineComponent({
     const unwatch = watch(
       () => store.state.accounts,
       (newAccounts: DebtAccount[], oldAccounts: DebtAccount[]) => {
-        // console.log("newAccounts Dashboard:", newAccounts);
         updateChart(newAccounts);
       }
     );
@@ -138,54 +137,7 @@ export default defineComponent({
     ...mapGetters([GETTERS.getAccounts])
   },
   computed: {
-    ...mapState(["accounts"]),
-    paymentData() {
-      let data: any = {};
-      try {
-        data = getTotalPaymentData(this.accounts, PAYDOWN_METHODS.snowball);
-      } catch (err) {
-        console.error("Unable to get payment data: ", err);
-      }
-      console.log("payment data:", data);
-      return data;
-    }
-    // chart() {
-    //   console.log("Compute chart in DashboardView");
-
-    //   let chartConfig = plotlyConfig;
-    //   let xTrace = this.paymentData.paymentArray.map((x: any) => x.date);
-    //   let traces = [];
-
-    //   console.log("chart accounts in Dashboard:", this.accounts);
-
-    //   for (let i = 0; i < this.accounts.length; i++) {
-    //     traces.push(
-    //       CreateTrace({
-    //         y: this.paymentData.paymentArray.map(
-    //           (payPeriod: PayPeriodDetail) => {
-    //             let paymentInfo = payPeriod.payments.filter(
-    //               (payment: PaymentDetail) =>
-    //                 payment.loanID === this.accounts[i].id
-    //             );
-    //             if (paymentInfo.length > 0) {
-    //               return paymentInfo[0].balance;
-    //             } else {
-    //               return null;
-    //             }
-    //           }
-    //         ),
-    //         x: xTrace,
-    //         name: this.accounts[i].name
-    //       })
-    //     );
-    //   }
-
-    //   chartConfig.traces = traces;
-
-    //   chartConfig.layout.datarevision = Date.now();
-    //   console.log("chart():", chartConfig);
-    //   return chartConfig;
-    // }
+    ...mapState(["accounts"])
   }
 });
 </script>

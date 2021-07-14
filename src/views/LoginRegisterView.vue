@@ -1,10 +1,10 @@
 <template>
   <div id="login" class="max-w-xs m-auto">
-    <PasswordReset
+    <!-- <PasswordReset
       class="w-screen h-screen z-10 absolute bg-black top-0 left-0 p-4"
       v-if="showPasswordReset"
       @close="togglePasswordReset"
-    ></PasswordReset>
+    ></PasswordReset> -->
     <section>
       <h1 class="text-3xl">
         <img class="pr-2 inline-block" src="/favicon-32x32.png" />Topple
@@ -50,8 +50,8 @@
             id="password1"
           />
         </div>
-        <p v-if="errorMessage !== ''" class="my-2 text-red-600 text-sm">
-          {{ errorMessage }}
+        <p v-if="loginErrorMessage !== ''" class="my-2 text-red-600 text-sm">
+          {{ loginErrorMessage }}
         </p>
         <div class="flex justify-between">
           <button
@@ -74,11 +74,11 @@
             >Create an Account</a
           >
         </div>
-        <div class="extras my-4 flex flex-col items-center">
+        <!-- <div class="extras my-4 flex flex-col items-center">
           <a class="cursor-pointer underline" @click="togglePasswordReset"
             >Forgot Password?</a
           >
-        </div>
+        </div> -->
       </form>
       <form v-else @submit.prevent="signup">
         <h1 class="my-2 text-xl">Get Started</h1>
@@ -138,6 +138,9 @@
             id="password2"
           />
         </div>
+        <p v-if="signupErrorMessage !== ''" class="my-2 text-red-600 text-sm">
+          {{ signupErrorMessage }}
+        </p>
         <div class="flex justify-between">
           <button
             class="bg-green-500 text-white px-2 py-1 my-2 text-lg"
@@ -168,17 +171,18 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import PasswordReset from "@/components/PasswordReset.vue";
+// import PasswordReset from "@/components/PasswordReset.vue";
 import { ACTIONS } from "../data";
 
 export default defineComponent({
   name: "LoginRegisterView",
   components: {
-    PasswordReset
+    // PasswordReset
   },
   data() {
     return {
-      errorMessage: "",
+      loginErrorMessage: "",
+      signupErrorMessage: "",
       loginForm: {
         email: "",
         password: ""
@@ -188,17 +192,17 @@ export default defineComponent({
         email: "",
         password: ""
       },
-      showLoginForm: true,
-      showPasswordReset: false
+      showLoginForm: true
+      // showPasswordReset: false
     };
   },
   methods: {
     toggleForm() {
       this.showLoginForm = !this.showLoginForm;
     },
-    togglePasswordReset() {
-      this.showPasswordReset = !this.showPasswordReset;
-    },
+    // togglePasswordReset() {
+    //   this.showPasswordReset = !this.showPasswordReset;
+    // },
     login() {
       this.$store
         .dispatch(ACTIONS.login, {
@@ -208,9 +212,9 @@ export default defineComponent({
         .then((err: string) => {
           console.log(err);
           if (err) {
-            this.errorMessage = err;
+            this.loginErrorMessage = err;
           } else {
-            this.errorMessage = "";
+            this.loginErrorMessage = "";
           }
         })
         .catch((err: any) => {
@@ -218,11 +222,16 @@ export default defineComponent({
         });
     },
     signup() {
-      this.$store.dispatch(ACTIONS.signup, {
-        email: this.signupForm.email,
-        password: this.signupForm.password,
-        name: this.signupForm.name
-      });
+      this.$store
+        .dispatch(ACTIONS.signup, {
+          email: this.signupForm.email,
+          password: this.signupForm.password,
+          name: this.signupForm.name
+        })
+        .then(() => (this.signupErrorMessage = ""))
+        .catch((error: string) => {
+          this.signupErrorMessage = error;
+        });
     }
   }
 });
