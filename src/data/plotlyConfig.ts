@@ -17,6 +17,20 @@ const LAYOUT = {
     color: "#f8f8f8",
     showline: true
   },
+  shapes: [
+    {
+      type: "line",
+      x0: null as Date,
+      y0: 0,
+      x1: null as Date,
+      yref: "paper",
+      y1: 1,
+      line: {
+        color: "#ff4646cc",
+        width: 1.5
+      }
+    }
+  ],
   font: {
     family: "Arial",
     // size: 14,
