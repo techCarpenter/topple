@@ -29,19 +29,12 @@ fb.auth.onAuthStateChanged(async user => {
 
     accountSnapUnsub = fb.accountsCollection
       .where("uid", "==", user.uid)
-      // .withConverter(accountConverter)
       .onSnapshot(
         accountRecords => {
-          let accountsArray: DebtAccount[] = [],
-            docData,
-            account;
+          let accountsArray: DebtAccount[] = [];
 
           accountRecords.forEach(doc => {
-            docData = doc.data();
-            docData.id = doc.id;
-
-            account = createAccount(docData);
-            accountsArray.push(account);
+            accountsArray.push(doc.data());
           });
 
           store.commit(MUTATIONS.setAccounts, accountsArray);
