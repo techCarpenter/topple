@@ -1,8 +1,8 @@
-// import { createAccount } from "@/models/CreateAccount";
 import { DebtAccount } from "@/interfaces";
+import { createAccount } from "@/models";
 
-const accountConverter = {
-  toFirestore: function(account: DebtAccount) {
+const accountConverter: firebase.default.firestore.FirestoreDataConverter<any> = {
+  toFirestore(account: DebtAccount) {
     return {
       name: account.name,
       balance: account.balance,
@@ -10,15 +10,15 @@ const accountConverter = {
       apr: account.apr,
       minPayment: account.minPayment,
       provider: account.provider,
-      uid: account.uid,
-      id: account.id
+      uid: account.uid
     };
   },
-  fromFirestore: function(snapshot: any, options: any) {
-    const data = snapshot.data(options);
-    // console.log("Account Data from Firebase: ", data);
+  fromFirestore(snapshot, options): DebtAccount {
+    const data = snapshot.data(options)!;
+    data.id = snapshot.id;
+
     data.dateOpened = new Date(data.dateOpened);
-    return data;
+    return createAccount(data);
   }
 };
 
