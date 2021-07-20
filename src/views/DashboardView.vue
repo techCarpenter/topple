@@ -40,7 +40,7 @@
     <div class="flex flex-col w-full">
       <details open>
         <summary class="mt-4 text-2xl">Accounts</summary>
-        <AccountSidebar class="mt-2" />
+        <AccountSidebar class="mt-4" />
       </details>
       <hr class="border-t-2 my-8" />
       <h1 class="text-2xl">Paydown Chart</h1>
@@ -72,8 +72,11 @@ export default defineComponent({
       chartConfig: any = reactive(plotlyConfig);
     // accounts: DebtAccount[],
 
+    // set vertical line x coordinates
+    chartConfig.layout.shapes[0].x0 = new Date();
+    chartConfig.layout.shapes[0].x1 = new Date();
+
     const updateChart = (accounts: DebtAccount[]) => {
-      // console.log("running updateChart()", accounts);
       let paymentData;
       if (accounts && accounts !== null && accounts.length > 0) {
         try {
@@ -105,9 +108,7 @@ export default defineComponent({
           }
 
           chartConfig.traces = traces;
-
           chartConfig.layout.datarevision = Date.now();
-          // console.log("watch chartConfig:", chartConfig);
         } catch (err) {
           console.error("Error updating chart:", err);
         }

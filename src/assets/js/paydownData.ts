@@ -130,12 +130,16 @@ function getTotalPaymentData(
           (curMonthInterest + curMonthPrincipal).toFixed(2)
         );
         loan.balance = futureValue;
+      } else {
+        //prevent adding empty payment details to payments
+        continue;
       }
       curPaymentObj.payments.push(paymentDetails);
     }
 
     // Add extra payments before pushing pay period
     if (
+      curPaymentObj.payments.length > 0 &&
       (extraPayment > 0 || snowballAmt > 0) &&
       paydownMethod !== PAYDOWN_METHODS.minPayments &&
       !(
