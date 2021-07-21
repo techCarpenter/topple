@@ -2,7 +2,7 @@
   <div class="max-w-lg m-auto">
     <div class="flex justify-between items-center">
       <h1 class="text-3xl">
-        <img class="pr-2 inline-block" src="/favicon-32x32.png" />Topple
+        <img class="pr-2 inline-block" src="/images/favicon-32x32.png" />Topple
       </h1>
       <button
         class="
