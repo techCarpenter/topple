@@ -38,39 +38,44 @@
       </button>
     </div>
     <div class="flex flex-col w-full">
-      <details open>
-        <summary class="mt-4 text-2xl">Accounts</summary>
-        <AccountSidebar class="mt-4" />
-      </details>
-      <hr class="border-t-2 my-8" />
-      <h1 class="text-2xl">Paydown Chart</h1>
-      <div
-        v-if="accounts.length > 0"
-        class="mt-2 items-center flex flex-col flex-auto"
-      >
-        <ReactiveChart v-if="chartConfig !== null" :chart="chartConfig" />
+      <div v-if="accounts && accounts.length > 0">
+        <PaydownStats />
+        <hr class="border-t-2 my-8" />
+        <h1 class="text-2xl mt-8">Paydown Chart</h1>
+        <div
+          v-if="accounts.length > 0"
+          class="mt-2 items-center flex flex-col flex-auto"
+        >
+          <ReactiveChart v-if="chartConfig !== null" :chart="chartConfig" />
+        </div>
+        <hr class="border-t-2 my-8" />
       </div>
+      <h1 class="mt-4 text-2xl">Accounts</h1>
+      <div class="my-4" v-if="!accounts || accounts.length === 0">
+        <p>Please add an account.</p>
+      </div>
+      <AccountSidebar class="mt-4" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { mapActions, mapGetters, mapState, useStore } from "vuex";
-import { ACTIONS, GETTERS, PAYDOWN_METHODS } from "../data";
+import { ACTIONS, GETTERS, MUTATIONS, PAYDOWN_METHODS } from "../data";
 import AccountSidebar from "../components/AccountSidebar.vue";
 import ReactiveChart from "../components/ReactiveChart.vue";
+import PaydownStats from "../components/PaydownStats/PaydownStats.vue";
 import { plotlyConfig, CreateTrace } from "../data";
 import { getTotalPaymentData } from "../assets/js/paydownData";
 import { defineComponent, onMounted, reactive, watch } from "vue";
 import { PaymentDetail, PayPeriodDetail, DebtAccount } from "../interfaces";
-import { key } from "../store";
+import { key } from "@/store";
 
 export default defineComponent({
   name: "DashboardView",
   setup() {
     let store = useStore(key),
       chartConfig: any = reactive(plotlyConfig);
-    // accounts: DebtAccount[],
 
     // set vertical line x coordinates
     chartConfig.layout.shapes[0].x0 = new Date();
@@ -81,6 +86,8 @@ export default defineComponent({
       if (accounts && accounts !== null && accounts.length > 0) {
         try {
           paymentData = getTotalPaymentData(accounts, PAYDOWN_METHODS.snowball);
+
+          store.commit(MUTATIONS.setPaymentData, paymentData);
 
           let xTrace = paymentData.paymentArray.map((x: any) => x.date);
           let traces = [];
@@ -131,7 +138,8 @@ export default defineComponent({
   },
   components: {
     AccountSidebar,
-    ReactiveChart
+    ReactiveChart,
+    PaydownStats
   },
   methods: {
     ...mapActions([ACTIONS.logout]),
