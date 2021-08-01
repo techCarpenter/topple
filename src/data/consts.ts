@@ -10,7 +10,8 @@ const MUTATIONS = {
   addAccount: "addAccount",
   updateAccount: "updateAccount",
   deleteAccount: "deleteAccount",
-  setPayments: "setPayments"
+  setPayments: "setPayments",
+  setPaymentData: "setPaymentData"
 };
 
 const ACTIONS = {
@@ -26,7 +27,8 @@ const ACTIONS = {
 const GETTERS = {
   getAccounts: "getAccounts",
   getAccountById: "getAccountById",
-  getUser: "getUser"
+  getUser: "getUser",
+  getPaydownData: "getPaydownData"
 };
 
 export { PAYDOWN_METHODS, MUTATIONS, ACTIONS, GETTERS };
