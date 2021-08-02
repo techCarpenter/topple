@@ -5,7 +5,6 @@
       class="my-3 flex flex-wrap justify-between"
       v-if="paydownData !== undefined && paydownData !== null"
     >
-      <!-- Current Stats -->
       <PaydownStatBlock
         title="Time Remaining"
         :value="
@@ -27,7 +26,6 @@
       class="my-3 flex flex-wrap justify-between"
       v-if="paydownData !== undefined && paydownData !== null"
     >
-      <!-- Plan Stats -->
       <PaydownStatBlock
         title="Starting Balance"
         :value="currencyFormat(startingBalance)"
@@ -52,6 +50,10 @@
         title="Total Saved"
         :value="currencyFormat(totalSaved)"
       />
+      <PaydownStatBlock
+        title="Final Snowball"
+        :value="currencyFormat(paydownData.finalSnowball)"
+      />
     </div>
   </div>
 </template>
@@ -67,7 +69,7 @@ import {
 import PaydownStatBlock from "./PaydownStatBlock.vue";
 import { mapState, useStore } from "vuex";
 import { key } from "@/store";
-import { PaymentDetail, PayPeriodDetail } from "@/interfaces";
+import { DebtAccount, PaymentDetail, PayPeriodDetail } from "@/interfaces";
 import { PAYDOWN_METHODS } from "@/data";
 
 export default defineComponent({
@@ -77,6 +79,7 @@ export default defineComponent({
     const store = useStore(key);
 
     const accounts = computed(() => store.state.accounts);
+    const paydownData = computed(() => store.state.paydownData);
 
     const dateFormat = new Intl.DateTimeFormat("en-US", {
       year: "numeric",
@@ -89,7 +92,7 @@ export default defineComponent({
 
     const startingBalance = computed(() =>
       store.state.accounts
-        .map((acct) => acct.balance)
+        .map((acct: DebtAccount) => acct.balance)
         .reduce((acc, cur) => acc + cur)
     );
 
@@ -97,7 +100,7 @@ export default defineComponent({
       let now = new Date();
       return (
         pmt.date.getFullYear() < now.getFullYear() ||
-        (pmt.date.getMonth() <= now.getMonth() &&
+        (pmt.date.getMonth() < now.getMonth() &&
           pmt.date.getFullYear() === now.getFullYear())
       );
     };
@@ -107,7 +110,9 @@ export default defineComponent({
         return store.state.paydownData.paymentArray
           .filter(paymentsBeforeToday)
           .map((pmt: PayPeriodDetail) => {
-            return pmt.payments.map((payment) => payment.totalPaid);
+            return pmt.payments.map(
+              (payment: PaymentDetail) => payment.totalPaid
+            );
           })
           .flat()
           .reduce((acc: number, cur: number) => acc + cur);
@@ -115,6 +120,14 @@ export default defineComponent({
         return 0;
       }
     });
+
+    const monthDiff = (dateFrom: Date, dateTo: Date) => {
+      return (
+        dateTo.getMonth() -
+        dateFrom.getMonth() +
+        12 * (dateTo.getFullYear() - dateFrom.getFullYear())
+      );
+    };
 
     // const savedNow = computed(() => {
     //   try {
@@ -134,29 +147,28 @@ export default defineComponent({
       let curYear = new Date().getFullYear();
       let curMonth = new Date().getMonth();
 
-      return store.state.paydownData.paymentArray
+      return paydownData.value.paymentArray
         .filter(
           (pmt: PayPeriodDetail) =>
             pmt.date.getFullYear() === curYear &&
             pmt.date.getMonth() === curMonth
         )[0]
-        .payments.reduce((acc: any, cur: PaymentDetail) => ({
-          balance: acc.balance + cur.balance
-        })).balance;
+        .payments.map((pmt) => pmt.balance)
+        .reduce((acc: number, cur: number) => acc + cur);
     });
 
     const progress = computed(() => {
-      return (
-        (paid.value / store.state.paydownData.totalPaid) *
-        100
-      ).toLocaleString("en-US", {
-        minimumFractionDigits: 1,
-        maximumFractionDigits: 1
-      });
+      return ((paid.value / paydownData.value.totalPaid) * 100).toLocaleString(
+        "en-US",
+        {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1
+        }
+      );
     });
 
     const totalSaved = computed(() => {
-      return minPaymentData.value.totalPaid - store.state.paydownData.totalPaid;
+      return minPaymentData.value.totalPaid - paydownData.value.totalPaid;
     });
 
     return {
@@ -164,6 +176,7 @@ export default defineComponent({
       currentBalance,
       // savedNow,
       accounts,
+      paydownData,
       paid,
       startingBalance,
       progress,
@@ -172,9 +185,6 @@ export default defineComponent({
       currencyFormat,
       percentFormat
     };
-  },
-  computed: {
-    ...mapState(["paydownData"])
   }
 });
 </script>
