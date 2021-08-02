@@ -25,7 +25,6 @@
         @click="logout"
       >
         Log out
-        <!-- {{ user.name }} -->
         <svg
           class="inline-block fill-current"
           width="24"
