@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col w-full" v-if="accounts.length > 0">
     <AccountItem
-      v-for="loan in accounts"
+      v-for="loan in accounts.sort((a, b) => a.name > b.name)"
       :key="loan.id"
       :account="loan"
       :selected="loan.id === selectedId"
