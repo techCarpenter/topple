@@ -25,6 +25,7 @@
         @click="logout"
       >
         Log out
+        <!-- {{ user.name }} -->
         <svg
           class="inline-block fill-current"
           width="24"
@@ -60,14 +61,14 @@
 </template>
 
 <script lang="ts">
-import { mapActions, mapGetters, mapState, useStore } from "vuex";
+import { mapActions, mapGetters, useStore } from "vuex";
 import { ACTIONS, GETTERS, MUTATIONS, PAYDOWN_METHODS } from "../data";
 import AccountSidebar from "../components/AccountSidebar.vue";
 import ReactiveChart from "../components/ReactiveChart.vue";
 import PaydownStats from "../components/PaydownStats/PaydownStats.vue";
 import { plotlyConfig, CreateTrace } from "../data";
 import { getTotalPaymentData } from "../assets/js/paydownData";
-import { defineComponent, onMounted, reactive, watch } from "vue";
+import { computed, defineComponent, onMounted, reactive, watch } from "vue";
 import { PaymentDetail, PayPeriodDetail, DebtAccount } from "../interfaces";
 import { key } from "@/store";
 
@@ -80,6 +81,10 @@ export default defineComponent({
     // set vertical line x coordinates
     chartConfig.layout.shapes[0].x0 = new Date();
     chartConfig.layout.shapes[0].x1 = new Date();
+
+    const accounts = computed(() => store.state.accounts);
+
+    const user = computed(() => store.state.userProfile);
 
     const updateChart = (accounts: DebtAccount[]) => {
       let paymentData;
@@ -132,6 +137,8 @@ export default defineComponent({
     );
 
     return {
+      user,
+      accounts,
       unwatch,
       chartConfig
     };
@@ -144,9 +151,6 @@ export default defineComponent({
   methods: {
     ...mapActions([ACTIONS.logout]),
     ...mapGetters([GETTERS.getAccounts])
-  },
-  computed: {
-    ...mapState(["accounts"])
   }
 });
 </script>
