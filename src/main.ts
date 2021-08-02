@@ -69,7 +69,7 @@ fb.auth.onAuthStateChanged(async user => {
     // Unsusbscribe from firebase collection snapshot listeners
     if (accountSnapUnsub) {
       accountSnapUnsub();
-      console.info("Unsubscribed account snapshot");
+      // console.info("Unsubscribed account snapshot");
     }
     // if (paymentSnapUnsub) {
     //   paymentSnapUnsub();

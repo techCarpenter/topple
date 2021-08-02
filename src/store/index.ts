@@ -3,21 +3,28 @@ import { InjectionKey } from "vue";
 import { MUTATIONS, ACTIONS, GETTERS } from "../data";
 import * as fb from "../firebase";
 import { router } from "../router";
-import { DebtAccount, PaymentDetail } from "@/interfaces";
+import {
+  DebtAccount,
+  PaymentDetail,
+  PaydownDataDetail,
+  UserProfileDetail
+} from "@/interfaces";
 
 export interface State {
-  userProfile: Object;
+  userProfile: UserProfileDetail;
   accounts: DebtAccount[];
   payments: PaymentDetail[];
+  paydownData: PaydownDataDetail;
 }
 
 export const key: InjectionKey<Store<State>> = Symbol();
 
 const store = createStore<State>({
   state: {
-    userProfile: {},
+    userProfile: null,
     accounts: [] as DebtAccount[],
-    payments: [] as PaymentDetail[]
+    payments: [] as PaymentDetail[],
+    paydownData: null
   },
   actions: {
     async [ACTIONS.deleteAccount](ctx, id: string) {
@@ -152,6 +159,9 @@ const store = createStore<State>({
     },
     [MUTATIONS.setPayments]: (state, payments) => {
       state.payments = payments;
+    },
+    [MUTATIONS.setPaymentData]: (state, paydownData) => {
+      state.paydownData = paydownData;
     }
   },
   getters: {
@@ -167,6 +177,9 @@ const store = createStore<State>({
       );
       if (index < 0) return null;
       return state.accounts[index];
+    },
+    [GETTERS.getPaydownData]: state => {
+      return state.paydownData;
     }
   },
   modules: {}

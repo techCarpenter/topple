@@ -3,7 +3,8 @@ import {
   AccountPayoffDetail,
   DebtAccount,
   PayPeriodDetail,
-  PaymentDetail
+  PaymentDetail,
+  PaydownDataDetail
 } from "@/interfaces";
 
 /**
@@ -51,14 +52,16 @@ function getTotalPaymentData(
   loans: DebtAccount[],
   paydownMethod: string = PAYDOWN_METHODS.snowball,
   initSnowball: number = 0
-) {
+): PaydownDataDetail {
   let totalInterestPaid: number = 0,
     totalPrincipalPaid: number = 0,
     accountPayoffOrder: AccountPayoffDetail[] = [],
     allPaymentData = [],
     snowballAmt: number = initSnowball,
     loansCopy: DebtAccount[] = copy(loans),
-    startDate: Date = loansCopy.map(loan => loan.dateOpened).sort(dateSort)[0],
+    startDate: Date = loansCopy
+      .map(loan => loan.dateOpened)
+      .sort(dateSortAsc)[0],
     curYear: number = startDate.getFullYear(),
     curMonth: number = startDate.getMonth(),
     ratePerMonth: number,
@@ -66,12 +69,19 @@ function getTotalPaymentData(
     minPay: number,
     futureValue: number,
     curMonthInterest: number,
-    curMonthPrincipal: number;
+    curMonthPrincipal: number,
+    monthsLeft: number = 0,
+    nowMonth = new Date().getMonth(),
+    nowYear = new Date().getFullYear();
 
   loansCopy = prioritizeLoans(loansCopy, paydownMethod);
 
   // Loop over each payment period
   do {
+    if (curYear > nowYear || (curYear === nowYear && curMonth >= nowMonth)) {
+      monthsLeft++;
+    }
+
     let extraPayment: number = 0,
       curPaymentObj: PayPeriodDetail = {
         date: new Date(curYear, curMonth, 1),
@@ -231,19 +241,23 @@ function getTotalPaymentData(
     }
   } while (loansCopy.length > 0);
 
-  return {
+  let returnObj = {
     paymentArray: allPaymentData,
     totalInterestPaid,
     totalPrincipalPaid,
     totalPaid: totalPrincipalPaid + totalInterestPaid,
     accountPayoffOrder,
-    startDate:
-      getMonthString(startDate.getMonth() + 1) + " " + startDate.getFullYear(),
-    endDate: getMonthString(curMonth) + " " + curYear,
+    startDate,
+    endDate: new Date(curYear, curMonth, 1),
+    monthsLeft,
     paydownMethod,
     startingSnowball: initSnowball,
     finalSnowball: snowballAmt
   };
+
+  // console.log("paydownData", returnObj);
+
+  return returnObj;
 }
 
 function prioritizeLoans(
@@ -293,11 +307,7 @@ function prioritizeLoans(
  * @param {Date} date2
  * @returns 1 for first is greater, 0 for equal, and -1 for second is greater
  */
-function dateSort(date1: Date, date2: Date): number {
-  // if (typeof date1 !== Date || typeof date2 !== Date) {
-  //   return 0;
-  // }
-
+function dateSortAsc(date1: Date, date2: Date): number {
   let year1 = date1.getFullYear(),
     month1 = date1.getMonth(),
     year2 = date2.getFullYear(),
@@ -371,15 +381,12 @@ function currencyFormat(value: number): string {
 }
 
 function dateStringFromDate(date: Date): string {
-  // if (typeof date === Date) {
   return `${date.getFullYear().toString()}-${(date.getMonth() + 1)
     .toString()
     .padStart(2, "0")}-${date
     .getDate()
     .toString()
     .padStart(2, "0")}`;
-  // }
-  // return "";
 }
 
 function dateFromString(dateString: String): Date {
@@ -390,7 +397,7 @@ function dateFromString(dateString: String): Date {
 export {
   copy,
   getMonthString,
-  dateSort,
+  dateSortAsc,
   getTotalPaymentData,
   prioritizeLoans,
   currencyFormat,
