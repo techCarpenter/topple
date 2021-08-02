@@ -3,23 +3,28 @@ import { InjectionKey } from "vue";
 import { MUTATIONS, ACTIONS, GETTERS } from "../data";
 import * as fb from "../firebase";
 import { router } from "../router";
-import { DebtAccount, PaymentDetail } from "@/interfaces";
+import {
+  DebtAccount,
+  PaymentDetail,
+  PaydownDataDetail,
+  UserProfileDetail
+} from "@/interfaces";
 
 export interface State {
-  userProfile: Object;
+  userProfile: UserProfileDetail;
   accounts: DebtAccount[];
   payments: PaymentDetail[];
-  paydownData: any;
+  paydownData: PaydownDataDetail;
 }
 
 export const key: InjectionKey<Store<State>> = Symbol();
 
 const store = createStore<State>({
   state: {
-    userProfile: {},
+    userProfile: null,
     accounts: [] as DebtAccount[],
     payments: [] as PaymentDetail[],
-    paydownData: {}
+    paydownData: null
   },
   actions: {
     async [ACTIONS.deleteAccount](ctx, id: string) {

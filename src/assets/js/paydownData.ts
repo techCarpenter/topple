@@ -3,7 +3,8 @@ import {
   AccountPayoffDetail,
   DebtAccount,
   PayPeriodDetail,
-  PaymentDetail
+  PaymentDetail,
+  PaydownDataDetail
 } from "@/interfaces";
 
 /**
@@ -51,7 +52,7 @@ function getTotalPaymentData(
   loans: DebtAccount[],
   paydownMethod: string = PAYDOWN_METHODS.snowball,
   initSnowball: number = 0
-) {
+): PaydownDataDetail {
   let totalInterestPaid: number = 0,
     totalPrincipalPaid: number = 0,
     accountPayoffOrder: AccountPayoffDetail[] = [],
@@ -77,7 +78,7 @@ function getTotalPaymentData(
 
   // Loop over each payment period
   do {
-    if (curYear > nowYear || (curYear === nowYear && curMonth > nowMonth)) {
+    if (curYear > nowYear || (curYear === nowYear && curMonth >= nowMonth)) {
       monthsLeft++;
     }
 

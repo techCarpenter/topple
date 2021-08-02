@@ -41,10 +41,32 @@ interface PlotlyTrace {
   };
 }
 
+interface PaydownDataDetail {
+  paymentArray: PayPeriodDetail[];
+  totalInterestPaid: number;
+  totalPrincipalPaid: number;
+  totalPaid: number;
+  accountPayoffOrder: AccountPayoffDetail[];
+  startDate: Date;
+  endDate: Date;
+  monthsLeft: number;
+  paydownMethod: string;
+  startingSnowball: number;
+  finalSnowball: number;
+}
+
+interface UserProfileDetail {
+  name: string;
+  lastLogin: number;
+  email: string;
+}
+
 export {
   DebtAccount,
   PayPeriodDetail,
   PaymentDetail,
   AccountPayoffDetail,
-  PlotlyTrace
+  PlotlyTrace,
+  PaydownDataDetail,
+  UserProfileDetail
 };
