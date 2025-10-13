@@ -153,7 +153,7 @@ export default defineComponent({
             pmt.date.getFullYear() === curYear &&
             pmt.date.getMonth() === curMonth
         )[0]
-        .payments.map((pmt) => pmt.balance)
+        .payments.map(pmt => pmt.balance)
         .reduce((acc: number, cur: number) => acc + cur);
     });
 

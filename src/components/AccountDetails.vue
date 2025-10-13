@@ -39,7 +39,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { currencyFormat, percentFormat } from "../assets/js/functions";
+import { currencyFormat, percentFormat } from "../assets/js/paydownData";
 
 export default defineComponent({
   props: {
@@ -49,13 +49,13 @@ export default defineComponent({
     }
   },
   methods: {
-    formatCurrency(value) {
+    formatCurrency(value: number) {
       return currencyFormat(value);
     },
-    formatPercent(value) {
+    formatPercent(value: number) {
       return percentFormat(value);
     },
-    formatDate(dateValue) {
+    formatDate(dateValue: Date) {
       return (
         (dateValue.getMonth() + 1).toString() +
         "/" +

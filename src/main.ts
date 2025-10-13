@@ -1,4 +1,5 @@
 import { createApp } from "vue";
+import { createPinia, Pinia } from "pinia";
 import { MUTATIONS, ACTIONS } from "./data";
 import { createAccount } from "./models";
 import AppComp from "./AppComp.vue";
@@ -8,7 +9,7 @@ import * as fb from "./firebase";
 import "./assets/tailwind.css";
 import { DebtAccount } from "@/interfaces";
 
-let app: any, accountSnapUnsub: Function; // paymentSnapUnsub: Function;
+let app: any, accountSnapUnsub: Function, pinia: Pinia; // paymentSnapUnsub: Function;
 
 fb.auth.onAuthStateChanged(async user => {
   /**
@@ -16,8 +17,9 @@ fb.auth.onAuthStateChanged(async user => {
    * update view when user logs in or out
    */
   if (!app) {
+    const pinia = createPinia();
     app = createApp(AppComp)
-      .use(store, key)
+      .use(pinia, key)
       .use(router)
       .mount("#app");
   }
